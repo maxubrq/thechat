@@ -369,11 +369,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <div class="fg" style="margin-bottom:12px"><label class="fl">Ghi chú</label><input class="fi" type="text" id="l-note" placeholder="Cảm giác hôm nay..."></div>
 
       <div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Ảnh bằng chứng (front · side · back)</div>
-      <div class="photo-zone" id="photo-zone">
-        <input type="file" id="photo-input" accept="image/*" multiple style="display:none">
-        <div class="photo-zone-text" onclick="$('#photo-input').click()">📷 Chọn ảnh (tối đa 3)</div>
+      <label for="photo-input" class="photo-zone" id="photo-zone" style="display:block;cursor:pointer" onclick="event.stopPropagation()">
+        <input type="file" id="photo-input" accept="image/*" multiple style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none">
+        <div class="photo-zone-text">📷 Chọn ảnh (tối đa 3)</div>
         <div class="photo-previews" id="photo-previews"></div>
-      </div>
+      </label>
       <div class="upload-prog" id="upload-prog">
         <div class="upload-label" id="upload-label">Đang upload ảnh...</div>
         <div class="upload-prog-bar" id="upload-bar"></div>
@@ -690,11 +690,11 @@ async function pushLogs() {
 // ══════════════════════════════════════════
 //  PHOTOS
 // ══════════════════════════════════════════
-$('#photo-input').on('change', function(e) {
+function handlePhotoChange(e) {
   const files = Array.from(e.target.files).slice(0, 3);
+  if (!files.length) return;
   pendingPhotos = [];
   $('#photo-previews').empty();
-  let loaded = 0;
   files.forEach((file, i) => {
     const reader = new FileReader();
     reader.onload = ev => {
@@ -703,7 +703,8 @@ $('#photo-input').on('change', function(e) {
         pendingPhotos.push({ dataUrl: b64, name });
         const wrap = $('<div class="pthumb-wrap"></div>');
         const img = $('<img class="pthumb">').attr('src', b64);
-        const del = $('<button class="pthumb-del">×</button>').on('click', () => {
+        const del = $('<button class="pthumb-del" type="button">×</button>').on('click', e => {
+          e.preventDefault(); e.stopPropagation();
           pendingPhotos = pendingPhotos.filter(p => p.name !== name);
           wrap.remove();
         });
@@ -713,8 +714,8 @@ $('#photo-input').on('change', function(e) {
     };
     reader.readAsDataURL(file);
   });
-  $(this).val('');
-});
+  e.target.value = '';
+}
 
 function resizeImg(dataUrl, maxW, cb) {
   const img = new Image();
@@ -1050,13 +1051,8 @@ $(()=> {
   $('#lock-btn').on('click', unlock);
   $('#lock-token').on('keydown', e => { if(e.key==='Enter') unlock(); });
 
-  // photo zone click (area not covered by button)
-  $('#photo-zone').on('click', e => {
-    if($(e.target).closest('.pthumb-wrap').length===0 && !$(e.target).is('.photo-zone-text')) {
-      $('#photo-input').click();
-    }
-  });
-  $('.photo-zone-text').on('click', () => $('#photo-input').click());
+  // photo input — use document-level to survive DOM re-renders
+  $(document).on('change', '#photo-input', handlePhotoChange);
 
   // check session token
   const saved = sessionStorage.getItem('toji_token');
