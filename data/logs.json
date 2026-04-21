@@ -1,5 +1,16 @@
 [
   {
+    "date": "2026-04-22",
+    "weight": 80,
+    "waist": null,
+    "sleep": 9,
+    "pullup": null,
+    "pushup": null,
+    "plank": null,
+    "note": "",
+    "photos": []
+  },
+  {
     "date": "2026-04-21",
     "weight": 83,
     "waist": 93,
