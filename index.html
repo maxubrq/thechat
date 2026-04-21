@@ -2,8 +2,21 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <title>Toji Protocol — 12 Tuần</title>
+
+<!-- PWA manifest -->
+<link rel="manifest" href="manifest.json">
+
+<!-- iOS PWA meta tags -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TOJI">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+<!-- Theme -->
+<meta name="theme-color" content="#0a0a0a">
+<meta name="mobile-web-app-capable" content="yes">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&display=swap');
 
@@ -32,6 +45,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   background: rgba(10,10,10,0.92); backdrop-filter: blur(12px);
   border-bottom: 0.5px solid var(--border); padding: 0 1rem;
+  padding-top: env(safe-area-inset-top);
 }
 .nav-inner { max-width: 680px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 52px; }
 .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--accent); }
@@ -57,7 +71,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .sync-btn:hover { color: var(--text); border-color: var(--text); }
 .sync-btn.primary { background: var(--accent); border-color: var(--accent); color: white; }
 
-.main { max-width: 680px; margin: 0 auto; padding: 100px 1rem 6rem; }
+.main { max-width: 680px; margin: 0 auto; padding: 100px 1rem calc(6rem + env(safe-area-inset-bottom)); }
 
 .panel { display: none; }
 .panel.active { display: block; }
@@ -1072,6 +1086,34 @@ function renderLogs() {
   _origRender();
   if (document.getElementById('panel-charts').classList.contains('active')) renderChart();
 }
+</script>
+
+<script>
+// Register service worker for PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+
+// iOS: show install banner if not already installed
+window.addEventListener('load', () => {
+  const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isStandalone = window.navigator.standalone;
+  const dismissed = localStorage.getItem('toji_install_dismissed');
+  if (isIos && !isStandalone && !dismissed) {
+    const banner = document.createElement('div');
+    banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#1c1c1c;border-top:0.5px solid #363636;padding:14px 1rem calc(14px + env(safe-area-inset-bottom));z-index:400;display:flex;align-items:flex-start;gap:12px;';
+    banner.innerHTML = `
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:500;color:#f0ede8;margin-bottom:3px;">Cài app về iPhone</div>
+        <div style="font-size:12px;color:#888;line-height:1.5;">Nhấn <strong style="color:#f0ede8">Share</strong> → <strong style="color:#f0ede8">Add to Home Screen</strong> để dùng offline như app thật</div>
+      </div>
+      <button onclick="this.parentElement.remove();localStorage.setItem('toji_install_dismissed','1')" style="background:none;border:none;color:#555;font-size:20px;cursor:pointer;padding:0;line-height:1;flex-shrink:0">×</button>
+    `;
+    document.body.appendChild(banner);
+  }
+});
 </script>
 </body>
 </html>
