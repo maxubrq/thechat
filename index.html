@@ -198,6 +198,38 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--card); border: 0.5px solid var(--border2); color: var(--text); padding: 10px 20px; border-radius: var(--radius); font-size: 13px; z-index: 300; opacity: 0; transition: all 0.25s; white-space: nowrap; max-width: 90vw; text-align: center; }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 .toast.err { border-color: var(--accent); color: #F0997B; }
+
+/* CHARTS */
+.chart-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
+.ctab { font-size: 12px; font-weight: 500; padding: 6px 14px; border: 0.5px solid var(--border2); background: none; color: var(--muted); cursor: pointer; border-radius: 20px; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
+.ctab.active { background: var(--accent); border-color: var(--accent); color: white; }
+.ctab:hover:not(.active) { color: var(--text); border-color: var(--text); }
+.chart-card { background: var(--card); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
+.chart-meta { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; gap: 10px; }
+.chart-title { font-weight: 500; font-size: 14px; color: var(--text); }
+.chart-range { font-size: 12px; color: var(--hint); margin-top: 2px; }
+.chart-stats { display: flex; gap: 16px; text-align: right; flex-shrink: 0; }
+.chart-stat-val { font-size: 18px; font-weight: 500; color: var(--text); }
+.chart-stat-val.pos { color: var(--accent2); }
+.chart-stat-val.neg { color: var(--accent); }
+.chart-stat-label { font-size: 10px; color: var(--hint); text-transform: uppercase; letter-spacing: 0.5px; }
+.chart-wrap { position: relative; width: 100%; }
+.chart-wrap canvas { width: 100% !important; display: block; }
+.chart-empty { font-size: 13px; color: var(--hint); text-align: center; padding: 2rem 0; display: none; }
+.chart-summary-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 1rem; }
+.summary-card { background: var(--card); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1rem; }
+.summary-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.summary-row { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; border-bottom: 0.5px solid var(--border); }
+.summary-row:last-child { border-bottom: none; }
+.summary-key { color: var(--muted); }
+.summary-val { font-weight: 500; color: var(--text); }
+.summary-val.good { color: var(--accent2); }
+.summary-val.bad { color: var(--accent); }
+.streak-box { background: var(--card); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; }
+.streak-num { font-family: 'Bebas Neue', sans-serif; font-size: 42px; color: var(--gold); line-height: 1; }
+.streak-info { text-align: right; }
+.streak-label { font-size: 12px; color: var(--muted); }
+.streak-sub { font-size: 11px; color: var(--hint); margin-top: 2px; }
 </style>
 </head>
 <body>
@@ -209,6 +241,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
       <button class="nav-tab active" onclick="showPanel('overview')">Overview</button>
       <button class="nav-tab" onclick="showPanel('workout')">Workout</button>
       <button class="nav-tab" onclick="showPanel('tracker')">Tracker</button>
+      <button class="nav-tab" onclick="showPanel('charts')">Charts</button>
       <button class="nav-tab" onclick="showPanel('more')">More</button>
     </div>
   </div>
@@ -375,6 +408,36 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
       <div style="font-size:14px;font-weight:500;color:var(--text)">Lịch sử (<span id="log-count">0</span> ngày)</div>
     </div>
     <div id="log-list"></div>
+  </div>
+
+  <!-- CHARTS -->
+  <div id="panel-charts" class="panel">
+    <div class="section-title">Progress Charts</div>
+    <div class="section-sub">Dữ liệu từ các log đã ghi</div>
+
+    <div class="chart-tabs">
+      <button class="ctab active" onclick="switchChart('weight', this)">Cân nặng</button>
+      <button class="ctab" onclick="switchChart('waist', this)">Vòng eo</button>
+      <button class="ctab" onclick="switchChart('pullup', this)">Pull-up</button>
+      <button class="ctab" onclick="switchChart('pushup', this)">Push-up</button>
+      <button class="ctab" onclick="switchChart('sleep', this)">Ngủ</button>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-meta">
+        <div>
+          <div class="chart-title" id="chart-title">Cân nặng (kg)</div>
+          <div class="chart-range" id="chart-range">—</div>
+        </div>
+        <div class="chart-stats" id="chart-stats"></div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="main-chart" height="220"></canvas>
+      </div>
+      <div class="chart-empty" id="chart-empty">Chưa có đủ dữ liệu — log ít nhất 2 ngày</div>
+    </div>
+
+    <div class="chart-summary-grid" id="chart-summary"></div>
   </div>
 
   <!-- MORE -->
@@ -752,6 +815,262 @@ function showToast(msg, isErr) {
   t.className = 'toast' + (isErr ? ' err' : '');
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2800);
+}
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// ---- CHARTS ----
+let activeMetric = 'weight';
+let mainChart = null;
+
+const METRICS = {
+  weight: { label: 'Cân nặng (kg)', key: 'weight', unit: 'kg', color: '#D85A30', target: 68, lowerIsBetter: true },
+  waist:  { label: 'Vòng eo (cm)',  key: 'waist',  unit: 'cm', color: '#BA7517', target: 80, lowerIsBetter: true },
+  pullup: { label: 'Pull-up (reps)', key: 'pullup', unit: '', color: '#1D9E75', target: 12, lowerIsBetter: false },
+  pushup: { label: 'Push-up (reps)', key: 'pushup', unit: '', color: '#5DCAA5', target: 40, lowerIsBetter: false },
+  sleep:  { label: 'Giờ ngủ (h)',   key: 'sleep',  unit: 'h', color: '#7F77DD', target: 8, lowerIsBetter: false },
+};
+
+function switchChart(metric, el) {
+  activeMetric = metric;
+  document.querySelectorAll('.ctab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderChart();
+}
+
+function getChartData(metric) {
+  const m = METRICS[metric];
+  const points = logs
+    .filter(l => l[m.key] != null)
+    .map(l => ({ date: l.date, val: l[m.key] }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+  return points;
+}
+
+function formatDateShort(d) {
+  const [, mo, day] = d.split('-');
+  return `${day}/${mo}`;
+}
+
+function renderChart() {
+  const m = METRICS[activeMetric];
+  const points = getChartData(activeMetric);
+  const wrap = document.querySelector('.chart-wrap');
+  const empty = document.getElementById('chart-empty');
+  const canvas = document.getElementById('main-chart');
+
+  document.getElementById('chart-title').textContent = m.label;
+
+  if (points.length < 2) {
+    wrap.style.display = 'none';
+    empty.style.display = 'block';
+    document.getElementById('chart-stats').innerHTML = '';
+    document.getElementById('chart-range').textContent = '—';
+    renderSummary();
+    return;
+  }
+  wrap.style.display = 'block';
+  empty.style.display = 'none';
+
+  const labels = points.map(p => formatDateShort(p.date));
+  const vals = points.map(p => p.val);
+  const first = vals[0], last = vals[vals.length - 1];
+  const diff = last - first;
+  const diffStr = (diff >= 0 ? '+' : '') + diff.toFixed(1) + m.unit;
+  const isGood = m.lowerIsBetter ? diff < 0 : diff > 0;
+
+  document.getElementById('chart-range').textContent =
+    formatDateShort(points[0].date) + ' → ' + formatDateShort(points[points.length-1].date);
+
+  document.getElementById('chart-stats').innerHTML = `
+    <div class="chart-stat">
+      <div class="chart-stat-val ${isGood ? 'pos' : 'neg'}">${diffStr}</div>
+      <div class="chart-stat-label">thay đổi</div>
+    </div>
+    <div class="chart-stat">
+      <div class="chart-stat-val">${last.toFixed(1)}${m.unit}</div>
+      <div class="chart-stat-label">hiện tại</div>
+    </div>
+  `;
+
+  // build phase background
+  const phaseColors = ['rgba(216,90,48,0.06)', 'rgba(186,117,23,0.06)', 'rgba(29,158,117,0.06)'];
+  const annotations = {};
+
+  if (mainChart) { mainChart.destroy(); mainChart = null; }
+
+  Chart.defaults.color = '#555';
+  Chart.defaults.font.family = "'DM Sans', sans-serif";
+
+  // target line dataset
+  const targetData = vals.map(() => m.target);
+
+  mainChart = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: m.label,
+          data: vals,
+          borderColor: m.color,
+          backgroundColor: m.color + '22',
+          borderWidth: 2,
+          pointBackgroundColor: m.color,
+          pointRadius: vals.length > 30 ? 2 : 4,
+          pointHoverRadius: 6,
+          fill: true,
+          tension: 0.35,
+        },
+        {
+          label: 'Mục tiêu',
+          data: targetData,
+          borderColor: '#444',
+          borderWidth: 1,
+          borderDash: [6, 4],
+          pointRadius: 0,
+          fill: false,
+          tension: 0,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1c1c1c',
+          borderColor: '#363636',
+          borderWidth: 0.5,
+          titleColor: '#888',
+          bodyColor: '#f0ede8',
+          padding: 10,
+          callbacks: {
+            label: ctx => ctx.datasetIndex === 0
+              ? `${ctx.parsed.y.toFixed(1)}${m.unit}`
+              : `Mục tiêu: ${m.target}${m.unit}`
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: '#2a2a2a', lineWidth: 0.5 },
+          ticks: { color: '#555', font: { size: 11 }, maxTicksLimit: 8 },
+          border: { color: '#2a2a2a' }
+        },
+        y: {
+          grid: { color: '#2a2a2a', lineWidth: 0.5 },
+          ticks: {
+            color: '#555', font: { size: 11 },
+            callback: v => v.toFixed(0) + m.unit
+          },
+          border: { color: '#2a2a2a' }
+        }
+      }
+    }
+  });
+
+  renderSummary();
+}
+
+function calcStreak() {
+  if (!logs.length) return 0;
+  const sorted = [...logs].sort((a, b) => b.date.localeCompare(a.date));
+  let streak = 0;
+  let prev = null;
+  for (const l of sorted) {
+    const d = new Date(l.date);
+    if (!prev) { streak = 1; prev = d; continue; }
+    const diff = Math.round((prev - d) / 86400000);
+    if (diff === 1) { streak++; prev = d; }
+    else break;
+  }
+  return streak;
+}
+
+function renderSummary() {
+  const streak = calcStreak();
+  const totalDays = logs.length;
+
+  // summary cards
+  const weightPts = getChartData('weight');
+  const waistPts  = getChartData('waist');
+  const pullupPts = getChartData('pullup');
+  const pushupPts = getChartData('pushup');
+
+  const delta = (pts, lb) => {
+    if (pts.length < 2) return null;
+    const d = pts[pts.length-1].val - pts[0].val;
+    return { val: d, good: lb ? d < 0 : d > 0 };
+  };
+
+  const fmt = (d, unit, lb) => {
+    if (!d) return '<span class="summary-val">—</span>';
+    const sign = d.val >= 0 ? '+' : '';
+    const cls = d.good ? 'good' : 'bad';
+    return `<span class="summary-val ${cls}">${sign}${d.val.toFixed(1)}${unit}</span>`;
+  };
+
+  const wDelta = delta(weightPts, true);
+  const waDelta = delta(waistPts, true);
+  const pDelta = delta(pullupPts, false);
+  const puDelta = delta(pushupPts, false);
+
+  const curWeight = weightPts.length ? weightPts[weightPts.length-1].val : null;
+  const curWaist  = waistPts.length  ? waistPts[waistPts.length-1].val   : null;
+
+  const phase = totalDays <= 28 ? 1 : totalDays <= 56 ? 2 : 3;
+  const phasePct = Math.min(100, Math.round((totalDays / 84) * 100));
+
+  document.getElementById('chart-summary').innerHTML = `
+    <div class="streak-box" style="grid-column:span 2">
+      <div>
+        <div class="streak-num">${streak}</div>
+        <div class="streak-label">ngày streak liên tiếp</div>
+      </div>
+      <div class="streak-info">
+        <div style="font-size:22px;font-weight:500;color:var(--text)">${totalDays}<span style="font-size:13px;color:var(--muted)">/84</span></div>
+        <div class="streak-label">ngày đã log</div>
+        <div class="streak-sub">Phase ${phase} · ${phasePct}% hoàn thành</div>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-label">Body</div>
+      <div class="summary-row"><span class="summary-key">Cân hiện tại</span>${curWeight ? `<span class="summary-val">${curWeight}kg</span>` : '<span class="summary-val">—</span>'}</div>
+      <div class="summary-row"><span class="summary-key">Thay đổi cân</span>${fmt(wDelta,'kg',true)}</div>
+      <div class="summary-row"><span class="summary-key">Vòng eo hiện tại</span>${curWaist ? `<span class="summary-val">${curWaist}cm</span>` : '<span class="summary-val">—</span>'}</div>
+      <div class="summary-row"><span class="summary-key">Thay đổi eo</span>${fmt(waDelta,'cm',true)}</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-label">Strength</div>
+      <div class="summary-row"><span class="summary-key">Pull-up tốt nhất</span>${pullupPts.length ? `<span class="summary-val">${Math.max(...pullupPts.map(p=>p.val))} reps</span>` : '<span class="summary-val">—</span>'}</div>
+      <div class="summary-row"><span class="summary-key">Pull-up tăng</span>${fmt(pDelta,'',false)}</div>
+      <div class="summary-row"><span class="summary-key">Push-up tốt nhất</span>${pushupPts.length ? `<span class="summary-val">${Math.max(...pushupPts.map(p=>p.val))} reps</span>` : '<span class="summary-val">—</span>'}</div>
+      <div class="summary-row"><span class="summary-key">Push-up tăng</span>${fmt(puDelta,'',false)}</div>
+    </div>
+  `;
+}
+
+// hook into showPanel to render chart when switching
+const _origShow = showPanel;
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo(0,0);
+  if (name === 'charts') setTimeout(renderChart, 50);
+}
+
+// also re-render summary after log save
+const _origRender = renderLogs;
+function renderLogs() {
+  _origRender();
+  if (document.getElementById('panel-charts').classList.contains('active')) renderChart();
 }
 </script>
 </body>
