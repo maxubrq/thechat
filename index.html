@@ -1,0 +1,884 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500&display=swap');
+
+  :root {
+    --ink: var(--color-text-primary);
+    --muted: var(--color-text-secondary);
+    --hint: var(--color-text-tertiary);
+    --surface: var(--color-background-primary);
+    --raised: var(--color-background-secondary);
+    --border: var(--color-border-tertiary);
+    --accent: #D85A30;
+    --accent2: #1D9E75;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body { font-family: 'DM Sans', sans-serif; }
+
+  .root { padding: 1.5rem 0; }
+
+  .header { margin-bottom: 2rem; }
+  .header-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 2px;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .header-sub {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 1.5rem;
+    border-bottom: 0.5px solid var(--border);
+    padding-bottom: 0;
+  }
+  .tab {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -0.5px;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .tab:hover:not(.active) { color: var(--ink); }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* Stats */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+  .stat-card {
+    background: var(--raised);
+    border-radius: var(--border-radius-md);
+    padding: 0.75rem 1rem;
+  }
+  .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .stat-val { font-size: 20px; font-weight: 500; color: var(--ink); }
+  .stat-target { font-size: 11px; color: var(--accent); margin-top: 2px; }
+
+  /* Phase cards */
+  .phase-card {
+    border: 0.5px solid var(--border);
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    background: var(--surface);
+    position: relative;
+    overflow: hidden;
+  }
+  .phase-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .phase-1::before { background: #D85A30; }
+  .phase-2::before { background: #BA7517; }
+  .phase-3::before { background: #1D9E75; }
+
+  .phase-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    gap: 8px;
+  }
+  .phase-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .phase-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .phase-weeks {
+    font-size: 12px;
+    color: var(--hint);
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+  .phase-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .phase-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+  .metric-box {
+    background: var(--raised);
+    border-radius: var(--border-radius-md);
+    padding: 8px 10px;
+    text-align: center;
+  }
+  .metric-key { font-size: 11px; color: var(--muted); margin-bottom: 2px; }
+  .metric-target { font-size: 14px; font-weight: 500; color: var(--ink); }
+
+  .phase-transform {
+    font-size: 13px;
+    color: var(--accent2);
+    font-weight: 500;
+    border-top: 0.5px solid var(--border);
+    padding-top: 0.75rem;
+    margin-top: 0.5rem;
+  }
+  .phase-transform span { color: var(--muted); font-weight: 400; }
+
+  /* Workout */
+  .workout-block {
+    border: 0.5px solid var(--border);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    margin-bottom: 1rem;
+    background: var(--surface);
+  }
+  .workout-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--raised);
+  }
+  .workout-name {
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .workout-badge {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  .badge-strength { background: #FAECE7; color: #993C1D; }
+  .badge-core { background: #E1F5EE; color: #0F6E56; }
+  .badge-cardio { background: #FAEEDA; color: #854F0B; }
+
+  .exercise-table { width: 100%; border-collapse: collapse; }
+  .exercise-table td {
+    padding: 10px 1.25rem;
+    font-size: 13px;
+    border-bottom: 0.5px solid var(--border);
+    color: var(--ink);
+    vertical-align: middle;
+  }
+  .exercise-table tr:last-child td { border-bottom: none; }
+  .exercise-table .ex-name { font-weight: 500; }
+  .exercise-table .ex-sets { color: var(--muted); text-align: right; white-space: nowrap; }
+  .prog-note { font-size: 11px; color: var(--accent); margin-top: 2px; }
+
+  /* Nutrition */
+  .nutrition-card {
+    border: 0.5px solid var(--border);
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    background: var(--surface);
+  }
+  .nutr-title { font-weight: 500; font-size: 15px; color: var(--ink); margin-bottom: 0.75rem; }
+  .nutr-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 0.5px solid var(--border);
+    font-size: 13px;
+  }
+  .nutr-row:last-child { border-bottom: none; }
+  .nutr-key { color: var(--muted); }
+  .nutr-val { font-weight: 500; color: var(--ink); }
+  .nutr-accent { color: var(--accent); }
+
+  /* Milestones */
+  .milestone-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 1rem 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .milestone-row:last-child { border-bottom: none; }
+  .milestone-week {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--accent);
+    line-height: 1;
+    min-width: 48px;
+    text-align: center;
+  }
+  .milestone-week small { display: block; font-size: 10px; color: var(--muted); font-family: 'DM Sans', sans-serif; font-weight: 400; letter-spacing: 0.5px; }
+  .milestone-content { flex: 1; }
+  .milestone-title { font-weight: 500; font-size: 14px; color: var(--ink); margin-bottom: 4px; }
+  .milestone-detail { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .gate {
+    display: inline-block;
+    font-size: 11px;
+    background: #FAECE7;
+    color: #993C1D;
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-top: 6px;
+    font-weight: 500;
+  }
+
+  /* Resources */
+  .resource-group { margin-bottom: 1.5rem; }
+  .resource-group-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  .resource-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border);
+    font-size: 13px;
+  }
+  .resource-item:last-child { border-bottom: none; }
+  .resource-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+  .resource-name { font-weight: 500; color: var(--ink); }
+  .resource-desc { color: var(--muted); margin-top: 2px; }
+
+  .face-card {
+    border: 0.5px solid var(--border);
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem;
+    background: var(--surface);
+    margin-bottom: 1rem;
+  }
+  .face-title { font-weight: 500; font-size: 14px; color: var(--ink); margin-bottom: 0.75rem; }
+  .face-item {
+    display: flex;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 0.5px solid var(--border);
+    font-size: 13px;
+    align-items: flex-start;
+  }
+  .face-item:last-child { border-bottom: none; }
+  .face-item-icon { color: var(--accent2); min-width: 16px; }
+  .face-item-text { color: var(--ink); line-height: 1.5; }
+  .face-item-text .sub { color: var(--muted); font-size: 12px; }
+</style>
+
+<div class="root">
+  <div class="header">
+    <div class="header-title">Toji Protocol — 12 tuần</div>
+    <div class="header-sub">175cm · 80–83kg · Mục tiêu: 68kg · Calisthenics · IF 16/8</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showPanel('overview')">Tổng quan</button>
+    <button class="tab" onclick="showPanel('workout')">Bài tập</button>
+    <button class="tab" onclick="showPanel('nutrition')">Dinh dưỡng</button>
+    <button class="tab" onclick="showPanel('milestones')">Milestones</button>
+    <button class="tab" onclick="showPanel('face')">Mặt + Mắt</button>
+    <button class="tab" onclick="showPanel('resources')">Tài nguyên</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div id="panel-overview" class="panel active">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Cân nặng hiện tại</div>
+        <div class="stat-val">80–83kg</div>
+        <div class="stat-target">→ mục tiêu 68kg</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Vòng eo</div>
+        <div class="stat-val">93cm</div>
+        <div class="stat-target">→ mục tiêu &lt;80cm</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Body fat ước tính</div>
+        <div class="stat-val">~25%</div>
+        <div class="stat-target">→ mục tiêu 12–15%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Pull-up hiện tại</div>
+        <div class="stat-val">~1</div>
+        <div class="stat-target">→ mục tiêu 10+</div>
+      </div>
+    </div>
+
+    <div class="phase-card phase-1">
+      <div class="phase-header">
+        <div>
+          <div class="phase-label">Phase 1</div>
+          <div class="phase-title">Foundation & Fat Loss Ignition</div>
+        </div>
+        <div class="phase-weeks">Tuần 1–4</div>
+      </div>
+      <div class="phase-desc">Xây nền. Cơ thể học cách di chuyển đúng, hệ thần kinh làm quen với calisthenics, thói quen ăn 1 buổi được thiết lập. Đây là giai đoạn khó chịu nhất — nhưng cũng là giai đoạn không thể bỏ qua.</div>
+      <div class="phase-metrics">
+        <div class="metric-box">
+          <div class="metric-key">Cân nặng mục tiêu</div>
+          <div class="metric-target">76–77kg</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-key">Push-up mục tiêu</div>
+          <div class="metric-target">15–20 reps</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-key">Pull-up mục tiêu</div>
+          <div class="metric-target">3–5 reps</div>
+        </div>
+      </div>
+      <div class="phase-transform">Transformation gate: <span>Tự mình pull-up được 3 rep không cần band → unlock Phase 2</span></div>
+    </div>
+
+    <div class="phase-card phase-2">
+      <div class="phase-header">
+        <div>
+          <div class="phase-label">Phase 2</div>
+          <div class="phase-title">Strength Surge & Body Recomposition</div>
+        </div>
+        <div class="phase-weeks">Tuần 5–8</div>
+      </div>
+      <div class="phase-desc">Cơ bắp bắt đầu lộ ra. Mỡ tiếp tục tan, cơ tăng song song. Volume tập tăng lên, intensity cao hơn. Đây là giai đoạn mày bắt đầu nhìn vào gương và thấy sự thay đổi thật sự.</div>
+      <div class="phase-metrics">
+        <div class="metric-box">
+          <div class="metric-key">Cân nặng mục tiêu</div>
+          <div class="metric-target">72–73kg</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-key">Push-up mục tiêu</div>
+          <div class="metric-target">30+ reps</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-key">Pull-up mục tiêu</div>
+          <div class="metric-target">8–10 reps</div>
+        </div>
+      </div>
+      <div class="phase-transform">Transformation gate: <span>Pull-up 8 rep sạch + Push-up 30 rep → unlock Phase 3</span></div>
+    </div>
+
+    <div class="phase-card phase-3">
+      <div class="phase-header">
+        <div>
+          <div class="phase-label">Phase 3</div>
+          <div class="phase-title">Toji Mode — Definition & Power</div>
+        </div>
+        <div class="phase-weeks">Tuần 9–12</div>
+      </div>
+      <div class="phase-desc">Giai đoạn finisher. Điêu khắc cơ thể, cắt nét từng đường. Cardio boxing tăng mạnh. Calories giảm thêm. Đây là phase mày trở thành phiên bản không thể quay lại — mày sẽ không thể un-see cơ thể này.</div>
+      <div class="phase-metrics">
+        <div class="metric-box">
+          <div class="metric-key">Cân nặng mục tiêu</div>
+          <div class="metric-target">68–70kg</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-key">Push-up mục tiêu</div>
+          <div class="metric-target">40+ reps</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-key">Pull-up mục tiêu</div>
+          <div class="metric-target">12–15 reps</div>
+        </div>
+      </div>
+      <div class="phase-transform">End state: <span>68kg · eo &lt;80cm · pull-up 12+ · body fat ~12–14%</span></div>
+    </div>
+  </div>
+
+  <!-- WORKOUT -->
+  <div id="panel-workout" class="panel">
+    <p style="font-size:13px; color:var(--muted); margin-bottom:1rem; line-height:1.6;">Một set duy nhất mỗi ngày — không A/B split. Tổng thời gian: <strong style="color:var(--ink)">50–60 phút</strong>. Tập theo đúng thứ tự dưới đây.</p>
+
+    <div class="workout-block">
+      <div class="workout-header">
+        <div class="workout-name">1. Warm-up (5–7 phút)</div>
+        <span class="workout-badge badge-cardio">bắt buộc</span>
+      </div>
+      <table class="exercise-table">
+        <tr><td class="ex-name">Nhảy dây boxing</td><td class="ex-sets">3 phút liên tục</td></tr>
+        <tr><td class="ex-name">Arm circles + hip circles</td><td class="ex-sets">30 giây mỗi chiều</td></tr>
+        <tr><td class="ex-name">Cat-cow + spinal rotation</td><td class="ex-sets">10 reps mỗi bên</td></tr>
+        <tr><td class="ex-name">Dead hang trên xà</td><td class="ex-sets">30–60 giây</td></tr>
+      </table>
+    </div>
+
+    <div class="workout-block">
+      <div class="workout-header">
+        <div class="workout-name">2. Pull — kéo ngang (xà)</div>
+        <span class="workout-badge badge-strength">lưng + bicep</span>
+      </div>
+      <table class="exercise-table">
+        <tr>
+          <td>
+            <div class="ex-name">Pull-up / Chin-up</div>
+            <div class="prog-note">P1: dùng band → P2: bodyweight → P3: thêm tempo 3-1-1</div>
+          </td>
+          <td class="ex-sets">4 sets × max reps<br>nghỉ 90 giây</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="ex-name">Scapular pull-up</div>
+            <div class="prog-note">Kích hoạt vai sau — không bỏ qua</div>
+          </td>
+          <td class="ex-sets">3 sets × 10</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="ex-name">Band pull-apart (dây kháng lực)</div>
+            <div class="prog-note">Tư thế thẳng lưng, kéo đến ngực</div>
+          </td>
+          <td class="ex-sets">3 sets × 15</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="workout-block">
+      <div class="workout-header">
+        <div class="workout-name">3. Push — đẩy (ngực + vai + tricep)</div>
+        <span class="workout-badge badge-strength">đẩy</span>
+      </div>
+      <table class="exercise-table">
+        <tr>
+          <td>
+            <div class="ex-name">Push-up (góc hẹp hoặc diamond)</div>
+            <div class="prog-note">P1: standard → P2: pike → P3: archer push-up</div>
+          </td>
+          <td class="ex-sets">4 sets × max reps<br>nghỉ 60 giây</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="ex-name">Dip (thanh song song hoặc ghế)</div>
+            <div class="prog-note">P1: assisted (chân chạm đất) → P2–3: full bodyweight</div>
+          </td>
+          <td class="ex-sets">3 sets × max reps</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="ex-name">Pike push-up</div>
+            <div class="prog-note">Vai + upper chest — thay thế overhead press</div>
+          </td>
+          <td class="ex-sets">3 sets × 10–15</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="ex-name">Band lateral raise (dây kháng lực)</div>
+          </td>
+          <td class="ex-sets">3 sets × 15 mỗi bên</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="workout-block">
+      <div class="workout-header">
+        <div class="workout-name">4. Core (bụng + hông)</div>
+        <span class="workout-badge badge-core">lõi</span>
+      </div>
+      <table class="exercise-table">
+        <tr>
+          <td>
+            <div class="ex-name">Plank</div>
+            <div class="prog-note">P1: 60s → P2: 90s → P3: 2 phút hoặc plank với chân nâng</div>
+          </td>
+          <td class="ex-sets">3 sets</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="ex-name">Hanging knee raise</div>
+            <div class="prog-note">P2 → nâng lên straight leg raise</div>
+          </td>
+          <td class="ex-sets">3 sets × 15</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="ex-name">Hollow body hold</div>
+            <div class="prog-note">Calisthenics core foundation — không thể thiếu</div>
+          </td>
+          <td class="ex-sets">3 sets × 30s</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="ex-name">Mountain climber</div>
+          </td>
+          <td class="ex-sets">3 sets × 30 giây</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="workout-block">
+      <div class="workout-header">
+        <div class="workout-name">5. Legs — chân + hông</div>
+        <span class="workout-badge badge-strength">chân</span>
+      </div>
+      <table class="exercise-table">
+        <tr>
+          <td>
+            <div class="ex-name">Bulgarian split squat (không cần tạ)</div>
+            <div class="prog-note">Tập chậm 3-1-1 — mày sẽ ghét bài này và đó là dấu hiệu tốt</div>
+          </td>
+          <td class="ex-sets">3 sets × 10 mỗi chân</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="ex-name">Glute bridge / Hip thrust</div>
+          </td>
+          <td class="ex-sets">3 sets × 15</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="ex-name">Calf raise (một chân)</div>
+          </td>
+          <td class="ex-sets">3 sets × 20 mỗi chân</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="workout-block">
+      <div class="workout-header">
+        <div class="workout-name">6. Cardio Finisher — boxing</div>
+        <span class="workout-badge badge-cardio">đốt mỡ</span>
+      </div>
+      <table class="exercise-table">
+        <tr>
+          <td>
+            <div class="ex-name">Nhảy dây liên tục</div>
+            <div class="prog-note">P1: 3 phút · P2: 5 phút · P3: 8–10 phút</div>
+          </td>
+          <td class="ex-sets">cuối buổi</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="ex-name">Shadow boxing (tùy chọn)</div>
+            <div class="prog-note">5 phút — giúp mắt có thần, jaw clenching tự nhiên</div>
+          </td>
+          <td class="ex-sets">mỗi ngày nếu có thể</td>
+        </tr>
+      </table>
+    </div>
+
+    <p style="font-size:12px; color:var(--hint); margin-top:0.5rem; line-height:1.7;">Không có ngày nghỉ theo schedule — nhưng nếu cơ thể thực sự cần, ngủ thêm và ngày hôm sau tập gấp đôi tập trung. Active rest = đi bộ 30 phút.</p>
+  </div>
+
+  <!-- NUTRITION -->
+  <div id="panel-nutrition" class="panel">
+    <div class="nutrition-card">
+      <div class="nutr-title">Cửa sổ ăn — IF 16/8</div>
+      <div class="nutr-row"><span class="nutr-key">Cửa sổ ăn</span><span class="nutr-val">12:00 – 20:00 (hoặc 13:00 – 21:00)</span></div>
+      <div class="nutr-row"><span class="nutr-key">Tập khi nào</span><span class="nutr-val">Trước cửa sổ ăn (sáng sớm lúc bụng đói) — đốt mỡ tối ưu</span></div>
+      <div class="nutr-row"><span class="nutr-key">Nếu không thể tập sáng</span><span class="nutr-val">Tập trước bữa ăn cuối trong cửa sổ</span></div>
+      <div class="nutr-row"><span class="nutr-key">Ngoài cửa sổ</span><span class="nutr-val nutr-accent">Chỉ nước lọc + black coffee + electrolytes</span></div>
+    </div>
+
+    <div class="nutrition-card">
+      <div class="nutr-title">Calories & macros mục tiêu</div>
+      <div class="nutr-row"><span class="nutr-key">Deficit mục tiêu</span><span class="nutr-val">500–700 kcal/ngày dưới TDEE</span></div>
+      <div class="nutr-row"><span class="nutr-key">Calories ngày thường</span><span class="nutr-val nutr-accent">1,800–2,000 kcal</span></div>
+      <div class="nutr-row"><span class="nutr-key">Protein (quan trọng nhất)</span><span class="nutr-val nutr-accent">160–180g/ngày (2g × kg lean mass)</span></div>
+      <div class="nutr-row"><span class="nutr-key">Carb</span><span class="nutr-val">120–150g — ưu tiên sau tập</span></div>
+      <div class="nutr-row"><span class="nutr-key">Fat</span><span class="nutr-val">50–70g — không cắt quá thấp</span></div>
+    </div>
+
+    <div class="nutrition-card">
+      <div class="nutr-title">Thực đơn mẫu (1 buổi ăn)</div>
+      <div class="nutr-row"><span class="nutr-key">Bữa 1 (12:00)</span><span class="nutr-val">4 trứng + ức gà 200g + cơm 1 chén</span></div>
+      <div class="nutr-row"><span class="nutr-key">Bữa 2 (15:00–16:00)</span><span class="nutr-val">Whey shake + chuối + cơm/khoai lang</span></div>
+      <div class="nutr-row"><span class="nutr-key">Bữa 3 (19:00–20:00)</span><span class="nutr-val">Cá/thịt nạc 200g + rau + 1 muỗng dầu olive</span></div>
+      <div class="nutr-row"><span class="nutr-key">Whey timing</span><span class="nutr-val nutr-accent">Ngay sau tập (nếu tập sáng — phá fast bằng whey)</span></div>
+    </div>
+
+    <div class="nutrition-card">
+      <div class="nutr-title">Supplement tối thiểu</div>
+      <div class="nutr-row"><span class="nutr-key">Whey protein</span><span class="nutr-val">1–2 scoop/ngày, 25g protein/scoop</span></div>
+      <div class="nutr-row"><span class="nutr-key">Creatine monohydrate</span><span class="nutr-val nutr-accent">5g/ngày — quan trọng cho strength gain khi deficit</span></div>
+      <div class="nutr-row"><span class="nutr-key">Electrolytes</span><span class="nutr-val">Muối + kali trong giờ fasting (tránh chuột rút)</span></div>
+      <div class="nutr-row"><span class="nutr-key">Omega-3</span><span class="nutr-val">2–3g/ngày — hỗ trợ mặt + da + khớp</span></div>
+      <div class="nutr-row"><span class="nutr-key">Vitamin D3 + K2</span><span class="nutr-val">Testosterone + jawline support</span></div>
+    </div>
+  </div>
+
+  <!-- MILESTONES -->
+  <div id="panel-milestones" class="panel">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:1rem;line-height:1.6;">Mỗi milestone là một điểm không thể quay lại. Đo vào buổi sáng sau khi đi vệ sinh, bụng đói, trước khi tập.</p>
+
+    <div class="milestone-row">
+      <div class="milestone-week">W1<small>check-in</small></div>
+      <div class="milestone-content">
+        <div class="milestone-title">Baseline đo đạc</div>
+        <div class="milestone-detail">Cân nặng · vòng eo · ảnh trước (front + side + back) · max rep pull-up · max rep push-up · plank time. Lưu lại — đây là bằng chứng của điểm xuất phát.</div>
+      </div>
+    </div>
+
+    <div class="milestone-row">
+      <div class="milestone-week">W2<small>check-in</small></div>
+      <div class="milestone-content">
+        <div class="milestone-title">Thói quen ăn được thiết lập</div>
+        <div class="milestone-detail">Không còn cảm giác chóng mặt khi fasting buổi sáng. Tập được hết toàn bộ workout không bỏ bài nào.</div>
+        <span class="gate">Gate: 5/7 ngày tập đủ liên tiếp</span>
+      </div>
+    </div>
+
+    <div class="milestone-row">
+      <div class="milestone-week">W4<small>end P1</small></div>
+      <div class="milestone-content">
+        <div class="milestone-title">Foundation complete</div>
+        <div class="milestone-detail">Cân: 76–77kg · Eo giảm ít nhất 3–4cm · Pull-up 3 rep bodyweight · Push-up 15 rep · Plank 90 giây. Chụp ảnh so sánh với W1.</div>
+        <span class="gate">Transformation gate: Pull-up 3 rep không band → Phase 2</span>
+      </div>
+    </div>
+
+    <div class="milestone-row">
+      <div class="milestone-week">W6<small>check-in</small></div>
+      <div class="milestone-content">
+        <div class="milestone-title">Cơ lộ đường nét đầu tiên</div>
+        <div class="milestone-detail">Bắt đầu thấy đường V-taper trên lưng. Vai tròn hơn. Ảnh nhìn rõ sự khác biệt so với W1.</div>
+      </div>
+    </div>
+
+    <div class="milestone-row">
+      <div class="milestone-week">W8<small>end P2</small></div>
+      <div class="milestone-content">
+        <div class="milestone-title">Body recomposition visible</div>
+        <div class="milestone-detail">Cân: 72–73kg · Eo &lt;87cm · Pull-up 8–10 rep · Push-up 30 rep · Plank 2 phút. Quần cũ size L bắt đầu rộng eo.</div>
+        <span class="gate">Transformation gate: Pull-up 8 rep sạch → Phase 3</span>
+      </div>
+    </div>
+
+    <div class="milestone-row">
+      <div class="milestone-week">W10<small>check-in</small></div>
+      <div class="milestone-content">
+        <div class="milestone-title">Jawline bắt đầu lộ rõ</div>
+        <div class="milestone-detail">Body fat giảm đủ để mặt bắt đầu định hình. Mắt sáng hơn nhờ ngủ tốt + Omega-3 + hydration. Người xung quanh bắt đầu nhận xét.</div>
+      </div>
+    </div>
+
+    <div class="milestone-row">
+      <div class="milestone-week">W12<small>FINAL</small></div>
+      <div class="milestone-content">
+        <div class="milestone-title">Toji Mode activated</div>
+        <div class="milestone-detail">Cân: 68–70kg · Eo &lt;80cm · Pull-up 12–15 rep · Push-up 40+ rep · Body fat ~12–14%. Chụp ảnh cuối — so sánh với W1. Đây là baseline mới. Không bao giờ dưới level này nữa.</div>
+        <span class="gate">Irreversible: đây là cơ thể mày từ bây giờ trở đi</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FACE + MAT -->
+  <div id="panel-face" class="panel">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:1rem;line-height:1.6;">Mặt góc cạnh + mắt có thần không phải aesthetic riêng — nó là hệ quả tự nhiên của body fat thấp + hormone tối ưu + recovery đủ.</p>
+
+    <div class="face-card">
+      <div class="face-title">Jawline & mặt góc cạnh</div>
+      <div class="face-item">
+        <div class="face-item-icon">→</div>
+        <div class="face-item-text">
+          <strong>Giảm body fat xuống 12–15%</strong> là yếu tố số 1 — không có shortcut. Mặt sẽ tự khắc sắc nét khi mỡ vùng cổ và má giảm.
+          <div class="sub">Mày đang ở ~25% BF — mỗi 1% giảm là một lần mặt sắc thêm.</div>
+        </div>
+      </div>
+      <div class="face-item">
+        <div class="face-item-icon">→</div>
+        <div class="face-item-text">
+          <strong>Mastic gum / mewing</strong> — nhai kẹo cao su cứng (mastic gum) 20–30 phút/ngày giúp cơ hàm phát triển. Kết hợp mewing (đặt lưỡi đúng vị trí trên vòm họng) hỗ trợ cấu trúc mặt.
+          <div class="sub">Không magic — nhưng là 1% marginal gain đáng làm.</div>
+        </div>
+      </div>
+      <div class="face-item">
+        <div class="face-item-icon">→</div>
+        <div class="face-item-text">
+          <strong>Sodium thấp, hydration cao</strong> — giảm phù mặt buổi sáng. Mục tiêu 3–4 lít nước/ngày, giảm muối chế biến sẵn.
+        </div>
+      </div>
+      <div class="face-item">
+        <div class="face-item-icon">→</div>
+        <div class="face-item-text">
+          <strong>Shadow boxing mỗi ngày 5 phút</strong> — jaw clenching tự nhiên khi boxing kích hoạt cơ masseter (cơ hàm), tạo góc cạnh thật.
+        </div>
+      </div>
+      <div class="face-item">
+        <div class="face-item-icon">→</div>
+        <div class="face-item-text">
+          <strong>Skincare tối giản</strong>: rửa mặt sáng tối + SPF 30 ban ngày + moisturizer nhẹ. Da khỏe = góc cạnh rõ hơn.
+        </div>
+      </div>
+    </div>
+
+    <div class="face-card">
+      <div class="face-title">Mắt có thần</div>
+      <div class="face-item">
+        <div class="face-item-icon">→</div>
+        <div class="face-item-text">
+          <strong>Ngủ 7–8 tiếng là không thể thương lượng</strong> — underslept eyes là cái sẽ phá hỏng mọi thứ. Cũng là lúc GH tiết ra → cơ phát triển + mỡ đốt cháy.
+        </div>
+      </div>
+      <div class="face-item">
+        <div class="face-item-icon">→</div>
+        <div class="face-item-text">
+          <strong>Omega-3 (2–3g/ngày)</strong> — cải thiện rõ rệt độ sáng và ẩm của mắt, giảm thâm quầng do viêm.
+        </div>
+      </div>
+      <div class="face-item">
+        <div class="face-item-icon">→</div>
+        <div class="face-item-text">
+          <strong>Cắt alcohol + đường tinh luyện</strong> — hai thứ này gây phù mắt và làm mắt mờ nhất. Tuần 2–3 sau khi cắt mày sẽ tự thấy.
+        </div>
+      </div>
+      <div class="face-item">
+        <div class="face-item-icon">→</div>
+        <div class="face-item-text">
+          <strong>Sunlight exposure 10–15 phút buổi sáng</strong> — điều chỉnh circadian rhythm, làm mắt sáng và tập trung hơn trong ngày. Cũng tăng testosterone.
+          <div class="sub">Nhìn vào ánh sáng mặt trời gián tiếp (không nhìn thẳng).</div>
+        </div>
+      </div>
+      <div class="face-item">
+        <div class="face-item-icon">→</div>
+        <div class="face-item-text">
+          <strong>Testosterone tự nhiên tăng</strong> từ resistance training + ngủ đủ + body fat giảm → mắt tự nhiên có energy và sự tập trung rõ hơn.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESOURCES -->
+  <div id="panel-resources" class="panel">
+    <div class="resource-group">
+      <div class="resource-group-title">Calisthenics — học kỹ thuật</div>
+      <div class="resource-item">
+        <div class="resource-dot"></div>
+        <div>
+          <div class="resource-name">YouTube: FitnessFAQs (Daniel Vadnal)</div>
+          <div class="resource-desc">Tốt nhất cho pull-up progression từ 0 → 15+. Kỹ thuật cực kỳ rõ ràng, có video chuyên biệt "first pull-up" và "archer pull-up".</div>
+        </div>
+      </div>
+      <div class="resource-item">
+        <div class="resource-dot"></div>
+        <div>
+          <div class="resource-name">YouTube: Calisthenics Movement</div>
+          <div class="resource-desc">Toàn bộ hệ thống progression calisthenics — từ beginner đến advanced. Phong cách rất methodical, phù hợp với tư duy structured của mày.</div>
+        </div>
+      </div>
+      <div class="resource-item">
+        <div class="resource-dot"></div>
+        <div>
+          <div class="resource-name">Book: Convict Conditioning (Paul Wade)</div>
+          <div class="resource-desc">Hệ thống 6 progression từ tường → one-arm push-up, zero equipment. Mindset của nó phù hợp hoàn toàn với "irreversible transformation".</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-group">
+      <div class="resource-group-title">Dinh dưỡng & Fasting</div>
+      <div class="resource-item">
+        <div class="resource-dot"></div>
+        <div>
+          <div class="resource-name">YouTube: Thomas DeLauer</div>
+          <div class="resource-desc">IF + fat loss science giải thích rõ ràng, evidence-based. Channel tốt nhất để hiểu tại sao fasting hoạt động.</div>
+        </div>
+      </div>
+      <div class="resource-item">
+        <div class="resource-dot"></div>
+        <div>
+          <div class="resource-name">App: Cronometer</div>
+          <div class="resource-desc">Track macro/micro cực kỳ chính xác — tốt hơn MyFitnessPal cho protein tracking. Dùng 2–3 tuần đầu để calibrate.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-group">
+      <div class="resource-group-title">Tracking & metrics</div>
+      <div class="resource-item">
+        <div class="resource-dot"></div>
+        <div>
+          <div class="resource-name">Cân mỗi sáng — dùng average 7 ngày</div>
+          <div class="resource-desc">Cân hàng ngày nhưng nhìn vào trend 7 ngày, không nhìn từng ngày. Day-to-day fluctuation là noise, không phải signal.</div>
+        </div>
+      </div>
+      <div class="resource-item">
+        <div class="resource-dot"></div>
+        <div>
+          <div class="resource-name">Ảnh progress mỗi 2 tuần</div>
+          <div class="resource-desc">Cùng giờ, cùng ánh sáng, cùng góc. Ba góc: front, side, back. Đây là data quan trọng hơn cân nặng.</div>
+        </div>
+      </div>
+      <div class="resource-item">
+        <div class="resource-dot"></div>
+        <div>
+          <div class="resource-name">Đo vòng eo mỗi tuần</div>
+          <div class="resource-desc">Đo ngay trên rốn, buổi sáng sau khi đi vệ sinh, không hít vào hay thở ra. Số này thường tụt nhanh nhất và motivating nhất.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-group">
+      <div class="resource-group-title">Thiết bị nên mua thêm</div>
+      <div class="resource-item">
+        <div class="resource-dot"></div>
+        <div>
+          <div class="resource-name">Gymnastic rings (~600k–1tr VND)</div>
+          <div class="resource-desc">Unlock toàn bộ calisthenics upper body. Ring push-up, ring row, ring dip — tất cả compound hơn nhiều so với straight bar.</div>
+        </div>
+      </div>
+      <div class="resource-item">
+        <div class="resource-dot"></div>
+        <div>
+          <div class="resource-name">Resistance band set (loop bands)</div>
+          <div class="resource-desc">Nhiều mức lực khác nhau — dùng để assisted pull-up (giảm dần), banded push-up, lateral raise. Essential cho giai đoạn đầu.</div>
+        </div>
+      </div>
+      <div class="resource-item">
+        <div class="resource-dot"></div>
+        <div>
+          <div class="resource-name">Parallette bars (~300–500k VND)</div>
+          <div class="resource-desc">Dip + L-sit + pike push-up chất lượng cao hơn nhiều. Nếu chỉ mua 1 thứ thêm ngoài rings — đây là nó.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
