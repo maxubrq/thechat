@@ -1,5 +1,18 @@
 [
   {
+    "date": "2026-04-22",
+    "weight": 80,
+    "waist": 93,
+    "sleep": 8,
+    "pullup": 1,
+    "pushup": 10,
+    "plank": 90,
+    "note": "",
+    "photos": [
+      "https://raw.githubusercontent.com/maxubrq/thechat/main/data/photos/2026-04-22-1.jpg?t=1776786619530"
+    ]
+  },
+  {
     "date": "2026-04-21",
     "weight": 80,
     "waist": 93,
