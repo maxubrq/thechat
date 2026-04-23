@@ -1,981 +1,2682 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
-<title>Toji Protocol</title>
-<link rel="manifest" href="manifest.json">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="TOJI">
-<link rel="apple-touch-icon" href="icon-192.png">
-<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAGS0lEQVR4nHVWS2xdVxVd+5xz733Pfk4d7DRNYjUOaZtUoiGmQtCUKEWgfDqigkwICCEFqc7gVVVnCCQ+SRGoE6fMqBQBVSQmRCWNkIoYIFqooFFoIjWDoLhO6IuxHbf+vPt8P+csBvfcjwccPb3Pffvss/daa+99xNqczAFAlAAAAQiEoEAgAghJEZAkCIigXiIgAbB4F1HFt2IpZQxpHS0IiKu3ASJCgqit/U6Bj4CAQOrnRXi1E5AiYkSgqOjtUeYANiKTIv4ilyIHgYh400ZKUvtg4UkBimimJRCBCEsIpIINUGFLB1HpwG+SKrIStCpdAQyksi/+JEj/xcMhJOGsMi03fxcCNb7TZRvQujJoRl3DKgBgUB5VAALvmI2wqLVBEGno5Qs/AN3W71+E1nCWNi/tGs5FQIp3KcYfX6Fcseh5cEqHXOrZpXv5A9vW/vYHEXY+usXVZTW2XcZ20WVltCWOtRYEAlOh32SqCaLWgc2zj1/57vDYg2NDgdKSvnp6fXFh/OxlrQPa1ENUUy6OFLKECDWdrDTk7al1kFz9E4ZH24P71/9199I9OOC5hasHtrXzlY+z3p+Dz37JuVyUkuqEJgaA8S59XRUQludYq4LhwT+u6Gt/vLpuvvbXjbWEAH91S136aucLr3zTPfls9ORXXJIIVCm4WnvFaapEiEKATQShILTW7PtiNH/r4q21tcQaoQLXU/u723E4/2/16OfFWuUdsNQSvLIJEKYoDZYVwuIMCp3TQfuTX/8QK4syMr4Qr+1+MBgbCaPW0P21jfk4j0e24cZfVv9zc+TbP7IuhYg0eCwVBQVAiRTNx5HiEyWcFW2YJeFbr/1mNr98d+OBYX14avzw57aPDps37wwu3nX6rdfsxgA6oLNV3FX0haJM9RQsUSw+lCIQ7nlio935jA4nOsH12eT67Fxhu6sT7h8Nk2hL+9NP+L2Nyik+HQCIkrIf1tzXlQkzPrHyyfpTQ/GLExnATtt02oEALzycPj3U76+sBtsmCN+d0Ggb9GnAFPizKpOiAkiIosv1xGNbTnxnFfLcQffzX/z+fj925PiW4W+c+noc6S2knthPWqV0pcTivZQUxdrUudyBwpKngmcR5yyUCU0LQALsndjV6/UA7Nix4/ZHvQgAkOYbcFYpVUQmzWFBKB14jUmZUik2IRmG7dC0brx/7exPf3xo6uDCwoIxKjB6aWnxqamD587+5Mb710LTCsNWCUDtvZxOgLVpmvWTtJ9mcZrFWRbn2SBJ1vM8mZubO378eBgGxZ4wUGGow1CFofZPwuDo0aMffjib2zRN+1kWF680i9O0n6Z9a1NYm2T+d/H3IM8Hg8EqyW63C6DdDoeGonY7iCITRTqKdBjqVitot8N2KwTQ7XZJDgartffMe7M2M822jHICFo/W1teiKAoCk+dWidKBIlnOZ4AIosBR4rhfwbJpkAAiUg2cYtCjFBUArKysJEmSJAn+3xokhVnljhUT4pVqQD/i4TtoUWTKufzM9JkvP/OMUso514/jkU6HRJalq6urIjIyMiIizvHAgQPO5Uqp+hbgFSuou2klYz80KSJ37tyZm5vT2nQ6neenn3/53Mu9Xm96evrIkSMALly4EEVhv9+fn5/38RGiPHqVkmBtWpLsZZCm/SRZtzabmZkZ3Tpa0Lh798N79+49efIkgPfe+yfJffseO/T0oUcefeTYsWMk43glTft5Nqi0lGWxdZnZxG85Z5RSSdLvdrs3b958992/z8zMnD9//vXXf3vq1LdE5PLlNycn90zu2aNEtFLj42Morm3SvEf5iVAWWs0BquuPc653r3d7dtZae/jw4W73hampqe0PPfTBBzcff3z/O2+/s3PnrsXFpeXlZR9jNQjo4UFzZG5aIlobwn7v9OlnT5wQ4RtvXHr1/C//u7Bw5sz05OTuc+d+RvKll168cuXK1q2fKkgu+K26nm+h1iZ01vmsBI1CIBkGQwDyfKC0UlK0H1qbaN0CQKYiIYAsi/0NrWxHBAgaFTQOoL9qVBc2ks5aRxqtCdjcAlRai4hzDoTSylkHgda6Al4gLFu21kasTR1zOt9pCUqVDGvawXqqs2bLS6SqTfEkqiILpY0R0Qqg2nwrr5XQXFUPaB6x+azawFP5P33JwrazMokNAAAAAElFTkSuQmCC>">
-<meta name="theme-color" content="#0a0a0a">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500&display=swap');
-:root {
-  --bg:#0a0a0a; --surface:#141414; --card:#1c1c1c; --border:#2a2a2a; --border2:#363636;
-  --text:#f0ede8; --muted:#888; --hint:#555;
-  --accent:#D85A30; --accent2:#1D9E75; --amber:#BA7517; --gold:#EF9F27;
-  --r:12px; --rs:8px;
-}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
+    />
+    <title>Toji Protocol</title>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="TOJI" />
+    <link rel="apple-touch-icon" href="icon-192.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAGS0lEQVR4nHVWS2xdVxVd+5xz733Pfk4d7DRNYjUOaZtUoiGmQtCUKEWgfDqigkwICCEFqc7gVVVnCCQ+SRGoE6fMqBQBVSQmRCWNkIoYIFqooFFoIjWDoLhO6IuxHbf+vPt8P+csBvfcjwccPb3Pffvss/daa+99xNqczAFAlAAAAQiEoEAgAghJEZAkCIigXiIgAbB4F1HFt2IpZQxpHS0IiKu3ASJCgqit/U6Bj4CAQOrnRXi1E5AiYkSgqOjtUeYANiKTIv4ilyIHgYh400ZKUvtg4UkBimimJRCBCEsIpIINUGFLB1HpwG+SKrIStCpdAQyksi/+JEj/xcMhJOGsMi03fxcCNb7TZRvQujJoRl3DKgBgUB5VAALvmI2wqLVBEGno5Qs/AN3W71+E1nCWNi/tGs5FQIp3KcYfX6Fcseh5cEqHXOrZpXv5A9vW/vYHEXY+usXVZTW2XcZ20WVltCWOtRYEAlOh32SqCaLWgc2zj1/57vDYg2NDgdKSvnp6fXFh/OxlrQPa1ENUUy6OFLKECDWdrDTk7al1kFz9E4ZH24P71/9199I9OOC5hasHtrXzlY+z3p+Dz37JuVyUkuqEJgaA8S59XRUQludYq4LhwT+u6Gt/vLpuvvbXjbWEAH91S136aucLr3zTPfls9ORXXJIIVCm4WnvFaapEiEKATQShILTW7PtiNH/r4q21tcQaoQLXU/u723E4/2/16OfFWuUdsNQSvLIJEKYoDZYVwuIMCp3TQfuTX/8QK4syMr4Qr+1+MBgbCaPW0P21jfk4j0e24cZfVv9zc+TbP7IuhYg0eCwVBQVAiRTNx5HiEyWcFW2YJeFbr/1mNr98d+OBYX14avzw57aPDps37wwu3nX6rdfsxgA6oLNV3FX0haJM9RQsUSw+lCIQ7nlio935jA4nOsH12eT67Fxhu6sT7h8Nk2hL+9NP+L2Nyik+HQCIkrIf1tzXlQkzPrHyyfpTQ/GLExnATtt02oEALzycPj3U76+sBtsmCN+d0Ggb9GnAFPizKpOiAkiIosv1xGNbTnxnFfLcQffzX/z+fj925PiW4W+c+noc6S2knthPWqV0pcTivZQUxdrUudyBwpKngmcR5yyUCU0LQALsndjV6/UA7Nix4/ZHvQgAkOYbcFYpVUQmzWFBKB14jUmZUik2IRmG7dC0brx/7exPf3xo6uDCwoIxKjB6aWnxqamD587+5Mb710LTCsNWCUDtvZxOgLVpmvWTtJ9mcZrFWRbn2SBJ1vM8mZubO378eBgGxZ4wUGGow1CFofZPwuDo0aMffjib2zRN+1kWF680i9O0n6Z9a1NYm2T+d/H3IM8Hg8EqyW63C6DdDoeGonY7iCITRTqKdBjqVitot8N2KwTQ7XZJDgartffMe7M2M822jHICFo/W1teiKAoCk+dWidKBIlnOZ4AIosBR4rhfwbJpkAAiUg2cYtCjFBUArKysJEmSJAn+3xokhVnljhUT4pVqQD/i4TtoUWTKufzM9JkvP/OMUso514/jkU6HRJalq6urIjIyMiIizvHAgQPO5Uqp+hbgFSuou2klYz80KSJ37tyZm5vT2nQ6neenn3/53Mu9Xm96evrIkSMALly4EEVhv9+fn5/38RGiPHqVkmBtWpLsZZCm/SRZtzabmZkZ3Tpa0Lh798N79+49efIkgPfe+yfJffseO/T0oUcefeTYsWMk43glTft5Nqi0lGWxdZnZxG85Z5RSSdLvdrs3b958992/z8zMnD9//vXXf3vq1LdE5PLlNycn90zu2aNEtFLj42Morm3SvEf5iVAWWs0BquuPc653r3d7dtZae/jw4W73hampqe0PPfTBBzcff3z/O2+/s3PnrsXFpeXlZR9jNQjo4UFzZG5aIlobwn7v9OlnT5wQ4RtvXHr1/C//u7Bw5sz05OTuc+d+RvKll168cuXK1q2fKkgu+K26nm+h1iZ01vmsBI1CIBkGQwDyfKC0UlK0H1qbaN0CQKYiIYAsi/0NrWxHBAgaFTQOoL9qVBc2ks5aRxqtCdjcAlRai4hzDoTSylkHgda6Al4gLFu21kasTR1zOt9pCUqVDGvawXqqs2bLS6SqTfEkqiILpY0R0Qqg2nwrr5XQXFUPaB6x+azawFP5P33JwrazMokNAAAAAElFTkSuQmCC>"
+    />
+    <meta name="theme-color" content="#0a0a0a" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500&display=swap");
+      :root {
+        --bg: #0a0a0a;
+        --surface: #141414;
+        --card: #1c1c1c;
+        --border: #2a2a2a;
+        --border2: #363636;
+        --text: #f0ede8;
+        --muted: #888;
+        --hint: #555;
+        --accent: #d85a30;
+        --accent2: #1d9e75;
+        --amber: #ba7517;
+        --gold: #ef9f27;
+        --r: 12px;
+        --rs: 8px;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        font-size: 15px;
+        line-height: 1.6;
+      }
 
-/* ── LOCK SCREEN ── */
-#lockscreen{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem}
-.lock-logo{font-family:'Bebas Neue',sans-serif;font-size:64px;letter-spacing:4px;color:var(--accent);margin-bottom:0.5rem}
-.lock-sub{font-size:13px;color:var(--muted);margin-bottom:2.5rem;letter-spacing:1px;text-transform:uppercase}
-.lock-form{width:100%;max-width:320px}
-.lock-label{font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:6px;display:block}
-.lock-input{width:100%;background:var(--card);border:0.5px solid var(--border2);border-radius:var(--rs);color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;padding:12px 14px;margin-bottom:10px;-webkit-appearance:none}
-.lock-input:focus{outline:none;border-color:var(--accent)}
-.lock-btn{width:100%;padding:13px;background:var(--accent);color:white;border:none;border-radius:var(--rs);font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer}
-.lock-btn:active{opacity:0.8}
-.lock-err{font-size:12px;color:#F0997B;margin-top:8px;text-align:center;min-height:18px}
-.lock-spinner{display:none;text-align:center;margin-top:12px;color:var(--muted);font-size:13px}
+      /* ── LOCK SCREEN ── */
+      #lockscreen {
+        position: fixed;
+        inset: 0;
+        background: var(--bg);
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+      .lock-logo {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 64px;
+        letter-spacing: 4px;
+        color: var(--accent);
+        margin-bottom: 0.5rem;
+      }
+      .lock-sub {
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 2.5rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .lock-form {
+        width: 100%;
+        max-width: 320px;
+      }
+      .lock-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--muted);
+        margin-bottom: 6px;
+        display: block;
+      }
+      .lock-input {
+        width: 100%;
+        background: var(--card);
+        border: 0.5px solid var(--border2);
+        border-radius: var(--rs);
+        color: var(--text);
+        font-size: 14px;
+        font-family: "DM Sans", sans-serif;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+        -webkit-appearance: none;
+      }
+      .lock-input:focus {
+        outline: none;
+        border-color: var(--accent);
+      }
+      .lock-btn {
+        width: 100%;
+        padding: 13px;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: var(--rs);
+        font-size: 14px;
+        font-weight: 500;
+        font-family: "DM Sans", sans-serif;
+        cursor: pointer;
+      }
+      .lock-btn:active {
+        opacity: 0.8;
+      }
+      .lock-err {
+        font-size: 12px;
+        color: #f0997b;
+        margin-top: 8px;
+        text-align: center;
+        min-height: 18px;
+      }
+      .lock-spinner {
+        display: none;
+        text-align: center;
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 13px;
+      }
 
-/* ── NAV ── */
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,10,0.92);backdrop-filter:blur(12px);border-bottom:0.5px solid var(--border);padding:0 1rem;padding-top:env(safe-area-inset-top)}
-.nav-inner{max-width:680px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px}
-.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--accent);cursor:pointer}
-.nav-tabs{display:flex;gap:2px}
-.nav-tab{font-size:11px;font-weight:500;padding:6px 9px;border:none;background:none;color:var(--muted);cursor:pointer;border-radius:var(--rs);transition:all .15s;font-family:'DM Sans',sans-serif;white-space:nowrap}
-.nav-tab.active{color:var(--text);background:var(--card)}
+      /* ── NAV ── */
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: rgba(10, 10, 10, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 0.5px solid var(--border);
+        padding: 0 1rem;
+        padding-top: env(safe-area-inset-top);
+      }
+      .nav-inner {
+        max-width: 680px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 52px;
+      }
+      .nav-logo {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 22px;
+        letter-spacing: 2px;
+        color: var(--accent);
+        cursor: pointer;
+      }
+      .nav-tabs {
+        display: flex;
+        gap: 2px;
+      }
+      .nav-tab {
+        font-size: 11px;
+        font-weight: 500;
+        padding: 6px 9px;
+        border: none;
+        background: none;
+        color: var(--muted);
+        cursor: pointer;
+        border-radius: var(--rs);
+        transition: all 0.15s;
+        font-family: "DM Sans", sans-serif;
+        white-space: nowrap;
+      }
+      .nav-tab.active {
+        color: var(--text);
+        background: var(--card);
+      }
 
-/* ── SYNC BAR ── */
-.sync-bar{position:fixed;top:calc(52px + env(safe-area-inset-top));left:0;right:0;z-index:99;background:var(--surface);border-bottom:0.5px solid var(--border);padding:0 1rem}
-.sync-bar-inner{max-width:680px;margin:0 auto;height:36px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-.sync-status{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
-.sdot{width:7px;height:7px;border-radius:50%;background:var(--hint);flex-shrink:0;transition:background .3s}
-.sdot.ok{background:var(--accent2)}.sdot.err{background:var(--accent)}.sdot.spin{background:var(--amber);animation:pulse 1s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.sync-actions{display:flex;gap:6px}
-.sbtn{font-size:11px;padding:4px 10px;border:0.5px solid var(--border2);background:none;color:var(--muted);border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap}
-.sbtn:hover{color:var(--text);border-color:var(--text)}
-.sbtn.pri{background:var(--accent);border-color:var(--accent);color:white}
-.sbtn-lock{font-size:11px;padding:4px 10px;border:0.5px solid var(--border2);background:none;color:var(--hint);border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif}
+      /* ── SYNC BAR ── */
+      .sync-bar {
+        position: fixed;
+        top: calc(52px + env(safe-area-inset-top));
+        left: 0;
+        right: 0;
+        z-index: 99;
+        background: var(--surface);
+        border-bottom: 0.5px solid var(--border);
+        padding: 0 1rem;
+      }
+      .sync-bar-inner {
+        max-width: 680px;
+        margin: 0 auto;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .sync-status {
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .sdot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--hint);
+        flex-shrink: 0;
+        transition: background 0.3s;
+      }
+      .sdot.ok {
+        background: var(--accent2);
+      }
+      .sdot.err {
+        background: var(--accent);
+      }
+      .sdot.spin {
+        background: var(--amber);
+        animation: pulse 1s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.4;
+        }
+      }
+      .sync-actions {
+        display: flex;
+        gap: 6px;
+      }
+      .sbtn {
+        font-size: 11px;
+        padding: 4px 10px;
+        border: 0.5px solid var(--border2);
+        background: none;
+        color: var(--muted);
+        border-radius: 20px;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        transition: all 0.15s;
+        white-space: nowrap;
+      }
+      .sbtn:hover {
+        color: var(--text);
+        border-color: var(--text);
+      }
+      .sbtn.pri {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: white;
+      }
+      .sbtn-lock {
+        font-size: 11px;
+        padding: 4px 10px;
+        border: 0.5px solid var(--border2);
+        background: none;
+        color: var(--hint);
+        border-radius: 20px;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+      }
 
-/* ── MAIN ── */
-.main{max-width:680px;margin:0 auto;padding:calc(52px + 36px + env(safe-area-inset-top) + 16px) 1rem calc(5rem + env(safe-area-inset-bottom))}
-.panel{display:none}.panel.active{display:block}
+      /* ── MAIN ── */
+      .main {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: calc(52px + 36px + env(safe-area-inset-top) + 16px) 1rem
+          calc(5rem + env(safe-area-inset-bottom));
+      }
+      .panel {
+        display: none;
+      }
+      .panel.active {
+        display: block;
+      }
 
-/* ── TYPOGRAPHY ── */
-.stitle{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:var(--text);margin:1.5rem 0 .25rem;line-height:1}
-.ssub{font-size:13px;color:var(--muted);margin-bottom:1.5rem}
+      /* ── TYPOGRAPHY ── */
+      .stitle {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 32px;
+        letter-spacing: 2px;
+        color: var(--text);
+        margin: 1.5rem 0 0.25rem;
+        line-height: 1;
+      }
+      .ssub {
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 1.5rem;
+      }
 
-/* ── CARDS ── */
-.card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--r);padding:1.25rem;margin-bottom:1rem}
-.card-title{font-weight:500;font-size:14px;color:var(--text);margin-bottom:.75rem}
+      /* ── CARDS ── */
+      .card {
+        background: var(--card);
+        border: 0.5px solid var(--border);
+        border-radius: var(--r);
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+      }
+      .card-title {
+        font-weight: 500;
+        font-size: 14px;
+        color: var(--text);
+        margin-bottom: 0.75rem;
+      }
 
-/* ── STATS GRID ── */
-.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:1.5rem}
-.stat-card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--r);padding:1rem}
-.sl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.sv{font-size:22px;font-weight:500;color:var(--text)}
-.st{font-size:12px;color:var(--accent);margin-top:2px}
+      /* ── STATS GRID ── */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 1.5rem;
+      }
+      .stat-card {
+        background: var(--card);
+        border: 0.5px solid var(--border);
+        border-radius: var(--r);
+        padding: 1rem;
+      }
+      .sl {
+        font-size: 11px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+      }
+      .sv {
+        font-size: 22px;
+        font-weight: 500;
+        color: var(--text);
+      }
+      .st {
+        font-size: 12px;
+        color: var(--accent);
+        margin-top: 2px;
+      }
 
-/* ── PHASE CARDS ── */
-.phase-card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--r);padding:1.25rem;margin-bottom:1rem;position:relative;overflow:hidden}
-.phase-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
-.p1::before{background:var(--accent)}.p2::before{background:var(--amber)}.p3::before{background:var(--accent2)}
-.ph{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem;gap:8px}
-.plabel{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:2px}
-.ptitle{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;color:var(--text);line-height:1}
-.pwk{font-size:12px;color:var(--hint);white-space:nowrap;padding-top:4px}
-.pdesc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:1rem}
-.pmetrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
-.mbox{background:var(--surface);border-radius:var(--rs);padding:8px;text-align:center}
-.mk{font-size:10px;color:var(--hint);margin-bottom:2px}.mv{font-size:14px;font-weight:500;color:var(--text)}
-.pgate{font-size:12px;color:var(--accent2);border-top:.5px solid var(--border);padding-top:.75rem;line-height:1.5}
-.pgate span{color:var(--muted)}
+      /* ── PHASE CARDS ── */
+      .phase-card {
+        background: var(--card);
+        border: 0.5px solid var(--border);
+        border-radius: var(--r);
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .phase-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+      }
+      .p1::before {
+        background: var(--accent);
+      }
+      .p2::before {
+        background: var(--amber);
+      }
+      .p3::before {
+        background: var(--accent2);
+      }
+      .ph {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.5rem;
+        gap: 8px;
+      }
+      .plabel {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--muted);
+        margin-bottom: 2px;
+      }
+      .ptitle {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 24px;
+        letter-spacing: 1px;
+        color: var(--text);
+        line-height: 1;
+      }
+      .pwk {
+        font-size: 12px;
+        color: var(--hint);
+        white-space: nowrap;
+        padding-top: 4px;
+      }
+      .pdesc {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.6;
+        margin-bottom: 1rem;
+      }
+      .pmetrics {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-bottom: 1rem;
+      }
+      .mbox {
+        background: var(--surface);
+        border-radius: var(--rs);
+        padding: 8px;
+        text-align: center;
+      }
+      .mk {
+        font-size: 10px;
+        color: var(--hint);
+        margin-bottom: 2px;
+      }
+      .mv {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text);
+      }
+      .pgate {
+        font-size: 12px;
+        color: var(--accent2);
+        border-top: 0.5px solid var(--border);
+        padding-top: 0.75rem;
+        line-height: 1.5;
+      }
+      .pgate span {
+        color: var(--muted);
+      }
 
-/* ── WORKOUT ── */
-.wb{background:var(--card);border:.5px solid var(--border);border-radius:var(--r);margin-bottom:1rem;overflow:hidden}
-.wh{padding:.875rem 1rem;border-bottom:.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surface)}
-.wn{font-weight:500;font-size:14px;color:var(--text)}
-.badge{font-size:10px;padding:3px 10px;border-radius:20px;font-weight:500}
-.bs{background:rgba(216,90,48,.15);color:#F0997B}.bc{background:rgba(29,158,117,.15);color:#5DCAA5}
-.ba{background:rgba(186,117,23,.15);color:#EF9F27}.bm{background:rgba(136,136,136,.15);color:#aaa}
-.ex{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 1rem;border-bottom:.5px solid var(--border);gap:10px}
-.ex:last-child{border-bottom:none}
-.en{font-size:13px;font-weight:500;color:var(--text)}.ep{font-size:11px;color:var(--accent);margin-top:3px}
-.es{font-size:12px;color:var(--muted);text-align:right;white-space:nowrap;min-width:80px;padding-top:2px}
+      /* ── WORKOUT ── */
+      .wb {
+        background: var(--card);
+        border: 0.5px solid var(--border);
+        border-radius: var(--r);
+        margin-bottom: 1rem;
+        overflow: hidden;
+      }
+      .wh {
+        padding: 0.875rem 1rem;
+        border-bottom: 0.5px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--surface);
+      }
+      .wn {
+        font-weight: 500;
+        font-size: 14px;
+        color: var(--text);
+      }
+      .badge {
+        font-size: 10px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-weight: 500;
+      }
+      .bs {
+        background: rgba(216, 90, 48, 0.15);
+        color: #f0997b;
+      }
+      .bc {
+        background: rgba(29, 158, 117, 0.15);
+        color: #5dcaa5;
+      }
+      .ba {
+        background: rgba(186, 117, 23, 0.15);
+        color: #ef9f27;
+      }
+      .bm {
+        background: rgba(136, 136, 136, 0.15);
+        color: #aaa;
+      }
+      .ex {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 10px 1rem;
+        border-bottom: 0.5px solid var(--border);
+        gap: 10px;
+      }
+      .ex:last-child {
+        border-bottom: none;
+      }
+      .en {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text);
+      }
+      .ep {
+        font-size: 11px;
+        color: var(--accent);
+        margin-top: 3px;
+      }
+      .es {
+        font-size: 12px;
+        color: var(--muted);
+        text-align: right;
+        white-space: nowrap;
+        min-width: 80px;
+        padding-top: 2px;
+      }
 
-/* ── FORM ── */
-.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
-.fl{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
-.fi{background:var(--surface);border:.5px solid var(--border2);border-radius:var(--rs);color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;padding:10px 12px;width:100%;-webkit-appearance:none;transition:border-color .15s}
-.fi:focus{outline:none;border-color:var(--accent)}
-.fi::placeholder{color:var(--hint)}
-.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-.fgrid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
-.full{grid-column:span 2}
-.btn{width:100%;padding:12px;background:var(--accent);color:white;border:none;border-radius:var(--rs);font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:opacity .15s}
-.btn:active{opacity:.8}
-.btn-ghost{background:var(--card);border:.5px solid var(--border2);color:var(--muted)}
+      /* ── FORM ── */
+      .fg {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 10px;
+      }
+      .fl {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--muted);
+      }
+      .fi {
+        background: var(--surface);
+        border: 0.5px solid var(--border2);
+        border-radius: var(--rs);
+        color: var(--text);
+        font-size: 14px;
+        font-family: "DM Sans", sans-serif;
+        padding: 10px 12px;
+        width: 100%;
+        -webkit-appearance: none;
+        transition: border-color 0.15s;
+      }
+      .fi:focus {
+        outline: none;
+        border-color: var(--accent);
+      }
+      .fi::placeholder {
+        color: var(--hint);
+      }
+      .fgrid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .fgrid3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .full {
+        grid-column: span 2;
+      }
+      .btn {
+        width: 100%;
+        padding: 12px;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: var(--rs);
+        font-size: 14px;
+        font-weight: 500;
+        font-family: "DM Sans", sans-serif;
+        cursor: pointer;
+        transition: opacity 0.15s;
+      }
+      .btn:active {
+        opacity: 0.8;
+      }
+      .btn-ghost {
+        background: var(--card);
+        border: 0.5px solid var(--border2);
+        color: var(--muted);
+      }
 
-/* ── PHOTO ZONE ── */
-.photo-zone{border:1px dashed var(--border2);border-radius:var(--rs);padding:1rem;text-align:center;background:var(--surface);margin-bottom:10px}
-.photo-zone-text{font-size:13px;color:var(--muted);margin-bottom:8px}
-.photo-previews{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
-.pthumb{aspect-ratio:1;object-fit:cover;border-radius:var(--rs);width:100%;position:relative}
-.pthumb-wrap{position:relative}
-.pthumb-del{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.7);color:white;border:none;border-radius:50%;width:20px;height:20px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+      /* ── PHOTO ZONE ── */
+      .photo-zone {
+        border: 1px dashed var(--border2);
+        border-radius: var(--rs);
+        padding: 1rem;
+        text-align: center;
+        background: var(--surface);
+        margin-bottom: 10px;
+      }
+      .photo-zone-text {
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .photo-previews {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .pthumb {
+        aspect-ratio: 1;
+        object-fit: cover;
+        border-radius: var(--rs);
+        width: 100%;
+        position: relative;
+      }
+      .pthumb-wrap {
+        position: relative;
+      }
+      .pthumb-del {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+      }
 
-/* ── LOG LIST ── */
-.log-entry{background:var(--card);border:.5px solid var(--border);border-radius:var(--r);padding:1rem;margin-bottom:10px}
-.leh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
-.led{font-size:13px;font-weight:500;color:var(--text)}
-.lewb{font-size:10px;background:rgba(216,90,48,.15);color:#F0997B;padding:2px 8px;border-radius:20px}
-.lm{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px}
-.lmi{font-size:12px}.lmk{color:var(--muted)}.lmv{color:var(--text);font-weight:500}
-.lp{display:flex;gap:8px;flex-wrap:wrap}
-.lpi{font-size:11px;background:var(--surface);border-radius:20px;padding:2px 10px;color:var(--muted)}
-.lpi strong{color:var(--text)}
-.lphotos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
-.lphoto{aspect-ratio:1;object-fit:cover;border-radius:var(--rs);width:100%;cursor:pointer}
-.lnote{font-size:13px;color:var(--muted);margin-top:6px;font-style:italic;line-height:1.5}
-.lea{margin-top:8px}
-.bdel{background:none;border:none;color:var(--hint);font-size:11px;cursor:pointer;padding:0;font-family:'DM Sans',sans-serif}
-.bdel:hover{color:var(--accent)}
-.empty-state{text-align:center;padding:3rem 1rem;color:var(--hint);font-size:14px}
-.empty-state .big{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--border2);letter-spacing:2px;display:block;margin-bottom:8px}
+      /* ── LOG LIST ── */
+      .log-entry {
+        background: var(--card);
+        border: 0.5px solid var(--border);
+        border-radius: var(--r);
+        padding: 1rem;
+        margin-bottom: 10px;
+      }
+      .leh {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 8px;
+      }
+      .led {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text);
+      }
+      .lewb {
+        font-size: 10px;
+        background: rgba(216, 90, 48, 0.15);
+        color: #f0997b;
+        padding: 2px 8px;
+        border-radius: 20px;
+      }
+      .lm {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+      }
+      .lmi {
+        font-size: 12px;
+      }
+      .lmk {
+        color: var(--muted);
+      }
+      .lmv {
+        color: var(--text);
+        font-weight: 500;
+      }
+      .lp {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .lpi {
+        font-size: 11px;
+        background: var(--surface);
+        border-radius: 20px;
+        padding: 2px 10px;
+        color: var(--muted);
+      }
+      .lpi strong {
+        color: var(--text);
+      }
+      .lphotos {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+        margin-top: 8px;
+      }
+      .lphoto {
+        aspect-ratio: 1;
+        object-fit: cover;
+        border-radius: var(--rs);
+        width: 100%;
+        cursor: pointer;
+      }
+      .lnote {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 6px;
+        font-style: italic;
+        line-height: 1.5;
+      }
+      .lea {
+        margin-top: 8px;
+      }
+      .bdel {
+        background: none;
+        border: none;
+        color: var(--hint);
+        font-size: 11px;
+        cursor: pointer;
+        padding: 0;
+        font-family: "DM Sans", sans-serif;
+      }
+      .bdel:hover {
+        color: var(--accent);
+      }
+      .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--hint);
+        font-size: 14px;
+      }
+      .empty-state .big {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 48px;
+        color: var(--border2);
+        letter-spacing: 2px;
+        display: block;
+        margin-bottom: 8px;
+      }
 
-/* ── PROGRESS BAR ── */
-.pbwrap{background:var(--card);border:.5px solid var(--border);border-radius:var(--r);padding:1rem;margin-bottom:1rem}
-.pbl{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px}
-.pbt{height:6px;background:var(--border);border-radius:4px;overflow:hidden}
-.pbf{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:4px;transition:width .4s ease}
+      /* ── PROGRESS BAR ── */
+      .pbwrap {
+        background: var(--card);
+        border: 0.5px solid var(--border);
+        border-radius: var(--r);
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+      .pbl {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .pbt {
+        height: 6px;
+        background: var(--border);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .pbf {
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent), var(--gold));
+        border-radius: 4px;
+        transition: width 0.4s ease;
+      }
 
-/* ── CHARTS ── */
-.ctabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
-.ctab{font-size:12px;font-weight:500;padding:6px 14px;border:.5px solid var(--border2);background:none;color:var(--muted);cursor:pointer;border-radius:20px;transition:all .15s;font-family:'DM Sans',sans-serif}
-.ctab.active{background:var(--accent);border-color:var(--accent);color:white}
-.chart-card{background:var(--card);border:.5px solid var(--border);border-radius:var(--r);padding:1.25rem;margin-bottom:1rem}
-.cmeta{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;gap:10px}
-.ctitle{font-weight:500;font-size:14px;color:var(--text)}
-.crange{font-size:12px;color:var(--hint);margin-top:2px}
-.cstats{display:flex;gap:16px;text-align:right;flex-shrink:0}
-.csv{font-size:18px;font-weight:500;color:var(--text)}
-.csv.pos{color:var(--accent2)}.csv.neg{color:var(--accent)}
-.csl{font-size:10px;color:var(--hint);text-transform:uppercase;letter-spacing:.5px}
-.cwrap{position:relative;width:100%}
-.cwrap canvas{width:100%!important;display:block}
-.cempty{font-size:13px;color:var(--hint);text-align:center;padding:2rem 0;display:none}
-.sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:1rem}
-.scard{background:var(--card);border:.5px solid var(--border);border-radius:var(--r);padding:1rem}
-.slabel{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-.srow{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:.5px solid var(--border)}
-.srow:last-child{border-bottom:none}
-.sk{color:var(--muted)}.sval{font-weight:500;color:var(--text)}
-.sval.good{color:var(--accent2)}.sval.bad{color:var(--accent)}
-.streak-box{background:var(--card);border:.5px solid var(--border);border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between}
-.streak-num{font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--gold);line-height:1}
-.streak-info{text-align:right}
+      /* ── CHARTS ── */
+      .ctabs {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+      }
+      .ctab {
+        font-size: 12px;
+        font-weight: 500;
+        padding: 6px 14px;
+        border: 0.5px solid var(--border2);
+        background: none;
+        color: var(--muted);
+        cursor: pointer;
+        border-radius: 20px;
+        transition: all 0.15s;
+        font-family: "DM Sans", sans-serif;
+      }
+      .ctab.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: white;
+      }
+      .chart-card {
+        background: var(--card);
+        border: 0.5px solid var(--border);
+        border-radius: var(--r);
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+      }
+      .cmeta {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        gap: 10px;
+      }
+      .ctitle {
+        font-weight: 500;
+        font-size: 14px;
+        color: var(--text);
+      }
+      .crange {
+        font-size: 12px;
+        color: var(--hint);
+        margin-top: 2px;
+      }
+      .cstats {
+        display: flex;
+        gap: 16px;
+        text-align: right;
+        flex-shrink: 0;
+      }
+      .csv {
+        font-size: 18px;
+        font-weight: 500;
+        color: var(--text);
+      }
+      .csv.pos {
+        color: var(--accent2);
+      }
+      .csv.neg {
+        color: var(--accent);
+      }
+      .csl {
+        font-size: 10px;
+        color: var(--hint);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .cwrap {
+        position: relative;
+        width: 100%;
+      }
+      .cwrap canvas {
+        width: 100% !important;
+        display: block;
+      }
+      .cempty {
+        font-size: 13px;
+        color: var(--hint);
+        text-align: center;
+        padding: 2rem 0;
+        display: none;
+      }
+      .sgrid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 1rem;
+      }
+      .scard {
+        background: var(--card);
+        border: 0.5px solid var(--border);
+        border-radius: var(--r);
+        padding: 1rem;
+      }
+      .slabel {
+        font-size: 11px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+      }
+      .srow {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        padding: 5px 0;
+        border-bottom: 0.5px solid var(--border);
+      }
+      .srow:last-child {
+        border-bottom: none;
+      }
+      .sk {
+        color: var(--muted);
+      }
+      .sval {
+        font-weight: 500;
+        color: var(--text);
+      }
+      .sval.good {
+        color: var(--accent2);
+      }
+      .sval.bad {
+        color: var(--accent);
+      }
+      .streak-box {
+        background: var(--card);
+        border: 0.5px solid var(--border);
+        border-radius: var(--r);
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .streak-num {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 42px;
+        color: var(--gold);
+        line-height: 1;
+      }
+      .streak-info {
+        text-align: right;
+      }
 
-/* ── NUTR ── */
-.ncard{background:var(--card);border:.5px solid var(--border);border-radius:var(--r);padding:1.25rem;margin-bottom:1rem}
-.ntitle{font-weight:500;font-size:14px;color:var(--text);margin-bottom:.75rem}
-.nrow{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:.5px solid var(--border);font-size:13px;gap:12px}
-.nrow:last-child{border-bottom:none}
-.nk{color:var(--muted);flex-shrink:0}.nv{font-weight:500;color:var(--text);text-align:right}
-.na{color:var(--accent)}
+      /* ── NUTR ── */
+      .ncard {
+        background: var(--card);
+        border: 0.5px solid var(--border);
+        border-radius: var(--r);
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+      }
+      .ntitle {
+        font-weight: 500;
+        font-size: 14px;
+        color: var(--text);
+        margin-bottom: 0.75rem;
+      }
+      .nrow {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 9px 0;
+        border-bottom: 0.5px solid var(--border);
+        font-size: 13px;
+        gap: 12px;
+      }
+      .nrow:last-child {
+        border-bottom: none;
+      }
+      .nk {
+        color: var(--muted);
+        flex-shrink: 0;
+      }
+      .nv {
+        font-weight: 500;
+        color: var(--text);
+        text-align: right;
+      }
+      .na {
+        color: var(--accent);
+      }
 
-/* ── FACE ── */
-.fcard{background:var(--card);border:.5px solid var(--border);border-radius:var(--r);padding:1.25rem;margin-bottom:1rem}
-.ftitle{font-weight:500;font-size:14px;color:var(--text);margin-bottom:.75rem}
-.fi2{display:flex;gap:10px;padding:8px 0;border-bottom:.5px solid var(--border);font-size:13px;align-items:flex-start}
-.fi2:last-child{border-bottom:none}
-.fdot{width:6px;height:6px;border-radius:50%;background:var(--accent2);margin-top:5px;flex-shrink:0}
-.ft{color:var(--muted);line-height:1.6}.ft strong{color:var(--text);font-weight:500}
-.ft .sub{color:var(--hint);font-size:12px}
+      /* ── FACE ── */
+      .fcard {
+        background: var(--card);
+        border: 0.5px solid var(--border);
+        border-radius: var(--r);
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+      }
+      .ftitle {
+        font-weight: 500;
+        font-size: 14px;
+        color: var(--text);
+        margin-bottom: 0.75rem;
+      }
+      .fi2 {
+        display: flex;
+        gap: 10px;
+        padding: 8px 0;
+        border-bottom: 0.5px solid var(--border);
+        font-size: 13px;
+        align-items: flex-start;
+      }
+      .fi2:last-child {
+        border-bottom: none;
+      }
+      .fdot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent2);
+        margin-top: 5px;
+        flex-shrink: 0;
+      }
+      .ft {
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      .ft strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+      .ft .sub {
+        color: var(--hint);
+        font-size: 12px;
+      }
 
-/* ── RESOURCES ── */
-.rg{margin-bottom:1.5rem}
-.rgt{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:.5rem;font-weight:500}
-.ri{display:flex;gap:10px;padding:10px 0;border-bottom:.5px solid var(--border)}
-.ri:last-child{border-bottom:none}
-.rdot{width:6px;height:6px;border-radius:50%;background:var(--accent);margin-top:5px;flex-shrink:0}
-.rn{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px}
-.rd{font-size:12px;color:var(--muted);line-height:1.5}
+      /* ── RESOURCES ── */
+      .rg {
+        margin-bottom: 1.5rem;
+      }
+      .rgt {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+      }
+      .ri {
+        display: flex;
+        gap: 10px;
+        padding: 10px 0;
+        border-bottom: 0.5px solid var(--border);
+      }
+      .ri:last-child {
+        border-bottom: none;
+      }
+      .rdot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        margin-top: 5px;
+        flex-shrink: 0;
+      }
+      .rn {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text);
+        margin-bottom: 2px;
+      }
+      .rd {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
 
-/* ── MODAL ── */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .2s}
-.modal-bg.open{opacity:1;pointer-events:all}
-.modal-img{max-width:100%;max-height:90vh;object-fit:contain;border-radius:var(--r)}
+      /* ── MODAL ── */
+      .modal-bg {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.92);
+        z-index: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s;
+      }
+      .modal-bg.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .modal-img {
+        max-width: 100%;
+        max-height: 90vh;
+        object-fit: contain;
+        border-radius: var(--r);
+      }
 
-/* ── TOAST ── */
-.toast{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(20px);background:var(--card);border:.5px solid var(--border2);color:var(--text);padding:10px 20px;border-radius:var(--r);font-size:13px;z-index:400;opacity:0;transition:all .25s;white-space:nowrap;max-width:90vw;text-align:center}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.toast.err{border-color:var(--accent);color:#F0997B}
+      /* ── TOAST ── */
+      .toast {
+        position: fixed;
+        bottom: calc(80px + env(safe-area-inset-bottom));
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: var(--card);
+        border: 0.5px solid var(--border2);
+        color: var(--text);
+        padding: 10px 20px;
+        border-radius: var(--r);
+        font-size: 13px;
+        z-index: 400;
+        opacity: 0;
+        transition: all 0.25s;
+        white-space: nowrap;
+        max-width: 90vw;
+        text-align: center;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+      .toast.err {
+        border-color: var(--accent);
+        color: #f0997b;
+      }
 
-/* ── UPLOAD PROGRESS ── */
-.upload-prog{background:var(--surface);border-radius:var(--rs);overflow:hidden;margin-top:8px;display:none}
-.upload-prog-bar{height:3px;background:var(--accent2);width:0%;transition:width .3s}
-.upload-label{font-size:11px;color:var(--hint);padding:4px 8px}
+      /* ── UPLOAD PROGRESS ── */
+      .upload-prog {
+        background: var(--surface);
+        border-radius: var(--rs);
+        overflow: hidden;
+        margin-top: 8px;
+        display: none;
+      }
+      .upload-prog-bar {
+        height: 3px;
+        background: var(--accent2);
+        width: 0%;
+        transition: width 0.3s;
+      }
+      .upload-label {
+        font-size: 11px;
+        color: var(--hint);
+        padding: 4px 8px;
+      }
 
-.divider{height:.5px;background:var(--border);margin:1.5rem 0}
-</style>
-</head>
-<body>
+      .divider {
+        height: 0.5px;
+        background: var(--border);
+        margin: 1.5rem 0;
+      }
 
-<!-- ══ LOCK SCREEN ══ -->
-<div id="lockscreen">
-  <div class="lock-logo">TOJI</div>
-  <div class="lock-sub">12-week protocol</div>
-  <div class="lock-form">
-    <label class="lock-label">GitHub Personal Access Token</label>
-    <input class="lock-input" type="password" id="lock-token" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
-    <button class="lock-btn" id="lock-btn">Unlock</button>
-    <div class="lock-err" id="lock-err"></div>
-    <div class="lock-spinner" id="lock-spinner">Đang xác thực...</div>
-  </div>
-</div>
-
-<!-- ══ APP ══ -->
-<div id="app" style="display:none">
-
-<nav class="nav">
-  <div class="nav-inner">
-    <div class="nav-logo" onclick="showPanel('overview')">TOJI</div>
-    <div class="nav-tabs">
-      <button class="nav-tab active" data-panel="overview">Overview</button>
-      <button class="nav-tab" data-panel="workout">Workout</button>
-      <button class="nav-tab" data-panel="tracker">Tracker</button>
-      <button class="nav-tab" data-panel="charts">Charts</button>
-      <button class="nav-tab" data-panel="timeline">Timeline</button>
-      <button class="nav-tab" data-panel="more">More</button>
-    </div>
-  </div>
-</nav>
-
-<div class="sync-bar">
-  <div class="sync-bar-inner">
-    <div class="sync-status">
-      <div class="sdot" id="sdot"></div>
-      <span id="slabel">Sẵn sàng</span>
-    </div>
-    <div class="sync-actions">
-      <button class="sbtn" onclick="pull()">↓ Pull</button>
-      <button class="sbtn pri" onclick="pushLogs()">↑ Push</button>
-      <button class="sbtn-lock" onclick="lockApp()" title="Đăng xuất">⎋</button>
-    </div>
-  </div>
-</div>
-
-<main class="main">
-
-  <!-- ══ OVERVIEW ══ -->
-  <div id="panel-overview" class="panel active">
-    <div class="stitle">12-week protocol</div>
-    <div class="ssub">175cm · 80–83kg start · Mục tiêu: 68kg · IF 16/8 · Calisthenics</div>
-    <div class="stats-grid">
-      <div class="stat-card"><div class="sl">Cân nặng start</div><div class="sv">80–83kg</div><div class="st">→ 68kg</div></div>
-      <div class="stat-card"><div class="sl">Vòng eo start</div><div class="sv">93cm</div><div class="st">→ &lt;80cm</div></div>
-      <div class="stat-card"><div class="sl">Body fat ước tính</div><div class="sv">~25%</div><div class="st">→ 12–15%</div></div>
-      <div class="stat-card"><div class="sl">Pull-up start</div><div class="sv">~1 rep</div><div class="st">→ 12+</div></div>
-    </div>
-    <div class="phase-card p1">
-      <div class="ph"><div><div class="plabel">Phase 1</div><div class="ptitle">Foundation & Fat Loss Ignition</div></div><div class="pwk">Tuần 1–4</div></div>
-      <div class="pdesc">Xây nền. Cơ thể học cách di chuyển đúng, hệ thần kinh làm quen với calisthenics, thói quen ăn 1 buổi được thiết lập.</div>
-      <div class="pmetrics"><div class="mbox"><div class="mk">Cân</div><div class="mv">76–77kg</div></div><div class="mbox"><div class="mk">Push-up</div><div class="mv">15–20</div></div><div class="mbox"><div class="mk">Pull-up</div><div class="mv">3–5</div></div></div>
-      <div class="pgate">Gate: <span>Pull-up 3 rep không band → unlock Phase 2</span></div>
-    </div>
-    <div class="phase-card p2">
-      <div class="ph"><div><div class="plabel">Phase 2</div><div class="ptitle">Strength Surge & Recomp</div></div><div class="pwk">Tuần 5–8</div></div>
-      <div class="pdesc">Cơ bắt đầu lộ ra. Mỡ tiếp tục tan, cơ tăng song song. Volume cao hơn — nhìn gương thấy sự thay đổi thật sự lần đầu.</div>
-      <div class="pmetrics"><div class="mbox"><div class="mk">Cân</div><div class="mv">72–73kg</div></div><div class="mbox"><div class="mk">Push-up</div><div class="mv">30+</div></div><div class="mbox"><div class="mk">Pull-up</div><div class="mv">8–10</div></div></div>
-      <div class="pgate">Gate: <span>Pull-up 8 rep sạch + Push-up 30 → unlock Phase 3</span></div>
-    </div>
-    <div class="phase-card p3">
-      <div class="ph"><div><div class="plabel">Phase 3</div><div class="ptitle">Toji Mode — Definition</div></div><div class="pwk">Tuần 9–12</div></div>
-      <div class="pdesc">Giai đoạn finisher. Điêu khắc từng đường cơ. Cardio boxing tăng mạnh. Phiên bản không thể quay lại.</div>
-      <div class="pmetrics"><div class="mbox"><div class="mk">Cân</div><div class="mv">68–70kg</div></div><div class="mbox"><div class="mk">Push-up</div><div class="mv">40+</div></div><div class="mbox"><div class="mk">Pull-up</div><div class="mv">12–15</div></div></div>
-      <div class="pgate" style="color:var(--accent2)">End state: <span>68kg · eo &lt;80cm · pull-up 12+ · ~12–14% BF</span></div>
-    </div>
-    <div class="divider"></div>
-    <div style="font-size:13px;color:var(--muted);line-height:1.8">
-      <strong style="color:var(--text)">3 nguyên tắc không thể thương lượng:</strong><br>
-      1. Ngủ 7–8 tiếng — cơ lớn trong lúc ngủ.<br>
-      2. Protein 160–180g/ngày — không có cái này cơ không giữ được khi deficit.<br>
-      3. Tập mỗi ngày — consistency beats intensity.
-    </div>
-  </div>
-
-  <!-- ══ WORKOUT ══ -->
-  <div id="panel-workout" class="panel">
-    <div class="stitle">Daily Workout</div>
-    <div class="ssub">Một set duy nhất · 50–60 phút · Tập mỗi ngày</div>
-    <div class="wb"><div class="wh"><div class="wn">1. Warm-up (5–7 phút)</div><span class="badge bm">bắt buộc</span></div>
-      <div class="ex"><div><div class="en">Nhảy dây boxing</div></div><div class="es">3 phút</div></div>
-      <div class="ex"><div><div class="en">Arm + hip circles</div></div><div class="es">30s/chiều</div></div>
-      <div class="ex"><div><div class="en">Cat-cow + spinal rotation</div></div><div class="es">10 reps</div></div>
-      <div class="ex"><div><div class="en">Dead hang (xà)</div></div><div class="es">30–60s</div></div>
-    </div>
-    <div class="wb"><div class="wh"><div class="wn">2. Pull — lưng + bicep</div><span class="badge bs">kéo</span></div>
-      <div class="ex"><div><div class="en">Pull-up / Chin-up</div><div class="ep">P1: band → P2: bodyweight → P3: tempo 3-1-1</div></div><div class="es">4×max<br>nghỉ 90s</div></div>
-      <div class="ex"><div><div class="en">Scapular pull-up</div><div class="ep">Kích hoạt vai sau — không bỏ</div></div><div class="es">3×10</div></div>
-      <div class="ex"><div><div class="en">Band pull-apart</div><div class="ep">Kéo đến ngực, giữ 1s</div></div><div class="es">3×15</div></div>
-    </div>
-    <div class="wb"><div class="wh"><div class="wn">3. Push — ngực + vai + tricep</div><span class="badge bs">đẩy</span></div>
-      <div class="ex"><div><div class="en">Push-up (diamond)</div><div class="ep">P1: standard → P2: pike → P3: archer</div></div><div class="es">4×max<br>nghỉ 60s</div></div>
-      <div class="ex"><div><div class="en">Dip</div><div class="ep">P1: assisted → P2–3: full bodyweight</div></div><div class="es">3×max</div></div>
-      <div class="ex"><div><div class="en">Pike push-up</div></div><div class="es">3×10–15</div></div>
-      <div class="ex"><div><div class="en">Band lateral raise</div></div><div class="es">3×15/bên</div></div>
-    </div>
-    <div class="wb"><div class="wh"><div class="wn">4. Core</div><span class="badge bc">lõi</span></div>
-      <div class="ex"><div><div class="en">Plank</div><div class="ep">P1: 60s → P2: 90s → P3: 2 phút</div></div><div class="es">3 sets</div></div>
-      <div class="ex"><div><div class="en">Hanging knee raise</div><div class="ep">P2 → straight leg raise</div></div><div class="es">3×15</div></div>
-      <div class="ex"><div><div class="en">Hollow body hold</div></div><div class="es">3×30s</div></div>
-      <div class="ex"><div><div class="en">Mountain climber</div></div><div class="es">3×30s</div></div>
-    </div>
-    <div class="wb"><div class="wh"><div class="wn">5. Legs</div><span class="badge bs">chân</span></div>
-      <div class="ex"><div><div class="en">Bulgarian split squat</div><div class="ep">Tempo 3-1-1 — mày sẽ ghét bài này</div></div><div class="es">3×10/chân</div></div>
-      <div class="ex"><div><div class="en">Glute bridge / Hip thrust</div></div><div class="es">3×15</div></div>
-      <div class="ex"><div><div class="en">Calf raise một chân</div></div><div class="es">3×20/chân</div></div>
-    </div>
-    <div class="wb"><div class="wh"><div class="wn">6. Cardio Finisher</div><span class="badge ba">đốt mỡ</span></div>
-      <div class="ex"><div><div class="en">Nhảy dây liên tục</div><div class="ep">P1: 3p · P2: 5p · P3: 8–10p</div></div><div class="es">cuối buổi</div></div>
-      <div class="ex"><div><div class="en">Shadow boxing</div><div class="ep">Jaw clenching → jawline + mắt thần</div></div><div class="es">5 phút</div></div>
-    </div>
-  </div>
-
-  <!-- ══ TRACKER ══ -->
-  <div id="panel-tracker" class="panel">
-    <div class="stitle">Daily Tracker</div>
-    <div class="ssub">Log mỗi ngày · ảnh push thẳng lên GitHub</div>
-    <div class="pbwrap">
-      <div class="pbl"><span>Tiến độ 12 tuần</span><span id="prog-text">0 / 84 ngày</span></div>
-      <div class="pbt"><div class="pbf" id="prog-fill" style="width:0%"></div></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Log hôm nay</div>
-      <div class="fgrid">
-        <div class="fg"><label class="fl">Ngày</label><input class="fi" type="date" id="l-date"></div>
-        <div class="fg"><label class="fl">Cân nặng (kg)</label><input class="fi" type="number" id="l-weight" placeholder="76.5" step="0.1"></div>
-        <div class="fg"><label class="fl">Vòng eo (cm)</label><input class="fi" type="number" id="l-waist" placeholder="90" step="0.5"></div>
-        <div class="fg"><label class="fl">Giờ ngủ</label><input class="fi" type="number" id="l-sleep" placeholder="7.5" step="0.5"></div>
+      .wo-phase-banner {
+        border-radius: var(--r);
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
+        background: var(--card);
+        border: 0.5px solid var(--border);
+      }
+      .wo-phase-banner strong {
+        color: var(--text);
+      }
+      .wo-week {
+        margin-bottom: 0.75rem;
+        border-radius: var(--r);
+        border: 0.5px solid var(--border);
+        overflow: hidden;
+        background: var(--card);
+      }
+      .wo-week.wo-week-current {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 1px rgba(216, 90, 48, 0.25);
+      }
+      .wo-week-h {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 0.875rem 1rem;
+        background: var(--surface);
+        border: none;
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 500;
+        font-family: "DM Sans", sans-serif;
+        cursor: pointer;
+        text-align: left;
+      }
+      .wo-week-h span.tag {
+        font-size: 10px;
+        padding: 2px 8px;
+        border-radius: 20px;
+        font-weight: 500;
+        flex-shrink: 0;
+      }
+      .wo-week-h span.tag.now {
+        background: rgba(216, 90, 48, 0.2);
+        color: #f0997b;
+      }
+      .wo-week-b {
+        display: none;
+        border-top: 0.5px solid var(--border);
+      }
+      .wo-week.open .wo-week-b {
+        display: block;
+      }
+      .wo-week-h .chev {
+        color: var(--muted);
+        font-size: 12px;
+        transition: transform 0.2s;
+      }
+      .wo-week.open .wo-week-h .chev {
+        transform: rotate(90deg);
+      }
+      .ex-video-btn {
+        font-size: 11px;
+        background: rgba(216, 90, 48, 0.12);
+        color: #f0997b;
+        border: none;
+        border-radius: 20px;
+        padding: 3px 10px;
+        cursor: pointer;
+        font-family: inherit;
+        margin-top: 4px;
+        display: inline-block;
+      }
+      .ex-new {
+        font-size: 10px;
+        background: rgba(239, 159, 39, 0.15);
+        color: #ef9f27;
+        padding: 2px 7px;
+        border-radius: 20px;
+        margin-left: 5px;
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ══ LOCK SCREEN ══ -->
+    <div id="lockscreen">
+      <div class="lock-logo">TOJI</div>
+      <div class="lock-sub">12-week protocol</div>
+      <div class="lock-form">
+        <label class="lock-label">GitHub Personal Access Token</label>
+        <input
+          class="lock-input"
+          type="password"
+          id="lock-token"
+          placeholder="ghp_xxxxxxxxxxxx"
+          autocomplete="off"
+        />
+        <button class="lock-btn" id="lock-btn">Unlock</button>
+        <div class="lock-err" id="lock-err"></div>
+        <div class="lock-spinner" id="lock-spinner">Đang xác thực...</div>
       </div>
-      <div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Performance</div>
-      <div class="fgrid3">
-        <div class="fg"><label class="fl">Pull-up</label><input class="fi" type="number" id="l-pullup" placeholder="3"></div>
-        <div class="fg"><label class="fl">Push-up</label><input class="fi" type="number" id="l-pushup" placeholder="15"></div>
-        <div class="fg"><label class="fl">Plank (s)</label><input class="fi" type="number" id="l-plank" placeholder="60"></div>
-      </div>
-      <div class="fg" style="margin-bottom:12px"><label class="fl">Ghi chú</label><input class="fi" type="text" id="l-note" placeholder="Cảm giác hôm nay..."></div>
-
-      <div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Ảnh bằng chứng (front · side · back)</div>
-      <label for="photo-input" class="photo-zone" id="photo-zone" style="display:block;cursor:pointer" onclick="event.stopPropagation()">
-        <input type="file" id="photo-input" accept="image/*" multiple style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none">
-        <div class="photo-zone-text">📷 Chọn ảnh (tối đa 3)</div>
-        <div class="photo-previews" id="photo-previews"></div>
-      </label>
-      <div class="upload-prog" id="upload-prog">
-        <div class="upload-label" id="upload-label">Đang upload ảnh...</div>
-        <div class="upload-prog-bar" id="upload-bar"></div>
-      </div>
-      <button class="btn" style="margin-top:10px" onclick="saveLog()">Lưu + Push lên GitHub</button>
     </div>
 
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-      <div style="font-size:14px;font-weight:500;color:var(--text)">Lịch sử (<span id="log-count">0</span> ngày)</div>
-    </div>
-    <div id="log-list"></div>
-  </div>
-
-  <!-- ══ CHARTS ══ -->
-  <div id="panel-charts" class="panel">
-    <div class="stitle">Progress Charts</div>
-    <div class="ssub">Dữ liệu từ các log đã ghi</div>
-    <div class="ctabs">
-      <button class="ctab active" data-metric="weight">Cân nặng</button>
-      <button class="ctab" data-metric="waist">Vòng eo</button>
-      <button class="ctab" data-metric="pullup">Pull-up</button>
-      <button class="ctab" data-metric="pushup">Push-up</button>
-      <button class="ctab" data-metric="sleep">Ngủ</button>
-    </div>
-    <div class="chart-card">
-      <div class="cmeta">
-        <div><div class="ctitle" id="c-title">Cân nặng (kg)</div><div class="crange" id="c-range">—</div></div>
-        <div class="cstats" id="c-stats"></div>
-      </div>
-      <div class="cwrap"><canvas id="main-chart" height="220"></canvas></div>
-      <div class="cempty" id="c-empty">Chưa có đủ dữ liệu — log ít nhất 2 ngày</div>
-    </div>
-    <div class="sgrid" id="c-summary"></div>
-  </div>
-
-
-  <!-- ══ TIMELINE ══ -->
-  <div id="panel-timeline" class="panel">
-    <div class="stitle">Photo Timeline</div>
-    <div class="ssub">Hành trình qua hình ảnh — mỗi ngày một bằng chứng</div>
-
-    <div id="tl-empty" class="empty-state" style="display:none">
-      <span class="big">DAY 0</span>Chưa có ảnh nào. Upload ảnh khi log hàng ngày.
-    </div>
-
-    <div id="tl-video-section" style="display:none;margin-bottom:1.5rem">
-      <div style="background:var(--card);border:.5px solid var(--border);border-radius:var(--r);padding:1.25rem">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
-          <div>
-            <div style="font-weight:500;font-size:14px;color:var(--text)">Timelapse video</div>
-            <div style="font-size:12px;color:var(--hint);margin-top:2px">Ghép tất cả ảnh thành video quá trình thay đổi</div>
+    <!-- ══ APP ══ -->
+    <div id="app" style="display: none">
+      <nav class="nav">
+        <div class="nav-inner">
+          <div class="nav-logo" onclick="showPanel('overview')">TOJI</div>
+          <div class="nav-tabs">
+            <button class="nav-tab active" data-panel="overview">
+              Overview
+            </button>
+            <button class="nav-tab" data-panel="workout">Workout</button>
+            <button class="nav-tab" data-panel="tracker">Tracker</button>
+            <button class="nav-tab" data-panel="charts">Charts</button>
+            <button class="nav-tab" data-panel="timeline">Timeline</button>
+            <button class="nav-tab" data-panel="more">More</button>
           </div>
-          <button class="btn" style="width:auto;padding:8px 16px;font-size:13px" onclick="generateTimelapse()">Tạo video</button>
         </div>
-        <div id="tl-video-wrap" style="display:none">
-          <video id="tl-video" controls style="width:100%;border-radius:var(--rs);margin-top:.5rem;background:#000"></video>
-          <button class="btn btn-ghost" style="margin-top:8px;font-size:13px" onclick="downloadTimelapse()">Tải xuống MP4</button>
-        </div>
-        <div id="tl-progress" style="display:none;margin-top:.5rem">
-          <div style="font-size:12px;color:var(--muted);margin-bottom:4px" id="tl-prog-label">Đang xử lý...</div>
-          <div style="height:4px;background:var(--border);border-radius:4px;overflow:hidden">
-            <div id="tl-prog-bar" style="height:100%;background:var(--accent2);width:0%;transition:width .2s"></div>
+      </nav>
+
+      <div class="sync-bar">
+        <div class="sync-bar-inner">
+          <div class="sync-status">
+            <div class="sdot" id="sdot"></div>
+            <span id="slabel">Sẵn sàng</span>
+          </div>
+          <div class="sync-actions">
+            <button class="sbtn" onclick="pull()">↓ Pull</button>
+            <button class="sbtn pri" onclick="pushLogs()">↑ Push</button>
+            <button class="sbtn-lock" onclick="lockApp()" title="Đăng xuất">
+              ⎋
+            </button>
           </div>
         </div>
       </div>
+
+      <main class="main">
+        <!-- ══ OVERVIEW ══ -->
+        <div id="panel-overview" class="panel active">
+          <div class="stitle">12-week protocol</div>
+          <div class="ssub">
+            175cm · 80–83kg start · Mục tiêu: 68kg · IF 16/8 · Calisthenics
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="sl">Cân nặng start</div>
+              <div class="sv">80–83kg</div>
+              <div class="st">→ 68kg</div>
+            </div>
+            <div class="stat-card">
+              <div class="sl">Vòng eo start</div>
+              <div class="sv">93cm</div>
+              <div class="st">→ &lt;80cm</div>
+            </div>
+            <div class="stat-card">
+              <div class="sl">Body fat ước tính</div>
+              <div class="sv">~25%</div>
+              <div class="st">→ 12–15%</div>
+            </div>
+            <div class="stat-card">
+              <div class="sl">Pull-up start</div>
+              <div class="sv">~1 rep</div>
+              <div class="st">→ 12+</div>
+            </div>
+          </div>
+          <div class="phase-card p1">
+            <div class="ph">
+              <div>
+                <div class="plabel">Phase 1</div>
+                <div class="ptitle">Foundation & Fat Loss Ignition</div>
+              </div>
+              <div class="pwk">Tuần 1–4</div>
+            </div>
+            <div class="pdesc">
+              Xây nền. Cơ thể học cách di chuyển đúng, hệ thần kinh làm quen với
+              calisthenics, thói quen ăn 1 buổi được thiết lập.
+            </div>
+            <div class="pmetrics">
+              <div class="mbox">
+                <div class="mk">Cân</div>
+                <div class="mv">76–77kg</div>
+              </div>
+              <div class="mbox">
+                <div class="mk">Push-up</div>
+                <div class="mv">15–20</div>
+              </div>
+              <div class="mbox">
+                <div class="mk">Pull-up</div>
+                <div class="mv">3–5</div>
+              </div>
+            </div>
+            <div class="pgate">
+              Gate: <span>Pull-up 3 rep không band → unlock Phase 2</span>
+            </div>
+          </div>
+          <div class="phase-card p2">
+            <div class="ph">
+              <div>
+                <div class="plabel">Phase 2</div>
+                <div class="ptitle">Strength Surge & Recomp</div>
+              </div>
+              <div class="pwk">Tuần 5–8</div>
+            </div>
+            <div class="pdesc">
+              Cơ bắt đầu lộ ra. Mỡ tiếp tục tan, cơ tăng song song. Volume cao
+              hơn — nhìn gương thấy sự thay đổi thật sự lần đầu.
+            </div>
+            <div class="pmetrics">
+              <div class="mbox">
+                <div class="mk">Cân</div>
+                <div class="mv">72–73kg</div>
+              </div>
+              <div class="mbox">
+                <div class="mk">Push-up</div>
+                <div class="mv">30+</div>
+              </div>
+              <div class="mbox">
+                <div class="mk">Pull-up</div>
+                <div class="mv">8–10</div>
+              </div>
+            </div>
+            <div class="pgate">
+              Gate:
+              <span>Pull-up 8 rep sạch + Push-up 30 → unlock Phase 3</span>
+            </div>
+          </div>
+          <div class="phase-card p3">
+            <div class="ph">
+              <div>
+                <div class="plabel">Phase 3</div>
+                <div class="ptitle">Toji Mode — Definition</div>
+              </div>
+              <div class="pwk">Tuần 9–12</div>
+            </div>
+            <div class="pdesc">
+              Giai đoạn finisher. Điêu khắc từng đường cơ. Cardio boxing tăng
+              mạnh. Phiên bản không thể quay lại.
+            </div>
+            <div class="pmetrics">
+              <div class="mbox">
+                <div class="mk">Cân</div>
+                <div class="mv">68–70kg</div>
+              </div>
+              <div class="mbox">
+                <div class="mk">Push-up</div>
+                <div class="mv">40+</div>
+              </div>
+              <div class="mbox">
+                <div class="mk">Pull-up</div>
+                <div class="mv">12–15</div>
+              </div>
+            </div>
+            <div class="pgate" style="color: var(--accent2)">
+              End state:
+              <span>68kg · eo &lt;80cm · pull-up 12+ · ~12–14% BF</span>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.8">
+            <strong style="color: var(--text)"
+              >3 nguyên tắc không thể thương lượng:</strong
+            ><br />
+            1. Ngủ 7–8 tiếng — cơ lớn trong lúc ngủ.<br />
+            2. Protein 160–180g/ngày — không có cái này cơ không giữ được khi
+            deficit.<br />
+            3. Tập mỗi ngày — consistency beats intensity.
+          </div>
+        </div>
+
+        <!-- ══ WORKOUT ══ -->
+        <div id="panel-workout" class="panel">
+          <div class="stitle">Workout Program</div>
+          <div class="ssub" id="wo-current-label">
+            Chọn phase để xem chi tiết
+          </div>
+          <div
+            style="
+              display: flex;
+              gap: 8px;
+              margin-bottom: 1rem;
+              flex-wrap: wrap;
+            "
+          >
+            <button class="ctab active" data-phase="1">
+              Phase 1 — Tuần 1–4
+            </button>
+            <button class="ctab" data-phase="2">Phase 2 — Tuần 5–8</button>
+            <button class="ctab" data-phase="3">Phase 3 — Tuần 9–12</button>
+          </div>
+          <div id="wo-content"></div>
+          <div
+            id="wo-video-modal"
+            style="
+              display: none;
+              position: fixed;
+              inset: 0;
+              background: rgba(0, 0, 0, 0.95);
+              z-index: 600;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              padding: 1rem;
+            "
+          >
+            <div style="width: 100%; max-width: 640px">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-bottom: 0.75rem;
+                "
+              >
+                <div
+                  id="wo-video-title"
+                  style="font-size: 14px; font-weight: 500; color: #f0ede8"
+                ></div>
+                <button
+                  onclick="closeVideoModal()"
+                  style="
+                    background: none;
+                    border: none;
+                    color: #888;
+                    font-size: 28px;
+                    cursor: pointer;
+                    line-height: 1;
+                    padding: 0;
+                  "
+                >
+                  ×
+                </button>
+              </div>
+              <div
+                style="
+                  position: relative;
+                  padding-bottom: 56.25%;
+                  height: 0;
+                  border-radius: 12px;
+                  overflow: hidden;
+                  background: #000;
+                "
+              >
+                <iframe
+                  id="wo-video-iframe"
+                  style="
+                    position: absolute;
+                    inset: 0;
+                    width: 100%;
+                    height: 100%;
+                    border: none;
+                  "
+                  allowfullscreen
+                  allow="autoplay; encrypted-media"
+                ></iframe>
+              </div>
+              <a
+                id="wo-video-link"
+                href="#"
+                target="_blank"
+                rel="noopener"
+                style="
+                  display: block;
+                  text-align: center;
+                  margin-top: 0.75rem;
+                  font-size: 13px;
+                  color: #d85a30;
+                "
+                >Mở trên YouTube →</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ TRACKER ══ -->
+        <div id="panel-tracker" class="panel">
+          <div class="stitle">Daily Tracker</div>
+          <div class="ssub">Log mỗi ngày · ảnh push thẳng lên GitHub</div>
+          <div class="pbwrap">
+            <div class="pbl">
+              <span>Tiến độ 12 tuần</span
+              ><span id="prog-text">0 / 84 ngày</span>
+            </div>
+            <div class="pbt">
+              <div class="pbf" id="prog-fill" style="width: 0%"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">Log hôm nay</div>
+            <div class="fgrid">
+              <div class="fg">
+                <label class="fl">Ngày</label
+                ><input class="fi" type="date" id="l-date" />
+              </div>
+              <div class="fg">
+                <label class="fl">Cân nặng (kg)</label
+                ><input
+                  class="fi"
+                  type="number"
+                  id="l-weight"
+                  placeholder="76.5"
+                  step="0.1"
+                />
+              </div>
+              <div class="fg">
+                <label class="fl">Vòng eo (cm)</label
+                ><input
+                  class="fi"
+                  type="number"
+                  id="l-waist"
+                  placeholder="90"
+                  step="0.5"
+                />
+              </div>
+              <div class="fg">
+                <label class="fl">Giờ ngủ</label
+                ><input
+                  class="fi"
+                  type="number"
+                  id="l-sleep"
+                  placeholder="7.5"
+                  step="0.5"
+                />
+              </div>
+            </div>
+            <div
+              style="
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                color: var(--muted);
+                margin-bottom: 8px;
+              "
+            >
+              Performance
+            </div>
+            <div class="fgrid3">
+              <div class="fg">
+                <label class="fl">Pull-up</label
+                ><input
+                  class="fi"
+                  type="number"
+                  id="l-pullup"
+                  placeholder="3"
+                />
+              </div>
+              <div class="fg">
+                <label class="fl">Push-up</label
+                ><input
+                  class="fi"
+                  type="number"
+                  id="l-pushup"
+                  placeholder="15"
+                />
+              </div>
+              <div class="fg">
+                <label class="fl">Plank (s)</label
+                ><input
+                  class="fi"
+                  type="number"
+                  id="l-plank"
+                  placeholder="60"
+                />
+              </div>
+            </div>
+            <div class="fg" style="margin-bottom: 12px">
+              <label class="fl">Ghi chú</label
+              ><input
+                class="fi"
+                type="text"
+                id="l-note"
+                placeholder="Cảm giác hôm nay..."
+              />
+            </div>
+
+            <div
+              style="
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                color: var(--muted);
+                margin-bottom: 8px;
+              "
+            >
+              Ảnh bằng chứng (front · side · back)
+            </div>
+            <label
+              for="photo-input"
+              class="photo-zone"
+              id="photo-zone"
+              style="display: block; cursor: pointer"
+              onclick="event.stopPropagation()"
+            >
+              <input
+                type="file"
+                id="photo-input"
+                accept="image/*"
+                multiple
+                style="
+                  position: absolute;
+                  width: 1px;
+                  height: 1px;
+                  opacity: 0;
+                  pointer-events: none;
+                "
+              />
+              <div class="photo-zone-text">📷 Chọn ảnh (tối đa 3)</div>
+              <div class="photo-previews" id="photo-previews"></div>
+            </label>
+            <div class="upload-prog" id="upload-prog">
+              <div class="upload-label" id="upload-label">
+                Đang upload ảnh...
+              </div>
+              <div class="upload-prog-bar" id="upload-bar"></div>
+            </div>
+            <button class="btn" style="margin-top: 10px" onclick="saveLog()">
+              Lưu + Push lên GitHub
+            </button>
+          </div>
+
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              margin-bottom: 1rem;
+            "
+          >
+            <div style="font-size: 14px; font-weight: 500; color: var(--text)">
+              Lịch sử (<span id="log-count">0</span> ngày)
+            </div>
+          </div>
+          <div id="log-list"></div>
+        </div>
+
+        <!-- ══ CHARTS ══ -->
+        <div id="panel-charts" class="panel">
+          <div class="stitle">Progress Charts</div>
+          <div class="ssub">Dữ liệu từ các log đã ghi</div>
+          <div class="ctabs">
+            <button class="ctab active" data-metric="weight">Cân nặng</button>
+            <button class="ctab" data-metric="waist">Vòng eo</button>
+            <button class="ctab" data-metric="pullup">Pull-up</button>
+            <button class="ctab" data-metric="pushup">Push-up</button>
+            <button class="ctab" data-metric="sleep">Ngủ</button>
+          </div>
+          <div class="chart-card">
+            <div class="cmeta">
+              <div>
+                <div class="ctitle" id="c-title">Cân nặng (kg)</div>
+                <div class="crange" id="c-range">—</div>
+              </div>
+              <div class="cstats" id="c-stats"></div>
+            </div>
+            <div class="cwrap">
+              <canvas id="main-chart" height="220"></canvas>
+            </div>
+            <div class="cempty" id="c-empty">
+              Chưa có đủ dữ liệu — log ít nhất 2 ngày
+            </div>
+          </div>
+          <div class="sgrid" id="c-summary"></div>
+        </div>
+
+        <!-- ══ TIMELINE ══ -->
+        <div id="panel-timeline" class="panel">
+          <div class="stitle">Photo Timeline</div>
+          <div class="ssub">
+            Hành trình qua hình ảnh — mỗi ngày một bằng chứng
+          </div>
+
+          <div id="tl-empty" class="empty-state" style="display: none">
+            <span class="big">DAY 0</span>Chưa có ảnh nào. Upload ảnh khi log
+            hàng ngày.
+          </div>
+
+          <div
+            id="tl-video-section"
+            style="display: none; margin-bottom: 1.5rem"
+          >
+            <div
+              style="
+                background: var(--card);
+                border: 0.5px solid var(--border);
+                border-radius: var(--r);
+                padding: 1.25rem;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  margin-bottom: 0.75rem;
+                "
+              >
+                <div>
+                  <div
+                    style="
+                      font-weight: 500;
+                      font-size: 14px;
+                      color: var(--text);
+                    "
+                  >
+                    Timelapse video
+                  </div>
+                  <div
+                    style="font-size: 12px; color: var(--hint); margin-top: 2px"
+                  >
+                    Ghép tất cả ảnh thành video quá trình thay đổi
+                  </div>
+                </div>
+                <button
+                  class="btn"
+                  style="width: auto; padding: 8px 16px; font-size: 13px"
+                  onclick="generateTimelapse()"
+                >
+                  Tạo video
+                </button>
+              </div>
+              <div id="tl-video-wrap" style="display: none">
+                <video
+                  id="tl-video"
+                  controls
+                  style="
+                    width: 100%;
+                    border-radius: var(--rs);
+                    margin-top: 0.5rem;
+                    background: #000;
+                  "
+                ></video>
+                <button
+                  class="btn btn-ghost"
+                  style="margin-top: 8px; font-size: 13px"
+                  onclick="downloadTimelapse()"
+                >
+                  Tải xuống MP4
+                </button>
+              </div>
+              <div id="tl-progress" style="display: none; margin-top: 0.5rem">
+                <div
+                  style="
+                    font-size: 12px;
+                    color: var(--muted);
+                    margin-bottom: 4px;
+                  "
+                  id="tl-prog-label"
+                >
+                  Đang xử lý...
+                </div>
+                <div
+                  style="
+                    height: 4px;
+                    background: var(--border);
+                    border-radius: 4px;
+                    overflow: hidden;
+                  "
+                >
+                  <div
+                    id="tl-prog-bar"
+                    style="
+                      height: 100%;
+                      background: var(--accent2);
+                      width: 0%;
+                      transition: width 0.2s;
+                    "
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            id="tl-filter"
+            style="
+              display: flex;
+              gap: 8px;
+              flex-wrap: wrap;
+              margin-bottom: 1rem;
+            "
+          >
+            <button class="ctab active" data-pos="all">Tất cả</button>
+            <button class="ctab" data-pos="1">Front</button>
+            <button class="ctab" data-pos="2">Side</button>
+            <button class="ctab" data-pos="3">Back</button>
+          </div>
+
+          <div
+            id="tl-grid"
+            style="
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              gap: 10px;
+            "
+          ></div>
+        </div>
+
+        <!-- ══ MORE ══ -->
+        <div id="panel-more" class="panel">
+          <div class="stitle">Nguy hiểm</div>
+          <div class="ssub">
+            Hành động không thể hoàn tác — đọc kỹ trước khi thực hiện
+          </div>
+          <div
+            style="
+              background: var(--card);
+              border: 0.5px solid #993c1d;
+              border-radius: var(--r);
+              padding: 1.25rem;
+              margin-bottom: 1.5rem;
+            "
+          >
+            <div
+              style="
+                font-weight: 500;
+                font-size: 14px;
+                color: #f0997b;
+                margin-bottom: 0.5rem;
+              "
+            >
+              Reset toàn bộ data
+            </div>
+            <div
+              style="
+                font-size: 13px;
+                color: var(--muted);
+                margin-bottom: 1rem;
+                line-height: 1.6;
+              "
+            >
+              Xóa toàn bộ logs + ảnh khỏi GitHub repo. Hành động này
+              <strong style="color: #f0997b">không thể hoàn tác</strong>. Dữ
+              liệu sẽ mất vĩnh viễn.
+            </div>
+            <button
+              class="btn"
+              style="background: #993c1d; font-size: 13px"
+              onclick="confirmReset()"
+            >
+              Xóa toàn bộ data
+            </button>
+          </div>
+          <div class="divider"></div>
+          <div class="stitle">Dinh dưỡng</div>
+          <div class="ssub">IF 16/8 · 1 cửa sổ ăn · Protein first</div>
+          <div class="ncard">
+            <div class="ntitle">Cửa sổ ăn</div>
+            <div class="nrow">
+              <span class="nk">Cửa sổ ăn</span
+              ><span class="nv">12:00 – 20:00</span>
+            </div>
+            <div class="nrow">
+              <span class="nk">Lý tưởng nhất</span
+              ><span class="nv">Tập sáng bụng đói → ăn lúc 12:00</span>
+            </div>
+            <div class="nrow">
+              <span class="nk">Ngoài cửa sổ</span
+              ><span class="nv na">Nước + black coffee + electrolytes</span>
+            </div>
+          </div>
+          <div class="ncard">
+            <div class="ntitle">Calories & Macros</div>
+            <div class="nrow">
+              <span class="nk">Calories/ngày</span
+              ><span class="nv na">1,800–2,000 kcal</span>
+            </div>
+            <div class="nrow">
+              <span class="nk">Protein</span
+              ><span class="nv na">160–180g (ưu tiên số 1)</span>
+            </div>
+            <div class="nrow">
+              <span class="nk">Carb</span
+              ><span class="nv">120–150g (sau tập)</span>
+            </div>
+            <div class="nrow">
+              <span class="nk">Fat</span><span class="nv">50–70g</span>
+            </div>
+          </div>
+          <div class="ncard">
+            <div class="ntitle">Supplements</div>
+            <div class="nrow">
+              <span class="nk">Whey protein</span
+              ><span class="nv">1–2 scoop/ngày</span>
+            </div>
+            <div class="nrow">
+              <span class="nk">Creatine mono</span
+              ><span class="nv na">5g/ngày</span>
+            </div>
+            <div class="nrow">
+              <span class="nk">Omega-3</span><span class="nv">2–3g/ngày</span>
+            </div>
+            <div class="nrow">
+              <span class="nk">Vitamin D3 + K2</span
+              ><span class="nv">Testosterone support</span>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="stitle">Mặt + Mắt</div>
+          <div class="fcard">
+            <div class="ftitle">Jawline & góc cạnh</div>
+            <div class="fi2">
+              <div class="fdot"></div>
+              <div class="ft">
+                <strong>Giảm body fat 12–15%</strong> — yếu tố số 1. Mặt tự sắc
+                nét khi mỡ cổ và má giảm.
+              </div>
+            </div>
+            <div class="fi2">
+              <div class="fdot"></div>
+              <div class="ft">
+                <strong>Mastic gum + shadow boxing</strong> — jaw clenching kích
+                hoạt cơ masseter.
+              </div>
+            </div>
+            <div class="fi2">
+              <div class="fdot"></div>
+              <div class="ft">
+                <strong>Sodium thấp + 3–4L nước/ngày</strong> — giảm phù mặt
+                buổi sáng.
+              </div>
+            </div>
+          </div>
+          <div class="fcard">
+            <div class="ftitle">Mắt có thần</div>
+            <div class="fi2">
+              <div class="fdot"></div>
+              <div class="ft">
+                <strong>Ngủ 7–8 tiếng</strong> — không thương lượng.
+              </div>
+            </div>
+            <div class="fi2">
+              <div class="fdot"></div>
+              <div class="ft">
+                <strong>Omega-3 (2–3g/ngày)</strong> — độ sáng mắt tăng sau 2–3
+                tuần.
+              </div>
+            </div>
+            <div class="fi2">
+              <div class="fdot"></div>
+              <div class="ft">
+                <strong>Cắt alcohol + đường</strong> — tuần 2–3 tự thấy khác
+                biệt.
+              </div>
+            </div>
+            <div class="fi2">
+              <div class="fdot"></div>
+              <div class="ft">
+                <strong>Sunlight 10–15 phút buổi sáng</strong> — circadian
+                rhythm + testosterone.
+              </div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="stitle">Tài nguyên</div>
+          <div class="rg">
+            <div class="rgt">Calisthenics</div>
+            <div class="ri">
+              <div class="rdot"></div>
+              <div>
+                <div class="rn">FitnessFAQs (Daniel Vadnal)</div>
+                <div class="rd">
+                  Pull-up progression từ 0 → 15+. Kỹ thuật chi tiết nhất.
+                </div>
+              </div>
+            </div>
+            <div class="ri">
+              <div class="rdot"></div>
+              <div>
+                <div class="rn">Calisthenics Movement</div>
+                <div class="rd">
+                  Hệ thống progression đầy đủ từ beginner → advanced.
+                </div>
+              </div>
+            </div>
+            <div class="ri">
+              <div class="rdot"></div>
+              <div>
+                <div class="rn">Convict Conditioning</div>
+                <div class="rd">
+                  6 progression, zero equipment, mindset irreversible.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="rg">
+            <div class="rgt">Dinh dưỡng</div>
+            <div class="ri">
+              <div class="rdot"></div>
+              <div>
+                <div class="rn">Thomas DeLauer (YouTube)</div>
+                <div class="rd">IF + fat loss science evidence-based.</div>
+              </div>
+            </div>
+            <div class="ri">
+              <div class="rdot"></div>
+              <div>
+                <div class="rn">App: Cronometer</div>
+                <div class="rd">
+                  Track macro/micro chính xác. Dùng 2–3 tuần đầu để calibrate.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="height: 1rem"></div>
+        </div>
+      </main>
     </div>
+    <!-- #app -->
 
-    <div id="tl-filter" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem">
-      <button class="ctab active" data-pos="all">Tất cả</button>
-      <button class="ctab" data-pos="1">Front</button>
-      <button class="ctab" data-pos="2">Side</button>
-      <button class="ctab" data-pos="3">Back</button>
+    <!-- Modal -->
+    <div
+      class="modal-bg"
+      id="photo-modal"
+      onclick="$(this).removeClass('open')"
+    >
+      <img class="modal-img" id="modal-img" src="" alt="" />
     </div>
+    <div class="toast" id="toast"></div>
 
-    <div id="tl-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px"></div>
-  </div>
+    <script>
+      // ══════════════════════════════════════════
+      //  CONFIG
+      // ══════════════════════════════════════════
+      const REPO = "maxubrq/thechat";
+      const API = "https://api.github.com";
+      const BRANCH = "main";
+      const LOGS_PATH = "data/logs.json";
+      const PHOTOS_DIR = "data/photos";
 
-  <!-- ══ MORE ══ -->
-  <div id="panel-more" class="panel">
-    <div class="stitle">Nguy hiểm</div>
-    <div class="ssub">Hành động không thể hoàn tác — đọc kỹ trước khi thực hiện</div>
-    <div style="background:var(--card);border:.5px solid #993C1D;border-radius:var(--r);padding:1.25rem;margin-bottom:1.5rem">
-      <div style="font-weight:500;font-size:14px;color:#F0997B;margin-bottom:.5rem">Reset toàn bộ data</div>
-      <div style="font-size:13px;color:var(--muted);margin-bottom:1rem;line-height:1.6">Xóa toàn bộ logs + ảnh khỏi GitHub repo. Hành động này <strong style="color:#F0997B">không thể hoàn tác</strong>. Dữ liệu sẽ mất vĩnh viễn.</div>
-      <button class="btn" style="background:#993C1D;font-size:13px" onclick="confirmReset()">Xóa toàn bộ data</button>
-    </div>
-    <div class="divider"></div>
-    <div class="stitle">Dinh dưỡng</div>
-    <div class="ssub">IF 16/8 · 1 cửa sổ ăn · Protein first</div>
-    <div class="ncard"><div class="ntitle">Cửa sổ ăn</div>
-      <div class="nrow"><span class="nk">Cửa sổ ăn</span><span class="nv">12:00 – 20:00</span></div>
-      <div class="nrow"><span class="nk">Lý tưởng nhất</span><span class="nv">Tập sáng bụng đói → ăn lúc 12:00</span></div>
-      <div class="nrow"><span class="nk">Ngoài cửa sổ</span><span class="nv na">Nước + black coffee + electrolytes</span></div>
-    </div>
-    <div class="ncard"><div class="ntitle">Calories & Macros</div>
-      <div class="nrow"><span class="nk">Calories/ngày</span><span class="nv na">1,800–2,000 kcal</span></div>
-      <div class="nrow"><span class="nk">Protein</span><span class="nv na">160–180g (ưu tiên số 1)</span></div>
-      <div class="nrow"><span class="nk">Carb</span><span class="nv">120–150g (sau tập)</span></div>
-      <div class="nrow"><span class="nk">Fat</span><span class="nv">50–70g</span></div>
-    </div>
-    <div class="ncard"><div class="ntitle">Supplements</div>
-      <div class="nrow"><span class="nk">Whey protein</span><span class="nv">1–2 scoop/ngày</span></div>
-      <div class="nrow"><span class="nk">Creatine mono</span><span class="nv na">5g/ngày</span></div>
-      <div class="nrow"><span class="nk">Omega-3</span><span class="nv">2–3g/ngày</span></div>
-      <div class="nrow"><span class="nk">Vitamin D3 + K2</span><span class="nv">Testosterone support</span></div>
-    </div>
-    <div class="divider"></div>
-    <div class="stitle">Mặt + Mắt</div>
-    <div class="fcard"><div class="ftitle">Jawline & góc cạnh</div>
-      <div class="fi2"><div class="fdot"></div><div class="ft"><strong>Giảm body fat 12–15%</strong> — yếu tố số 1. Mặt tự sắc nét khi mỡ cổ và má giảm.</div></div>
-      <div class="fi2"><div class="fdot"></div><div class="ft"><strong>Mastic gum + shadow boxing</strong> — jaw clenching kích hoạt cơ masseter.</div></div>
-      <div class="fi2"><div class="fdot"></div><div class="ft"><strong>Sodium thấp + 3–4L nước/ngày</strong> — giảm phù mặt buổi sáng.</div></div>
-    </div>
-    <div class="fcard"><div class="ftitle">Mắt có thần</div>
-      <div class="fi2"><div class="fdot"></div><div class="ft"><strong>Ngủ 7–8 tiếng</strong> — không thương lượng.</div></div>
-      <div class="fi2"><div class="fdot"></div><div class="ft"><strong>Omega-3 (2–3g/ngày)</strong> — độ sáng mắt tăng sau 2–3 tuần.</div></div>
-      <div class="fi2"><div class="fdot"></div><div class="ft"><strong>Cắt alcohol + đường</strong> — tuần 2–3 tự thấy khác biệt.</div></div>
-      <div class="fi2"><div class="fdot"></div><div class="ft"><strong>Sunlight 10–15 phút buổi sáng</strong> — circadian rhythm + testosterone.</div></div>
-    </div>
-    <div class="divider"></div>
-    <div class="stitle">Tài nguyên</div>
-    <div class="rg"><div class="rgt">Calisthenics</div>
-      <div class="ri"><div class="rdot"></div><div><div class="rn">FitnessFAQs (Daniel Vadnal)</div><div class="rd">Pull-up progression từ 0 → 15+. Kỹ thuật chi tiết nhất.</div></div></div>
-      <div class="ri"><div class="rdot"></div><div><div class="rn">Calisthenics Movement</div><div class="rd">Hệ thống progression đầy đủ từ beginner → advanced.</div></div></div>
-      <div class="ri"><div class="rdot"></div><div><div class="rn">Convict Conditioning</div><div class="rd">6 progression, zero equipment, mindset irreversible.</div></div></div>
-    </div>
-    <div class="rg"><div class="rgt">Dinh dưỡng</div>
-      <div class="ri"><div class="rdot"></div><div><div class="rn">Thomas DeLauer (YouTube)</div><div class="rd">IF + fat loss science evidence-based.</div></div></div>
-      <div class="ri"><div class="rdot"></div><div><div class="rn">App: Cronometer</div><div class="rd">Track macro/micro chính xác. Dùng 2–3 tuần đầu để calibrate.</div></div></div>
-    </div>
-    <div style="height:1rem"></div>
-  </div>
+      // ══════════════════════════════════════════
+      //  STATE
+      // ══════════════════════════════════════════
+      let TOKEN = "";
+      let logs = [];
+      let pendingPhotos = []; // [{dataUrl, name}]
+      let mainChart = null;
+      let activeMetric = "weight";
+      let fileSHAs = {}; // cache SHAs for updates
+      let activePhase = 1;
+      let openWeeks = new Set();
 
-</main>
-</div><!-- #app -->
+      // ══════════════════════════════════════════
+      //  GITHUB API HELPERS
+      // ══════════════════════════════════════════
+      function ghHeaders() {
+        return {
+          Authorization: "token " + TOKEN,
+          Accept: "application/vnd.github.v3+json",
+          "Content-Type": "application/json",
+        };
+      }
 
-<!-- Modal -->
-<div class="modal-bg" id="photo-modal" onclick="$(this).removeClass('open')">
-  <img class="modal-img" id="modal-img" src="" alt="">
-</div>
-<div class="toast" id="toast"></div>
+      async function ghGet(path) {
+        const r = await fetch(`${API}${path}`, { headers: ghHeaders() });
+        if (!r.ok) throw new Error(r.status + " " + r.statusText);
+        return r.json();
+      }
 
-<script>
-// ══════════════════════════════════════════
-//  CONFIG
-// ══════════════════════════════════════════
-const REPO  = 'maxubrq/thechat';
-const API   = 'https://api.github.com';
-const BRANCH = 'main';
-const LOGS_PATH = 'data/logs.json';
-const PHOTOS_DIR = 'data/photos';
+      async function ghGetFile(filePath) {
+        try {
+          const data = await ghGet(
+            `/repos/${REPO}/contents/${filePath}?ref=${BRANCH}&t=${Date.now()}`,
+          );
+          return data;
+        } catch (e) {
+          if (e.message.startsWith("404")) return null;
+          throw e;
+        }
+      }
 
-// ══════════════════════════════════════════
-//  STATE
-// ══════════════════════════════════════════
-let TOKEN = '';
-let logs = [];
-let pendingPhotos = []; // [{dataUrl, name}]
-let mainChart = null;
-let activeMetric = 'weight';
-let fileSHAs = {}; // cache SHAs for updates
-
-// ══════════════════════════════════════════
-//  GITHUB API HELPERS
-// ══════════════════════════════════════════
-function ghHeaders() {
-  return {
-    'Authorization': 'token ' + TOKEN,
-    'Accept': 'application/vnd.github.v3+json',
-    'Content-Type': 'application/json'
-  };
-}
-
-async function ghGet(path) {
-  const r = await fetch(`${API}${path}`, { headers: ghHeaders() });
-  if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
-  return r.json();
-}
-
-async function ghGetFile(filePath) {
-  try {
-    const data = await ghGet(`/repos/${REPO}/contents/${filePath}?ref=${BRANCH}&t=${Date.now()}`);
-    return data;
-  } catch(e) {
-    if (e.message.startsWith('404')) return null;
-    throw e;
-  }
-}
-
-async function ghPutFile(filePath, content, message, sha) {
-  const body = {
-    message,
-    content: btoa(unescape(encodeURIComponent(content))),
-    branch: BRANCH
-  };
-  if (sha) body.sha = sha;
-  const r = await fetch(`${API}/repos/${REPO}/contents/${filePath}`, {
-    method: 'PUT',
-    headers: ghHeaders(),
-    body: JSON.stringify(body)
-  });
-  if (!r.ok) {
-    const err = await r.json().catch(() => ({}));
-    throw new Error(err.message || r.status);
-  }
-  const res = await r.json();
-  fileSHAs[filePath] = res.content.sha;
-  return res;
-}
-
-async function ghPutBinary(filePath, base64Data, message, sha) {
-  // base64Data is already base64 (from FileReader or canvas)
-  // strip data URL prefix if present
-  const b64 = base64Data.includes(',') ? base64Data.split(',')[1] : base64Data;
-  const body = { message, content: b64, branch: BRANCH };
-  if (sha) body.sha = sha;
-  const r = await fetch(`${API}/repos/${REPO}/contents/${filePath}`, {
-    method: 'PUT',
-    headers: ghHeaders(),
-    body: JSON.stringify(body)
-  });
-  if (!r.ok) {
-    const err = await r.json().catch(() => ({}));
-    throw new Error(err.message || r.status);
-  }
-  const res = await r.json();
-  fileSHAs[filePath] = res.content.sha;
-  return res;
-}
-
-// ══════════════════════════════════════════
-//  AUTH / LOCK
-// ══════════════════════════════════════════
-async function unlock() {
-  const t = $('#lock-token').val().trim();
-  if (!t) return;
-  $('#lock-err').text('');
-  $('#lock-spinner').show();
-  $('#lock-btn').prop('disabled', true);
-  try {
-    // validate token by hitting /user
-    const r = await fetch(`${API}/user`, { headers: { 'Authorization': 'token ' + t } });
-    if (!r.ok) throw new Error('Token không hợp lệ');
-    TOKEN = t;
-    sessionStorage.setItem('toji_token', t);
-    $('#lockscreen').hide();
-    $('#app').show();
-    setSyncStatus('ok', 'Đã đăng nhập');
-    await pull(true);
-  } catch(e) {
-    $('#lock-err').text(e.message);
-  } finally {
-    $('#lock-spinner').hide();
-    $('#lock-btn').prop('disabled', false);
-  }
-}
-
-function lockApp() {
-  TOKEN = '';
-  sessionStorage.removeItem('toji_token');
-  logs = [];
-  pendingPhotos = [];
-  $('#lock-token').val('');
-  $('#lock-err').text('');
-  $('#app').hide();
-  $('#lockscreen').show();
-}
-
-// ══════════════════════════════════════════
-//  SYNC — PULL
-// ══════════════════════════════════════════
-async function pull(silent) {
-  setSyncStatus('spin', 'Đang pull...');
-  try {
-    const file = await ghGetFile(LOGS_PATH);
-    if (file) {
-      fileSHAs[LOGS_PATH] = file.sha;
-      const content = decodeURIComponent(escape(atob(file.content.replace(/\n/g, ''))));
-      logs = JSON.parse(content);
-    } else {
-      logs = [];
-    }
-    renderLogs();
-    renderProgress();
-    if (activeMetric) renderChart();
-    renderTimeline();
-    const now = new Date().toLocaleTimeString('vi-VN', { hour:'2-digit', minute:'2-digit' });
-    setSyncStatus('ok', 'Pull lúc ' + now);
-    if (!silent) toast('Đã pull từ GitHub!');
-  } catch(e) {
-    setSyncStatus('err', 'Pull thất bại');
-    if (!silent) toast('Pull thất bại: ' + e.message, true);
-  }
-}
-
-// ══════════════════════════════════════════
-//  SYNC — PUSH LOGS
-// ══════════════════════════════════════════
-async function pushLogs() {
-  setSyncStatus('spin', 'Đang push...');
-  try {
-    const content = JSON.stringify(logs, null, 2);
-    const sha = fileSHAs[LOGS_PATH];
-    await ghPutFile(LOGS_PATH, content, `log update ${new Date().toISOString().split('T')[0]}`, sha);
-    const now = new Date().toLocaleTimeString('vi-VN', { hour:'2-digit', minute:'2-digit' });
-    setSyncStatus('ok', 'Push lúc ' + now);
-    toast('Đã push lên GitHub!');
-  } catch(e) {
-    setSyncStatus('err', 'Push thất bại');
-    toast('Push thất bại: ' + e.message, true);
-  }
-}
-
-// ══════════════════════════════════════════
-//  PHOTOS
-// ══════════════════════════════════════════
-function handlePhotoChange(e) {
-  const files = Array.from(e.target.files).slice(0, 3);
-  if (!files.length) return;
-  pendingPhotos = [];
-  $('#photo-previews').empty();
-  files.forEach((file, i) => {
-    const reader = new FileReader();
-    reader.onload = ev => {
-      resizeImg(ev.target.result, 1200, b64 => {
-        const name = `photo-${i+1}`;
-        pendingPhotos.push({ dataUrl: b64, name });
-        const wrap = $('<div class="pthumb-wrap"></div>');
-        const img = $('<img class="pthumb">').attr('src', b64);
-        const del = $('<button class="pthumb-del" type="button">×</button>').on('click', e => {
-          e.preventDefault(); e.stopPropagation();
-          pendingPhotos = pendingPhotos.filter(p => p.name !== name);
-          wrap.remove();
+      async function ghPutFile(filePath, content, message, sha) {
+        const body = {
+          message,
+          content: btoa(unescape(encodeURIComponent(content))),
+          branch: BRANCH,
+        };
+        if (sha) body.sha = sha;
+        const r = await fetch(`${API}/repos/${REPO}/contents/${filePath}`, {
+          method: "PUT",
+          headers: ghHeaders(),
+          body: JSON.stringify(body),
         });
-        wrap.append(img).append(del);
-        $('#photo-previews').append(wrap);
-      });
-    };
-    reader.readAsDataURL(file);
-  });
-  e.target.value = '';
-}
+        if (!r.ok) {
+          const err = await r.json().catch(() => ({}));
+          throw new Error(err.message || r.status);
+        }
+        const res = await r.json();
+        fileSHAs[filePath] = res.content.sha;
+        return res;
+      }
 
-function resizeImg(dataUrl, maxW, cb) {
-  const img = new Image();
-  img.onload = () => {
-    const ratio = Math.min(1, maxW / img.width);
-    const c = document.createElement('canvas');
-    c.width = img.width * ratio;
-    c.height = img.height * ratio;
-    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-    cb(c.toDataURL('image/jpeg', 0.82));
-  };
-  img.src = dataUrl;
-}
+      async function ghPutBinary(filePath, base64Data, message, sha) {
+        // base64Data is already base64 (from FileReader or canvas)
+        // strip data URL prefix if present
+        const b64 = base64Data.includes(",")
+          ? base64Data.split(",")[1]
+          : base64Data;
+        const body = { message, content: b64, branch: BRANCH };
+        if (sha) body.sha = sha;
+        const r = await fetch(`${API}/repos/${REPO}/contents/${filePath}`, {
+          method: "PUT",
+          headers: ghHeaders(),
+          body: JSON.stringify(body),
+        });
+        if (!r.ok) {
+          const err = await r.json().catch(() => ({}));
+          throw new Error(err.message || r.status);
+        }
+        const res = await r.json();
+        fileSHAs[filePath] = res.content.sha;
+        return res;
+      }
 
-async function uploadPhotos(date) {
-  if (!pendingPhotos.length) return [];
-  const urls = [];
-  $('#upload-prog').show();
-  for (let i = 0; i < pendingPhotos.length; i++) {
-    const { dataUrl, name } = pendingPhotos[i];
-    const pct = Math.round(((i) / pendingPhotos.length) * 100);
-    $('#upload-bar').css('width', pct + '%');
-    $('#upload-label').text(`Đang upload ảnh ${i+1}/${pendingPhotos.length}...`);
-    const filePath = `${PHOTOS_DIR}/${date}-${i+1}.jpg`;
-    const existingSHA = fileSHAs[filePath];
-    await ghPutBinary(filePath, dataUrl, `photo ${date} #${i+1}`, existingSHA);
-    // public URL via raw.githubusercontent.com
-    const rawUrl = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${filePath}?t=${Date.now()}`;
-    urls.push(rawUrl);
-  }
-  $('#upload-bar').css('width', '100%');
-  $('#upload-label').text('Upload xong!');
-  setTimeout(() => $('#upload-prog').hide(), 1500);
-  return urls;
-}
+      // ══════════════════════════════════════════
+      //  AUTH / LOCK
+      // ══════════════════════════════════════════
+      async function unlock() {
+        const t = $("#lock-token").val().trim();
+        if (!t) return;
+        $("#lock-err").text("");
+        $("#lock-spinner").show();
+        $("#lock-btn").prop("disabled", true);
+        try {
+          // validate token by hitting /user
+          const r = await fetch(`${API}/user`, {
+            headers: { Authorization: "token " + t },
+          });
+          if (!r.ok) throw new Error("Token không hợp lệ");
+          TOKEN = t;
+          sessionStorage.setItem("toji_token", t);
+          $("#lockscreen").hide();
+          $("#app").show();
+          setSyncStatus("ok", "Đã đăng nhập");
+          await pull(true);
+        } catch (e) {
+          $("#lock-err").text(e.message);
+        } finally {
+          $("#lock-spinner").hide();
+          $("#lock-btn").prop("disabled", false);
+        }
+      }
 
-// ══════════════════════════════════════════
-//  LOG CRUD
-// ══════════════════════════════════════════
-async function saveLog() {
-  const date = $('#l-date').val();
-  if (!date) { toast('Chọn ngày trước!', true); return; }
+      function lockApp() {
+        TOKEN = "";
+        sessionStorage.removeItem("toji_token");
+        logs = [];
+        pendingPhotos = [];
+        $("#lock-token").val("");
+        $("#lock-err").text("");
+        $("#app").hide();
+        $("#lockscreen").show();
+      }
 
-  const entry = {
-    date,
-    weight: parseFloat($('#l-weight').val()) || null,
-    waist:  parseFloat($('#l-waist').val())  || null,
-    sleep:  parseFloat($('#l-sleep').val())  || null,
-    pullup: parseInt($('#l-pullup').val())   || null,
-    pushup: parseInt($('#l-pushup').val())   || null,
-    plank:  parseInt($('#l-plank').val())    || null,
-    note:   $('#l-note').val().trim(),
-    photos: []
-  };
+      // ══════════════════════════════════════════
+      //  SYNC — PULL
+      // ══════════════════════════════════════════
+      async function pull(silent) {
+        setSyncStatus("spin", "Đang pull...");
+        try {
+          const file = await ghGetFile(LOGS_PATH);
+          if (file) {
+            fileSHAs[LOGS_PATH] = file.sha;
+            const content = decodeURIComponent(
+              escape(atob(file.content.replace(/\n/g, ""))),
+            );
+            logs = JSON.parse(content);
+          } else {
+            logs = [];
+          }
+          renderLogs();
+          renderProgress();
+          if (activeMetric) renderChart();
+          renderTimeline();
+          renderWorkout();
+          const now = new Date().toLocaleTimeString("vi-VN", {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+          setSyncStatus("ok", "Pull lúc " + now);
+          if (!silent) toast("Đã pull từ GitHub!");
+        } catch (e) {
+          setSyncStatus("err", "Pull thất bại");
+          if (!silent) toast("Pull thất bại: " + e.message, true);
+        }
+      }
 
-  setSyncStatus('spin', 'Đang lưu...');
+      // ══════════════════════════════════════════
+      //  SYNC — PUSH LOGS
+      // ══════════════════════════════════════════
+      async function pushLogs() {
+        setSyncStatus("spin", "Đang push...");
+        try {
+          const content = JSON.stringify(logs, null, 2);
+          const sha = fileSHAs[LOGS_PATH];
+          await ghPutFile(
+            LOGS_PATH,
+            content,
+            `log update ${new Date().toISOString().split("T")[0]}`,
+            sha,
+          );
+          const now = new Date().toLocaleTimeString("vi-VN", {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+          setSyncStatus("ok", "Push lúc " + now);
+          toast("Đã push lên GitHub!");
+        } catch (e) {
+          setSyncStatus("err", "Push thất bại");
+          toast("Push thất bại: " + e.message, true);
+        }
+      }
 
-  try {
-    // 1. upload photos first
-    entry.photos = await uploadPhotos(date);
+      // ══════════════════════════════════════════
+      //  PHOTOS
+      // ══════════════════════════════════════════
+      function handlePhotoChange(e) {
+        const files = Array.from(e.target.files).slice(0, 3);
+        if (!files.length) return;
+        pendingPhotos = [];
+        $("#photo-previews").empty();
+        files.forEach((file, i) => {
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            resizeImg(ev.target.result, 1200, (b64) => {
+              const name = `photo-${i + 1}`;
+              pendingPhotos.push({ dataUrl: b64, name });
+              const wrap = $('<div class="pthumb-wrap"></div>');
+              const img = $('<img class="pthumb">').attr("src", b64);
+              const del = $(
+                '<button class="pthumb-del" type="button">×</button>',
+              ).on("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                pendingPhotos = pendingPhotos.filter((p) => p.name !== name);
+                wrap.remove();
+              });
+              wrap.append(img).append(del);
+              $("#photo-previews").append(wrap);
+            });
+          };
+          reader.readAsDataURL(file);
+        });
+        e.target.value = "";
+      }
 
-    // 2. merge into logs
-    const idx = logs.findIndex(l => l.date === date);
-    if (idx >= 0) {
-      // keep existing photos if none new uploaded
-      if (!entry.photos.length && logs[idx].photos) entry.photos = logs[idx].photos;
-      logs[idx] = entry;
-    } else {
-      logs.unshift(entry);
-    }
-    logs.sort((a,b) => b.date.localeCompare(a.date));
+      function resizeImg(dataUrl, maxW, cb) {
+        const img = new Image();
+        img.onload = () => {
+          const ratio = Math.min(1, maxW / img.width);
+          const c = document.createElement("canvas");
+          c.width = img.width * ratio;
+          c.height = img.height * ratio;
+          c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+          cb(c.toDataURL("image/jpeg", 0.82));
+        };
+        img.src = dataUrl;
+      }
 
-    // 3. push logs.json
-    await pushLogs();
+      async function uploadPhotos(date) {
+        if (!pendingPhotos.length) return [];
+        const urls = [];
+        $("#upload-prog").show();
+        for (let i = 0; i < pendingPhotos.length; i++) {
+          const { dataUrl, name } = pendingPhotos[i];
+          const pct = Math.round((i / pendingPhotos.length) * 100);
+          $("#upload-bar").css("width", pct + "%");
+          $("#upload-label").text(
+            `Đang upload ảnh ${i + 1}/${pendingPhotos.length}...`,
+          );
+          const filePath = `${PHOTOS_DIR}/${date}-${i + 1}.jpg`;
+          const existingSHA = fileSHAs[filePath];
+          await ghPutBinary(
+            filePath,
+            dataUrl,
+            `photo ${date} #${i + 1}`,
+            existingSHA,
+          );
+          // public URL via raw.githubusercontent.com
+          const rawUrl = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${filePath}?t=${Date.now()}`;
+          urls.push(rawUrl);
+        }
+        $("#upload-bar").css("width", "100%");
+        $("#upload-label").text("Upload xong!");
+        setTimeout(() => $("#upload-prog").hide(), 1500);
+        return urls;
+      }
 
-    // 4. reset form
-    ['l-weight','l-waist','l-sleep','l-pullup','l-pushup','l-plank','l-note'].forEach(id => $('#'+id).val(''));
-    $('#photo-previews').empty();
-    pendingPhotos = [];
+      // ══════════════════════════════════════════
+      //  LOG CRUD
+      // ══════════════════════════════════════════
+      async function saveLog() {
+        const date = $("#l-date").val();
+        if (!date) {
+          toast("Chọn ngày trước!", true);
+          return;
+        }
 
-    renderLogs();
-    renderProgress();
-    renderTimeline();
-    toast('Đã lưu + push lên GitHub!');
-  } catch(e) {
-    setSyncStatus('err', 'Lỗi');
-    toast('Lỗi: ' + e.message, true);
-  }
-}
+        const entry = {
+          date,
+          weight: parseFloat($("#l-weight").val()) || null,
+          waist: parseFloat($("#l-waist").val()) || null,
+          sleep: parseFloat($("#l-sleep").val()) || null,
+          pullup: parseInt($("#l-pullup").val()) || null,
+          pushup: parseInt($("#l-pushup").val()) || null,
+          plank: parseInt($("#l-plank").val()) || null,
+          note: $("#l-note").val().trim(),
+          photos: [],
+        };
 
-async function deleteLog(idx) {
-  if (!confirm('Xóa log này?')) return;
-  logs.splice(idx, 1);
-  renderLogs();
-  renderProgress();
-  await pushLogs();
-}
+        setSyncStatus("spin", "Đang lưu...");
 
-// ══════════════════════════════════════════
-//  RENDER
-// ══════════════════════════════════════════
-function fmtDate(d) { const [y,m,day]=d.split('-'); return `${day}/${m}/${y}`; }
-function fmtDateShort(d) { const [,m,day]=d.split('-'); return `${day}/${m}`; }
+        try {
+          // 1. upload photos first
+          entry.photos = await uploadPhotos(date);
 
-function getWeek(date) {
-  if (!logs.length) return 1;
-  const first = [...logs].sort((a,b)=>a.date.localeCompare(b.date))[0].date;
-  const diff = Math.floor((new Date(date)-new Date(first))/86400000);
-  return Math.min(12, Math.floor(diff/7)+1);
-}
+          // 2. merge into logs
+          const idx = logs.findIndex((l) => l.date === date);
+          if (idx >= 0) {
+            // keep existing photos if none new uploaded
+            if (!entry.photos.length && logs[idx].photos)
+              entry.photos = logs[idx].photos;
+            logs[idx] = entry;
+          } else {
+            logs.unshift(entry);
+          }
+          logs.sort((a, b) => b.date.localeCompare(a.date));
 
-function renderLogs() {
-  $('#log-count').text(logs.length);
-  if (!logs.length) {
-    $('#log-list').html('<div class="empty-state"><span class="big">DAY 0</span>Bắt đầu từ hôm nay. Log ngày đầu tiên.</div>');
-    return;
-  }
-  const html = logs.map((log, i) => {
-    const wk = getWeek(log.date);
-    const ph = wk<=4?1:wk<=8?2:3;
-    const metrics = [
-      log.weight ? `<div class="lmi"><span class="lmk">Cân: </span><span class="lmv">${log.weight}kg</span></div>` : '',
-      log.waist  ? `<div class="lmi"><span class="lmk">Eo: </span><span class="lmv">${log.waist}cm</span></div>` : '',
-      log.sleep  ? `<div class="lmi"><span class="lmk">Ngủ: </span><span class="lmv">${log.sleep}h</span></div>` : '',
-    ].join('');
-    const perf = [
-      log.pullup ? `<div class="lpi">Pull-up <strong>${log.pullup}</strong></div>` : '',
-      log.pushup ? `<div class="lpi">Push-up <strong>${log.pushup}</strong></div>` : '',
-      log.plank  ? `<div class="lpi">Plank <strong>${log.plank}s</strong></div>` : '',
-    ].join('');
-    const photos = (log.photos||[]).length
-      ? `<div class="lphotos">${log.photos.map(u=>`<img class="lphoto" src="${u}" onclick="openModal('${u}')" loading="lazy">`).join('')}</div>`
-      : '';
-    return `<div class="log-entry">
+          // 3. push logs.json
+          await pushLogs();
+
+          // 4. reset form
+          [
+            "l-weight",
+            "l-waist",
+            "l-sleep",
+            "l-pullup",
+            "l-pushup",
+            "l-plank",
+            "l-note",
+          ].forEach((id) => $("#" + id).val(""));
+          $("#photo-previews").empty();
+          pendingPhotos = [];
+
+          renderLogs();
+          renderProgress();
+          renderTimeline();
+          renderWorkout();
+          toast("Đã lưu + push lên GitHub!");
+        } catch (e) {
+          setSyncStatus("err", "Lỗi");
+          toast("Lỗi: " + e.message, true);
+        }
+      }
+
+      async function deleteLog(idx) {
+        if (!confirm("Xóa log này?")) return;
+        logs.splice(idx, 1);
+        renderLogs();
+        renderProgress();
+        renderWorkout();
+        await pushLogs();
+      }
+
+      // ══════════════════════════════════════════
+      //  RENDER
+      // ══════════════════════════════════════════
+      function fmtDate(d) {
+        const [y, m, day] = d.split("-");
+        return `${day}/${m}/${y}`;
+      }
+      function fmtDateShort(d) {
+        const [, m, day] = d.split("-");
+        return `${day}/${m}`;
+      }
+
+      function getWeek(date) {
+        if (!logs.length) return 1;
+        const first = [...logs].sort((a, b) => a.date.localeCompare(b.date))[0]
+          .date;
+        const diff = Math.floor((new Date(date) - new Date(first)) / 86400000);
+        return Math.min(12, Math.floor(diff / 7) + 1);
+      }
+
+      function renderLogs() {
+        $("#log-count").text(logs.length);
+        if (!logs.length) {
+          $("#log-list").html(
+            '<div class="empty-state"><span class="big">DAY 0</span>Bắt đầu từ hôm nay. Log ngày đầu tiên.</div>',
+          );
+          return;
+        }
+        const html = logs
+          .map((log, i) => {
+            const wk = getWeek(log.date);
+            const ph = wk <= 4 ? 1 : wk <= 8 ? 2 : 3;
+            const metrics = [
+              log.weight
+                ? `<div class="lmi"><span class="lmk">Cân: </span><span class="lmv">${log.weight}kg</span></div>`
+                : "",
+              log.waist
+                ? `<div class="lmi"><span class="lmk">Eo: </span><span class="lmv">${log.waist}cm</span></div>`
+                : "",
+              log.sleep
+                ? `<div class="lmi"><span class="lmk">Ngủ: </span><span class="lmv">${log.sleep}h</span></div>`
+                : "",
+            ].join("");
+            const perf = [
+              log.pullup
+                ? `<div class="lpi">Pull-up <strong>${log.pullup}</strong></div>`
+                : "",
+              log.pushup
+                ? `<div class="lpi">Push-up <strong>${log.pushup}</strong></div>`
+                : "",
+              log.plank
+                ? `<div class="lpi">Plank <strong>${log.plank}s</strong></div>`
+                : "",
+            ].join("");
+            const photos = (log.photos || []).length
+              ? `<div class="lphotos">${log.photos.map((u) => `<img class="lphoto" src="${u}" onclick="openModal('${u}')" loading="lazy">`).join("")}</div>`
+              : "";
+            return `<div class="log-entry">
       <div class="leh"><div class="led">${fmtDate(log.date)}</div><span class="lewb">Tuần ${wk} · P${ph}</span></div>
-      ${metrics ? `<div class="lm">${metrics}</div>` : ''}
-      ${perf ? `<div class="lp">${perf}</div>` : ''}
-      ${log.note ? `<div class="lnote">"${log.note}"</div>` : ''}
+      ${metrics ? `<div class="lm">${metrics}</div>` : ""}
+      ${perf ? `<div class="lp">${perf}</div>` : ""}
+      ${log.note ? `<div class="lnote">"${log.note}"</div>` : ""}
       ${photos}
       <div class="lea"><button class="bdel" onclick="deleteLog(${i})">Xóa</button></div>
     </div>`;
-  }).join('');
-  $('#log-list').html(html);
-}
+          })
+          .join("");
+        $("#log-list").html(html);
+      }
 
-function renderProgress() {
-  const pct = Math.min(100, Math.round((logs.length/84)*100));
-  $('#prog-fill').css('width', pct+'%');
-  $('#prog-text').text(`${logs.length} / 84 ngày`);
-}
+      function renderProgress() {
+        const pct = Math.min(100, Math.round((logs.length / 84) * 100));
+        $("#prog-fill").css("width", pct + "%");
+        $("#prog-text").text(`${logs.length} / 84 ngày`);
+      }
 
-// ══════════════════════════════════════════
-//  CHARTS
-// ══════════════════════════════════════════
-const METRICS = {
-  weight: { label:'Cân nặng (kg)', key:'weight', unit:'kg', color:'#D85A30', target:68, lib:true },
-  waist:  { label:'Vòng eo (cm)',  key:'waist',  unit:'cm', color:'#BA7517', target:80, lib:true },
-  pullup: { label:'Pull-up (reps)',key:'pullup',  unit:'',   color:'#1D9E75', target:12, lib:false },
-  pushup: { label:'Push-up (reps)',key:'pushup',  unit:'',   color:'#5DCAA5', target:40, lib:false },
-  sleep:  { label:'Giờ ngủ (h)',   key:'sleep',   unit:'h',  color:'#7F77DD', target:8,  lib:false },
-};
+      // ══════════════════════════════════════════
+      //  CHARTS
+      // ══════════════════════════════════════════
+      const METRICS = {
+        weight: {
+          label: "Cân nặng (kg)",
+          key: "weight",
+          unit: "kg",
+          color: "#D85A30",
+          target: 68,
+          lib: true,
+        },
+        waist: {
+          label: "Vòng eo (cm)",
+          key: "waist",
+          unit: "cm",
+          color: "#BA7517",
+          target: 80,
+          lib: true,
+        },
+        pullup: {
+          label: "Pull-up (reps)",
+          key: "pullup",
+          unit: "",
+          color: "#1D9E75",
+          target: 12,
+          lib: false,
+        },
+        pushup: {
+          label: "Push-up (reps)",
+          key: "pushup",
+          unit: "",
+          color: "#5DCAA5",
+          target: 40,
+          lib: false,
+        },
+        sleep: {
+          label: "Giờ ngủ (h)",
+          key: "sleep",
+          unit: "h",
+          color: "#7F77DD",
+          target: 8,
+          lib: false,
+        },
+      };
 
-function getPoints(metric) {
-  return logs.filter(l=>l[METRICS[metric].key]!=null)
-    .map(l=>({date:l.date, val:l[METRICS[metric].key]}))
-    .sort((a,b)=>a.date.localeCompare(b.date));
-}
+      function getPoints(metric) {
+        return logs
+          .filter((l) => l[METRICS[metric].key] != null)
+          .map((l) => ({ date: l.date, val: l[METRICS[metric].key] }))
+          .sort((a, b) => a.date.localeCompare(b.date));
+      }
 
-function renderChart() {
-  const m = METRICS[activeMetric];
-  const pts = getPoints(activeMetric);
-  $('#c-title').text(m.label);
+      function renderChart() {
+        const m = METRICS[activeMetric];
+        const pts = getPoints(activeMetric);
+        $("#c-title").text(m.label);
 
-  if (pts.length < 2) {
-    $('.cwrap').hide(); $('#c-empty').show(); $('#c-stats').html(''); $('#c-range').text('—');
-    renderSummary(); return;
-  }
-  $('.cwrap').show(); $('#c-empty').hide();
+        if (pts.length < 2) {
+          $(".cwrap").hide();
+          $("#c-empty").show();
+          $("#c-stats").html("");
+          $("#c-range").text("—");
+          renderSummary();
+          return;
+        }
+        $(".cwrap").show();
+        $("#c-empty").hide();
 
-  const labels = pts.map(p=>fmtDateShort(p.date));
-  const vals   = pts.map(p=>p.val);
-  const diff   = vals[vals.length-1] - vals[0];
-  const isGood = m.lib ? diff<0 : diff>0;
-  const sign   = diff>=0?'+':'';
-  const cls    = isGood?'pos':'neg';
+        const labels = pts.map((p) => fmtDateShort(p.date));
+        const vals = pts.map((p) => p.val);
+        const diff = vals[vals.length - 1] - vals[0];
+        const isGood = m.lib ? diff < 0 : diff > 0;
+        const sign = diff >= 0 ? "+" : "";
+        const cls = isGood ? "pos" : "neg";
 
-  $('#c-range').text(fmtDateShort(pts[0].date)+' → '+fmtDateShort(pts[pts.length-1].date));
-  $('#c-stats').html(`
+        $("#c-range").text(
+          fmtDateShort(pts[0].date) +
+            " → " +
+            fmtDateShort(pts[pts.length - 1].date),
+        );
+        $("#c-stats").html(`
     <div><div class="csv ${cls}">${sign}${diff.toFixed(1)}${m.unit}</div><div class="csl">thay đổi</div></div>
-    <div><div class="csv">${vals[vals.length-1].toFixed(1)}${m.unit}</div><div class="csl">hiện tại</div></div>
+    <div><div class="csv">${vals[vals.length - 1].toFixed(1)}${m.unit}</div><div class="csl">hiện tại</div></div>
   `);
 
-  if (mainChart) { mainChart.destroy(); mainChart=null; }
-  Chart.defaults.color='#555';
-  Chart.defaults.font.family="'DM Sans',sans-serif";
+        if (mainChart) {
+          mainChart.destroy();
+          mainChart = null;
+        }
+        Chart.defaults.color = "#555";
+        Chart.defaults.font.family = "'DM Sans',sans-serif";
 
-  mainChart = new Chart(document.getElementById('main-chart'), {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [
-        { label:m.label, data:vals, borderColor:m.color, backgroundColor:m.color+'22',
-          borderWidth:2, pointBackgroundColor:m.color, pointRadius:pts.length>30?2:4,
-          pointHoverRadius:6, fill:true, tension:0.35 },
-        { label:'Mục tiêu', data:vals.map(()=>m.target), borderColor:'#444',
-          borderWidth:1, borderDash:[6,4], pointRadius:0, fill:false }
-      ]
-    },
-    options: {
-      responsive:true,
-      interaction:{ mode:'index', intersect:false },
-      plugins:{
-        legend:{ display:false },
-        tooltip:{ backgroundColor:'#1c1c1c', borderColor:'#363636', borderWidth:0.5,
-          titleColor:'#888', bodyColor:'#f0ede8', padding:10,
-          callbacks:{ label: ctx => ctx.datasetIndex===0
-            ? `${ctx.parsed.y.toFixed(1)}${m.unit}` : `Mục tiêu: ${m.target}${m.unit}` }}
-      },
-      scales:{
-        x:{ grid:{color:'#2a2a2a',lineWidth:.5}, ticks:{color:'#555',font:{size:11},maxTicksLimit:8}, border:{color:'#2a2a2a'} },
-        y:{ grid:{color:'#2a2a2a',lineWidth:.5}, ticks:{color:'#555',font:{size:11},callback:v=>v.toFixed(0)+m.unit}, border:{color:'#2a2a2a'} }
+        mainChart = new Chart(document.getElementById("main-chart"), {
+          type: "line",
+          data: {
+            labels,
+            datasets: [
+              {
+                label: m.label,
+                data: vals,
+                borderColor: m.color,
+                backgroundColor: m.color + "22",
+                borderWidth: 2,
+                pointBackgroundColor: m.color,
+                pointRadius: pts.length > 30 ? 2 : 4,
+                pointHoverRadius: 6,
+                fill: true,
+                tension: 0.35,
+              },
+              {
+                label: "Mục tiêu",
+                data: vals.map(() => m.target),
+                borderColor: "#444",
+                borderWidth: 1,
+                borderDash: [6, 4],
+                pointRadius: 0,
+                fill: false,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            interaction: { mode: "index", intersect: false },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: "#1c1c1c",
+                borderColor: "#363636",
+                borderWidth: 0.5,
+                titleColor: "#888",
+                bodyColor: "#f0ede8",
+                padding: 10,
+                callbacks: {
+                  label: (ctx) =>
+                    ctx.datasetIndex === 0
+                      ? `${ctx.parsed.y.toFixed(1)}${m.unit}`
+                      : `Mục tiêu: ${m.target}${m.unit}`,
+                },
+              },
+            },
+            scales: {
+              x: {
+                grid: { color: "#2a2a2a", lineWidth: 0.5 },
+                ticks: { color: "#555", font: { size: 11 }, maxTicksLimit: 8 },
+                border: { color: "#2a2a2a" },
+              },
+              y: {
+                grid: { color: "#2a2a2a", lineWidth: 0.5 },
+                ticks: {
+                  color: "#555",
+                  font: { size: 11 },
+                  callback: (v) => v.toFixed(0) + m.unit,
+                },
+                border: { color: "#2a2a2a" },
+              },
+            },
+          },
+        });
+        renderSummary();
       }
-    }
-  });
-  renderSummary();
-}
 
-function calcStreak() {
-  if (!logs.length) return 0;
-  const sorted=[...logs].sort((a,b)=>b.date.localeCompare(a.date));
-  let s=0,prev=null;
-  for(const l of sorted){
-    const d=new Date(l.date);
-    if(!prev){s=1;prev=d;continue;}
-    if(Math.round((prev-d)/86400000)===1){s++;prev=d;}else break;
-  }
-  return s;
-}
+      function calcStreak() {
+        if (!logs.length) return 0;
+        const sorted = [...logs].sort((a, b) => b.date.localeCompare(a.date));
+        let s = 0,
+          prev = null;
+        for (const l of sorted) {
+          const d = new Date(l.date);
+          if (!prev) {
+            s = 1;
+            prev = d;
+            continue;
+          }
+          if (Math.round((prev - d) / 86400000) === 1) {
+            s++;
+            prev = d;
+          } else break;
+        }
+        return s;
+      }
 
-function delta(pts, lib) {
-  if(pts.length<2) return null;
-  const d=pts[pts.length-1].val-pts[0].val;
-  return {val:d, good:lib?d<0:d>0};
-}
-function fmtDelta(d, unit, lib) {
-  if(!d) return '<span class="sval">—</span>';
-  const sign=d.val>=0?'+':'';
-  return `<span class="sval ${d.good?'good':'bad'}">${sign}${d.val.toFixed(1)}${unit}</span>`;
-}
+      function delta(pts, lib) {
+        if (pts.length < 2) return null;
+        const d = pts[pts.length - 1].val - pts[0].val;
+        return { val: d, good: lib ? d < 0 : d > 0 };
+      }
+      function fmtDelta(d, unit, lib) {
+        if (!d) return '<span class="sval">—</span>';
+        const sign = d.val >= 0 ? "+" : "";
+        return `<span class="sval ${d.good ? "good" : "bad"}">${sign}${d.val.toFixed(1)}${unit}</span>`;
+      }
 
-function renderSummary() {
-  const streak=calcStreak(), total=logs.length;
-  const phase=total<=28?1:total<=56?2:3;
-  const pct=Math.min(100,Math.round((total/84)*100));
-  const wPts=getPoints('weight'), waPts=getPoints('waist');
-  const puPts=getPoints('pullup'), psPts=getPoints('pushup');
-  const curW=wPts.length?wPts[wPts.length-1].val:null;
-  const curWa=waPts.length?waPts[waPts.length-1].val:null;
+      function renderSummary() {
+        const streak = calcStreak(),
+          total = logs.length;
+        const phase = total <= 28 ? 1 : total <= 56 ? 2 : 3;
+        const pct = Math.min(100, Math.round((total / 84) * 100));
+        const wPts = getPoints("weight"),
+          waPts = getPoints("waist");
+        const puPts = getPoints("pullup"),
+          psPts = getPoints("pushup");
+        const curW = wPts.length ? wPts[wPts.length - 1].val : null;
+        const curWa = waPts.length ? waPts[waPts.length - 1].val : null;
 
-  $('#c-summary').html(`
+        $("#c-summary").html(`
     <div class="streak-box" style="grid-column:span 2">
       <div><div class="streak-num">${streak}</div><div style="font-size:12px;color:var(--muted)">ngày streak</div></div>
       <div class="streak-info">
@@ -985,185 +2686,586 @@ function renderSummary() {
       </div>
     </div>
     <div class="scard"><div class="slabel">Body</div>
-      <div class="srow"><span class="sk">Cân hiện tại</span>${curW?`<span class="sval">${curW}kg</span>`:'<span class="sval">—</span>'}</div>
-      <div class="srow"><span class="sk">Thay đổi cân</span>${fmtDelta(delta(wPts,true),'kg',true)}</div>
-      <div class="srow"><span class="sk">Vòng eo</span>${curWa?`<span class="sval">${curWa}cm</span>`:'<span class="sval">—</span>'}</div>
-      <div class="srow"><span class="sk">Thay đổi eo</span>${fmtDelta(delta(waPts,true),'cm',true)}</div>
+      <div class="srow"><span class="sk">Cân hiện tại</span>${curW ? `<span class="sval">${curW}kg</span>` : '<span class="sval">—</span>'}</div>
+      <div class="srow"><span class="sk">Thay đổi cân</span>${fmtDelta(delta(wPts, true), "kg", true)}</div>
+      <div class="srow"><span class="sk">Vòng eo</span>${curWa ? `<span class="sval">${curWa}cm</span>` : '<span class="sval">—</span>'}</div>
+      <div class="srow"><span class="sk">Thay đổi eo</span>${fmtDelta(delta(waPts, true), "cm", true)}</div>
     </div>
     <div class="scard"><div class="slabel">Strength</div>
-      <div class="srow"><span class="sk">Pull-up best</span>${puPts.length?`<span class="sval">${Math.max(...puPts.map(p=>p.val))}</span>`:'<span class="sval">—</span>'}</div>
-      <div class="srow"><span class="sk">Pull-up tăng</span>${fmtDelta(delta(puPts,false),'',false)}</div>
-      <div class="srow"><span class="sk">Push-up best</span>${psPts.length?`<span class="sval">${Math.max(...psPts.map(p=>p.val))}</span>`:'<span class="sval">—</span>'}</div>
-      <div class="srow"><span class="sk">Push-up tăng</span>${fmtDelta(delta(psPts,false),'',false)}</div>
+      <div class="srow"><span class="sk">Pull-up best</span>${puPts.length ? `<span class="sval">${Math.max(...puPts.map((p) => p.val))}</span>` : '<span class="sval">—</span>'}</div>
+      <div class="srow"><span class="sk">Pull-up tăng</span>${fmtDelta(delta(puPts, false), "", false)}</div>
+      <div class="srow"><span class="sk">Push-up best</span>${psPts.length ? `<span class="sval">${Math.max(...psPts.map((p) => p.val))}</span>` : '<span class="sval">—</span>'}</div>
+      <div class="srow"><span class="sk">Push-up tăng</span>${fmtDelta(delta(psPts, false), "", false)}</div>
     </div>
   `);
-}
+      }
 
-// ══════════════════════════════════════════
-//  UI HELPERS
-// ══════════════════════════════════════════
-function setSyncStatus(state, msg) {
-  const dot=$('#sdot'), lbl=$('#slabel');
-  dot.attr('class','sdot');
-  if(state==='ok'){ dot.addClass('ok'); lbl.text(msg||'OK'); }
-  else if(state==='err'){ dot.addClass('err'); lbl.text(msg||'Lỗi'); }
-  else if(state==='spin'){ dot.addClass('spin'); lbl.text(msg||'...'); }
-  else lbl.text(msg||'');
-}
+      // ══════════════════════════════════════════
+      //  UI HELPERS
+      // ══════════════════════════════════════════
+      function setSyncStatus(state, msg) {
+        const dot = $("#sdot"),
+          lbl = $("#slabel");
+        dot.attr("class", "sdot");
+        if (state === "ok") {
+          dot.addClass("ok");
+          lbl.text(msg || "OK");
+        } else if (state === "err") {
+          dot.addClass("err");
+          lbl.text(msg || "Lỗi");
+        } else if (state === "spin") {
+          dot.addClass("spin");
+          lbl.text(msg || "...");
+        } else lbl.text(msg || "");
+      }
 
-function showPanel(name) {
-  $('.panel').removeClass('active');
-  $('.nav-tab').removeClass('active');
-  $(`#panel-${name}`).addClass('active');
-  $(`.nav-tab[data-panel="${name}"]`).addClass('active');
-  window.scrollTo(0,0);
-  if(name==='charts') setTimeout(renderChart, 50);
-  if(name==='timeline') setTimeout(renderTimeline, 50);
-}
+      function showPanel(name) {
+        $(".panel").removeClass("active");
+        $(".nav-tab").removeClass("active");
+        $(`#panel-${name}`).addClass("active");
+        $(`.nav-tab[data-panel="${name}"]`).addClass("active");
+        window.scrollTo(0, 0);
+        if (name === "charts") setTimeout(renderChart, 50);
+        if (name === "workout") {
+          const cw = getCurrentProgramWeek();
+          const wp = {
+            1: [1, 2, 3, 4],
+            2: [5, 6, 7, 8],
+            3: [9, 10, 11, 12],
+          }[activePhase];
+          if (cw && wp && wp.includes(cw)) openWeeks.add(cw);
+          setTimeout(renderWorkout, 50);
+        }
+        if (name === "timeline") setTimeout(renderTimeline, 50);
+      }
 
-function openModal(src) { $('#modal-img').attr('src',src); $('#photo-modal').addClass('open'); }
+      function getCurrentProgramWeek() {
+        if (!logs.length) return null;
+        const first = [...logs].sort((a, b) =>
+          a.date.localeCompare(b.date),
+        )[0].date;
+        const today = new Date().toISOString().split("T")[0];
+        const diff = Math.floor(
+          (new Date(today + "T12:00:00") - new Date(first + "T12:00:00")) /
+            86400000,
+        );
+        return Math.min(12, Math.max(1, Math.floor(diff / 7) + 1));
+      }
 
-function toast(msg, isErr) {
-  const t=$('#toast');
-  t.text(msg).attr('class','toast'+(isErr?' err':'')).addClass('show');
-  setTimeout(()=>t.removeClass('show'), 2800);
-}
+      function ytWatch(id) {
+        return "https://www.youtube.com/watch?v=" + id;
+      }
+      function ytEmbed(id) {
+        return "https://www.youtube.com/embed/" + id + "?rel=0";
+      }
 
-// ══════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════
-$(()=> {
-  // date default
-  $('#l-date').val(new Date().toISOString().split('T')[0]);
+      function openVideoModal(title, videoId) {
+        $("#wo-video-title").text(title);
+        $("#wo-video-iframe").attr("src", ytEmbed(videoId));
+        $("#wo-video-link").attr("href", ytWatch(videoId));
+        $("#wo-video-modal").css({ display: "flex" });
+      }
 
-  // nav tabs
-  $(document).on('click', '.nav-tab', function() { showPanel($(this).data('panel')); });
+      function closeVideoModal() {
+        $("#wo-video-modal").hide();
+        $("#wo-video-iframe").attr("src", "");
+      }
 
-  // chart tabs
-  $(document).on('click', '.ctab', function() {
-    activeMetric = $(this).data('metric');
-    $('.ctab').removeClass('active');
-    $(this).addClass('active');
-    renderChart();
-  });
+      /** @type {Record<number, { estMin: number; blurb: string }>} */
+      const WO_PHASE_META = {
+        1: {
+          estMin: 55,
+          blurb:
+            "Nền tảng ~55 phút/ngày tập. Kỹ thuật & thói quen; volume vừa đủ để phục hồi.",
+        },
+        2: {
+          estMin: 80,
+          blurb:
+            "Tăng sets + thêm bài phụ ~80 phút. Ưu tiên chất lượng rep, giữ nhịp thở.",
+        },
+        3: {
+          estMin: 110,
+          blurb:
+            "Finisher ~110 phút: density cao, thêm boxing/shadow + skill work.",
+        },
+      };
 
-  // lock btn
-  $('#lock-btn').on('click', unlock);
-  $('#lock-token').on('keydown', e => { if(e.key==='Enter') unlock(); });
+      /**
+       * sets/reps keyed by phase 1|2|3; yt = YouTube id; newFrom = show badge from phase
+       */
+      const WO_LIBRARY = {
+        warm: {
+          n: "Khởi động toàn thân (5–8 phút)",
+          sets: { 1: 1, 2: 1, 3: 1 },
+          reps: { 1: "5–8 phút", 2: "8 phút", 3: "10 phút" },
+          yt: "2tM1LFFxeKg",
+        },
+        scap: {
+          n: "Scapular pulls / dead hang awareness",
+          sets: { 1: 3, 2: 4, 3: 4 },
+          reps: { 1: "8–10", 2: "10–12", 3: "12–15" },
+          yt: "eGo4IYlbEe4",
+        },
+        neg: {
+          n: "Pull-up negatives (eccentric)",
+          sets: { 1: 3, 2: 4, 3: 5 },
+          reps: { 1: "3–5s xuống", 2: "4–6s", 3: "5–8s" },
+          yt: "eGo4IYlbEe4",
+        },
+        band: {
+          n: "Assisted pull-up (band / machine)",
+          sets: { 1: 4, 2: 5, 3: 6 },
+          reps: { 1: "AMRAP sạch", 2: "AMRAP", 3: "AMRAP + pause 1s trên" },
+          yt: "eGo4IYlbEe4",
+        },
+        push: {
+          n: "Push-up (full ROM)",
+          sets: { 1: 4, 2: 5, 3: 6 },
+          reps: { 1: "10–15", 2: "15–25", 3: "20–35" },
+          yt: "IODxDxX7oi4",
+        },
+        row: {
+          n: "Inverted row / Australian pull-up",
+          sets: { 1: 3, 2: 4, 3: 5 },
+          reps: { 1: "10–12", 2: "12–15", 3: "15–20" },
+          yt: "hWbUlkbHzMs",
+        },
+        core1: {
+          n: "Hollow body hold",
+          sets: { 1: 3, 2: 4, 3: 4 },
+          reps: { 1: "20–30s", 2: "30–40s", 3: "40–50s" },
+          yt: "p7vEWk05wFM",
+        },
+        plank: {
+          n: "Plank (bodyline)",
+          sets: { 1: 3, 2: 3, 3: 4 },
+          reps: { 1: "45–60s", 2: "60s", 3: "60–90s" },
+          yt: "pSHjTRCQxIw",
+        },
+        dip: {
+          n: "Bench dip / parallel dip progression",
+          sets: { 1: 0, 2: 4, 3: 5 },
+          reps: { 1: "—", 2: "10–15", 3: "12–20" },
+          yt: "yN6Q1UI_xkE",
+          newFrom: 2,
+        },
+        leg: {
+          n: "Hanging knee / leg raise",
+          sets: { 1: 0, 2: 3, 3: 4 },
+          reps: { 1: "—", 2: "10–12", 3: "12–15" },
+          yt: "Pr1ieGZ5atk",
+          newFrom: 2,
+        },
+        lunge: {
+          n: "Walking lunge / split squat",
+          sets: { 1: 0, 2: 3, 3: 4 },
+          reps: { 1: "—", 2: "10/leg", 3: "12/leg" },
+          yt: "QOVaHwmYZ6c",
+          newFrom: 2,
+        },
+        mu: {
+          n: "Pull-up (strict) + slow eccentric",
+          sets: { 1: 4, 2: 5, 3: 6 },
+          reps: { 1: "3–5", 2: "5–8", 3: "8–12" },
+          yt: "eGo4IYlbEe4",
+        },
+        arch: {
+          n: "Arch body / Superman hold",
+          sets: { 1: 0, 2: 0, 3: 3 },
+          reps: { 1: "—", 2: "—", 3: "20–30s" },
+          yt: "p7vEWk05wFM",
+          newFrom: 3,
+        },
+        box: {
+          n: "Shadow boxing (4 rounds × 3 phút)",
+          sets: { 1: 0, 2: 0, 3: 1 },
+          reps: { 1: "—", 2: "—", 3: "12 phút + nghỉ 1 phút/round" },
+          yt: "b-7UCHOLK0",
+          newFrom: 3,
+        },
+        fin: {
+          n: "Cooldown + foam roll / breathing (5–8 phút)",
+          sets: { 1: 1, 2: 1, 3: 1 },
+          reps: { 1: "5 phút", 2: "6 phút", 3: "8 phút" },
+          yt: "c56KcxwfVDc",
+        },
+      };
 
-  // photo input — use document-level to survive DOM re-renders
-  $(document).on('change', '#photo-input', handlePhotoChange);
+      /** @type {Record<number, { title: string; keys: (keyof typeof WO_LIBRARY)[] }[]>} */
+      const WO_DAYS = {
+        1: [
+          {
+            title: "Ngày A — Kéo + đẩy (nền)",
+            keys: [
+              "warm",
+              "scap",
+              "neg",
+              "band",
+              "push",
+              "row",
+              "core1",
+              "fin",
+            ],
+          },
+          {
+            title: "Ngày B — Full body nhẹ",
+            keys: ["warm", "push", "row", "plank", "core1", "fin"],
+          },
+        ],
+        2: [
+          {
+            title: "Ngày A — Kéo + đẩy (+volume)",
+            keys: [
+              "warm",
+              "scap",
+              "neg",
+              "band",
+              "push",
+              "row",
+              "core1",
+              "plank",
+              "fin",
+            ],
+          },
+          {
+            title: "Ngày B — Thân dưới + core",
+            keys: ["warm", "push", "row", "plank", "core1", "fin"],
+          },
+        ],
+        3: [
+          {
+            title: "Ngày A — Strength + skill density",
+            keys: [
+              "warm",
+              "scap",
+              "mu",
+              "push",
+              "row",
+              "dip",
+              "leg",
+              "core1",
+              "arch",
+              "fin",
+            ],
+          },
+          {
+            title: "Ngày B — Conditioning + boxing",
+            keys: [
+              "warm",
+              "push",
+              "row",
+              "plank",
+              "leg",
+              "box",
+              "core1",
+              "fin",
+            ],
+          },
+        ],
+      };
 
-  // check session token
-  const saved = sessionStorage.getItem('toji_token');
-  if (saved) {
-    TOKEN = saved;
-    $('#lockscreen').hide();
-    $('#app').show();
-    setSyncStatus('ok', 'Đã đăng nhập');
-    pull(true);
-  }
+      function weekTemplateId(w) {
+        if (w <= 4) return 1;
+        if (w <= 8) return 2;
+        return 3;
+      }
 
-  // iOS install banner
-  const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  if (isIos && !window.navigator.standalone && !sessionStorage.getItem('toji_banner_dismissed')) {
-    const banner = $(`<div style="position:fixed;bottom:0;left:0;right:0;background:#1c1c1c;border-top:.5px solid #363636;padding:14px 1rem calc(14px + env(safe-area-inset-bottom));z-index:400;display:flex;align-items:flex-start;gap:12px;">
+      function renderExerciseRow(key, phase) {
+        const ex = WO_LIBRARY[key];
+        if (!ex) return "";
+        const sets =
+          ex.sets[phase] !== undefined ? ex.sets[phase] : ex.sets[3] ?? 0;
+        if (!sets) return "";
+        const reps =
+          ex.reps[phase] !== undefined ? ex.reps[phase] : ex.reps[3] ?? "—";
+        const newBadge =
+          ex.newFrom && phase >= ex.newFrom
+            ? '<span class="ex-new">Mới</span>'
+            : "";
+        const title = ex.n.replace(/"/g, "&quot;");
+        const vid = ex.yt;
+        return `<div class="ex">
+  <div>
+    <div class="en">${ex.n}${newBadge}</div>
+    <button type="button" class="ex-video-btn" data-vid="${vid}" data-vtitle="${title}">▶ Video</button>
+  </div>
+  <div class="es">${sets} × ${reps}</div>
+</div>`;
+      }
+
+      function renderWorkout() {
+        const phase = activePhase;
+        const meta = WO_PHASE_META[phase];
+        const cw = getCurrentProgramWeek();
+        const weeksInPhase = { 1: [1, 2, 3, 4], 2: [5, 6, 7, 8], 3: [9, 10, 11, 12] }[
+          phase
+        ];
+        $("#wo-current-label").text(
+          meta
+            ? `Phase ${phase} · ~${meta.estMin} phút / session gợi ý` +
+                (cw
+                  ? ` · Tuần hiện tại (theo log): ${cw}`
+                  : " · Chưa có log — thêm log để bắt đầu đếm tuần"),
+            : "",
+        );
+
+        let html = `<div class="wo-phase-banner"><strong>Phase ${phase}</strong> — ${meta.blurb}</div>`;
+
+        weeksInPhase.forEach((w) => {
+          const tmpl = weekTemplateId(w);
+          const days = WO_DAYS[tmpl];
+          const isCurrent = cw === w;
+          const open = openWeeks.has(w);
+          const cls =
+            "wo-week" + (open ? " open" : "") + (isCurrent ? " wo-week-current" : "");
+          const tag = isCurrent
+            ? '<span class="tag now">Tuần này</span>'
+            : `<span class="tag" style="background:rgba(136,136,136,.12);color:#888">Tuần ${w}</span>`;
+          let body = "";
+          days.forEach((d) => {
+            body += `<div class="wb" style="border-bottom:.5px solid var(--border)">
+  <div class="wh"><span class="wn">${d.title}</span><span class="badge bs">${tmpl === 3 ? "P3" : tmpl === 2 ? "P2" : "P1"}</span></div>
+  ${d.keys.map((k) => renderExerciseRow(k, tmpl)).join("")}
+</div>`;
+          });
+          html += `<div class="${cls}" data-week="${w}">
+  <button type="button" class="wo-week-h" data-week-toggle="${w}">
+    <span>Tuần ${w}</span>
+    <span style="display:flex;align-items:center;gap:8px">${tag}<span class="chev">›</span></span>
+  </button>
+  <div class="wo-week-b">${body}</div>
+</div>`;
+        });
+
+        $("#wo-content").html(html);
+      }
+
+      function openModal(src) {
+        $("#modal-img").attr("src", src);
+        $("#photo-modal").addClass("open");
+      }
+
+      function toast(msg, isErr) {
+        const t = $("#toast");
+        t.text(msg)
+          .attr("class", "toast" + (isErr ? " err" : ""))
+          .addClass("show");
+        setTimeout(() => t.removeClass("show"), 2800);
+      }
+
+      // ══════════════════════════════════════════
+      //  INIT
+      // ══════════════════════════════════════════
+      $(() => {
+        // date default
+        $("#l-date").val(new Date().toISOString().split("T")[0]);
+
+        // nav tabs
+        $(document).on("click", ".nav-tab", function () {
+          showPanel($(this).data("panel"));
+        });
+
+        // chart tabs (scoped — workout panel also uses .ctab for phases)
+        $(document).on("click", "#panel-charts .ctab[data-metric]", function () {
+          activeMetric = $(this).data("metric");
+          $("#panel-charts .ctab[data-metric]").removeClass("active");
+          $(this).addClass("active");
+          renderChart();
+        });
+
+        $(document).on(
+          "click",
+          "#panel-workout .ctab[data-phase]",
+          function () {
+            activePhase = parseInt($(this).data("phase"), 10);
+            $("#panel-workout .ctab[data-phase]").removeClass("active");
+            $(this).addClass("active");
+            openWeeks = new Set();
+            const cw = getCurrentProgramWeek();
+            const wp = {
+              1: [1, 2, 3, 4],
+              2: [5, 6, 7, 8],
+              3: [9, 10, 11, 12],
+            }[activePhase];
+            if (cw && wp && wp.includes(cw)) openWeeks.add(cw);
+            renderWorkout();
+          },
+        );
+
+        $(document).on("click", "[data-week-toggle]", function (e) {
+          e.preventDefault();
+          const w = parseInt($(this).data("week-toggle"), 10);
+          if (openWeeks.has(w)) openWeeks.delete(w);
+          else openWeeks.add(w);
+          renderWorkout();
+        });
+
+        $(document).on("click", ".ex-video-btn", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          const vid = $(this).data("vid");
+          const t = $(this).data("vtitle") || "Video";
+          openVideoModal(t, String(vid));
+        });
+
+        $("#wo-video-modal").on("click", function (e) {
+          if (e.target === this) closeVideoModal();
+        });
+
+        // lock btn
+        $("#lock-btn").on("click", unlock);
+        $("#lock-token").on("keydown", (e) => {
+          if (e.key === "Enter") unlock();
+        });
+
+        // photo input — use document-level to survive DOM re-renders
+        $(document).on("change", "#photo-input", handlePhotoChange);
+
+        // check session token
+        const saved = sessionStorage.getItem("toji_token");
+        if (saved) {
+          TOKEN = saved;
+          $("#lockscreen").hide();
+          $("#app").show();
+          setSyncStatus("ok", "Đã đăng nhập");
+          pull(true);
+        }
+
+        // iOS install banner
+        const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+        if (
+          isIos &&
+          !window.navigator.standalone &&
+          !sessionStorage.getItem("toji_banner_dismissed")
+        ) {
+          const banner =
+            $(`<div style="position:fixed;bottom:0;left:0;right:0;background:#1c1c1c;border-top:.5px solid #363636;padding:14px 1rem calc(14px + env(safe-area-inset-bottom));z-index:400;display:flex;align-items:flex-start;gap:12px;">
       <div style="flex:1"><div style="font-size:13px;font-weight:500;color:#f0ede8;margin-bottom:3px">Cài app về iPhone</div>
       <div style="font-size:12px;color:#888;line-height:1.5">Safari → <strong style="color:#f0ede8">Share</strong> → <strong style="color:#f0ede8">Add to Home Screen</strong></div></div>
       <button id="dismiss-banner" style="background:none;border:none;color:#555;font-size:22px;cursor:pointer;padding:0;line-height:1">×</button>
     </div>`);
-    $('body').append(banner);
-    $('#dismiss-banner').on('click', () => { banner.remove(); sessionStorage.setItem('toji_banner_dismissed','1'); });
-  }
-
-  // Timeline filter tabs
-  $(document).on('click', '#tl-filter .ctab', function() {
-    tlFilter = $(this).data('pos').toString();
-    $('#tl-filter .ctab').removeClass('active');
-    $(this).addClass('active');
-    renderTimeline();
-  });
-
-  // SW
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/thechat/sw.js', { scope:'/thechat/' }).catch(()=>{});
-  }
-});
-
-
-// ══════════════════════════════════════════
-//  RESET ALL DATA
-// ══════════════════════════════════════════
-async function confirmReset() {
-  const ans = prompt('Nhập "XOA TOAN BO" để xác nhận xóa toàn bộ data:');
-  if (ans !== 'XOA TOAN BO') { toast('Đã hủy.'); return; }
-  setSyncStatus('spin','Đang xóa...');
-  try {
-    // 1. delete logs.json
-    const logFile = await ghGetFile(LOGS_PATH);
-    if (logFile) {
-      await fetch(`${API}/repos/${REPO}/contents/${LOGS_PATH}`, {
-        method:'DELETE',
-        headers: ghHeaders(),
-        body: JSON.stringify({ message:'reset: delete logs', sha: logFile.sha, branch: BRANCH })
-      });
-    }
-    // 2. delete all photos by listing the photos dir
-    try {
-      const photoDir = await ghGet(`/repos/${REPO}/contents/${PHOTOS_DIR}?ref=${BRANCH}`);
-      for (const f of photoDir) {
-        if (f.type === 'file') {
-          await fetch(`${API}/repos/${REPO}/contents/${f.path}`, {
-            method:'DELETE',
-            headers: ghHeaders(),
-            body: JSON.stringify({ message:'reset: delete photo', sha: f.sha, branch: BRANCH })
+          $("body").append(banner);
+          $("#dismiss-banner").on("click", () => {
+            banner.remove();
+            sessionStorage.setItem("toji_banner_dismissed", "1");
           });
         }
+
+        // Timeline filter tabs
+        $(document).on("click", "#tl-filter .ctab", function () {
+          tlFilter = $(this).data("pos").toString();
+          $("#tl-filter .ctab").removeClass("active");
+          $(this).addClass("active");
+          renderTimeline();
+        });
+
+        // SW
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker
+            .register("/thechat/sw.js", { scope: "/thechat/" })
+            .catch(() => {});
+        }
+      });
+
+      // ══════════════════════════════════════════
+      //  RESET ALL DATA
+      // ══════════════════════════════════════════
+      async function confirmReset() {
+        const ans = prompt('Nhập "XOA TOAN BO" để xác nhận xóa toàn bộ data:');
+        if (ans !== "XOA TOAN BO") {
+          toast("Đã hủy.");
+          return;
+        }
+        setSyncStatus("spin", "Đang xóa...");
+        try {
+          // 1. delete logs.json
+          const logFile = await ghGetFile(LOGS_PATH);
+          if (logFile) {
+            await fetch(`${API}/repos/${REPO}/contents/${LOGS_PATH}`, {
+              method: "DELETE",
+              headers: ghHeaders(),
+              body: JSON.stringify({
+                message: "reset: delete logs",
+                sha: logFile.sha,
+                branch: BRANCH,
+              }),
+            });
+          }
+          // 2. delete all photos by listing the photos dir
+          try {
+            const photoDir = await ghGet(
+              `/repos/${REPO}/contents/${PHOTOS_DIR}?ref=${BRANCH}`,
+            );
+            for (const f of photoDir) {
+              if (f.type === "file") {
+                await fetch(`${API}/repos/${REPO}/contents/${f.path}`, {
+                  method: "DELETE",
+                  headers: ghHeaders(),
+                  body: JSON.stringify({
+                    message: "reset: delete photo",
+                    sha: f.sha,
+                    branch: BRANCH,
+                  }),
+                });
+              }
+            }
+          } catch (e) {
+            /* photos dir may not exist */
+          }
+          // 3. clear local state
+          logs = [];
+          fileSHAs = {};
+          renderLogs();
+          renderProgress();
+          renderTimeline();
+          renderWorkout();
+          setSyncStatus("ok", "Data đã được xóa");
+          toast("Đã xóa toàn bộ data!");
+        } catch (e) {
+          setSyncStatus("err", "Xóa thất bại");
+          toast("Lỗi: " + e.message, true);
+        }
       }
-    } catch(e) { /* photos dir may not exist */ }
-    // 3. clear local state
-    logs = [];
-    fileSHAs = {};
-    renderLogs();
-    renderProgress();
-    renderTimeline();
-    setSyncStatus('ok','Data đã được xóa');
-    toast('Đã xóa toàn bộ data!');
-  } catch(e) {
-    setSyncStatus('err','Xóa thất bại');
-    toast('Lỗi: ' + e.message, true);
-  }
-}
 
-// ══════════════════════════════════════════
-//  TIMELINE
-// ══════════════════════════════════════════
-let tlFilter = 'all';
-let timelapseBlob = null;
+      // ══════════════════════════════════════════
+      //  TIMELINE
+      // ══════════════════════════════════════════
+      let tlFilter = "all";
+      let timelapseBlob = null;
 
-function renderTimeline() {
-  const allPhotos = [];
-  logs.forEach(log => {
-    (log.photos||[]).forEach((url, i) => {
-      if (url && url !== '__photo__') {
-        allPhotos.push({ date: log.date, url, pos: i+1, label: ['Front','Side','Back'][i]||'Photo' });
-      }
-    });
-  });
-  allPhotos.sort((a,b) => a.date.localeCompare(b.date));
+      function renderTimeline() {
+        const allPhotos = [];
+        logs.forEach((log) => {
+          (log.photos || []).forEach((url, i) => {
+            if (url && url !== "__photo__") {
+              allPhotos.push({
+                date: log.date,
+                url,
+                pos: i + 1,
+                label: ["Front", "Side", "Back"][i] || "Photo",
+              });
+            }
+          });
+        });
+        allPhotos.sort((a, b) => a.date.localeCompare(b.date));
 
-  const filtered = tlFilter === 'all' ? allPhotos : allPhotos.filter(p => p.pos == tlFilter);
+        const filtered =
+          tlFilter === "all"
+            ? allPhotos
+            : allPhotos.filter((p) => p.pos == tlFilter);
 
-  if (!filtered.length) {
-    $('#tl-empty').show();
-    $('#tl-video-section').hide();
-    $('#tl-grid').empty();
-    return;
-  }
-  $('#tl-empty').hide();
-  $('#tl-video-section').show();
+        if (!filtered.length) {
+          $("#tl-empty").show();
+          $("#tl-video-section").hide();
+          $("#tl-grid").empty();
+          return;
+        }
+        $("#tl-empty").hide();
+        $("#tl-video-section").show();
 
-  const html = filtered.map(p => `
+        const html = filtered
+          .map(
+            (p) => `
     <div style="background:var(--card);border:.5px solid var(--border);border-radius:var(--r);overflow:hidden">
       <img src="${p.url}" loading="lazy" style="width:100%;aspect-ratio:1;object-fit:cover;display:block;cursor:pointer" onclick="openModal('${p.url}')">
       <div style="padding:8px 10px">
@@ -1171,116 +3273,139 @@ function renderTimeline() {
         <div style="font-size:11px;color:var(--hint);margin-top:1px">${p.label} · Week ${getWeekSimple(p.date)}</div>
       </div>
     </div>
-  `).join('');
-  $('#tl-grid').html(html);
-}
+  `,
+          )
+          .join("");
+        $("#tl-grid").html(html);
+      }
 
-function getWeekSimple(date) {
-  if (!logs.length) return 1;
-  const first = [...logs].sort((a,b)=>a.date.localeCompare(b.date))[0].date;
-  const diff = Math.floor((new Date(date)-new Date(first))/86400000);
-  return Math.min(12, Math.floor(diff/7)+1);
-}
+      function getWeekSimple(date) {
+        if (!logs.length) return 1;
+        const first = [...logs].sort((a, b) => a.date.localeCompare(b.date))[0]
+          .date;
+        const diff = Math.floor((new Date(date) - new Date(first)) / 86400000);
+        return Math.min(12, Math.floor(diff / 7) + 1);
+      }
 
-// ══════════════════════════════════════════
-//  TIMELAPSE VIDEO (canvas-based)
-// ══════════════════════════════════════════
-async function generateTimelapse() {
-  // Gather all front photos (pos=1) or all if none
-  let photos = [];
-  const filt = tlFilter === 'all' ? '1' : tlFilter; // prefer front for video
-  logs.forEach(log => {
-    const idx = parseInt(filt) - 1;
-    const url = (log.photos||[])[idx];
-    if (url && url !== '__photo__') photos.push({ date: log.date, url });
-  });
-  if (!photos.length) {
-    logs.forEach(log => {
-      (log.photos||[]).forEach((url,i) => {
-        if (url && url !== '__photo__') photos.push({ date: log.date, url, pos: i+1 });
-      });
-    });
-  }
-  photos.sort((a,b) => a.date.localeCompare(b.date));
-  if (photos.length < 2) { toast('Cần ít nhất 2 ảnh để tạo video', true); return; }
+      // ══════════════════════════════════════════
+      //  TIMELAPSE VIDEO (canvas-based)
+      // ══════════════════════════════════════════
+      async function generateTimelapse() {
+        // Gather all front photos (pos=1) or all if none
+        let photos = [];
+        const filt = tlFilter === "all" ? "1" : tlFilter; // prefer front for video
+        logs.forEach((log) => {
+          const idx = parseInt(filt) - 1;
+          const url = (log.photos || [])[idx];
+          if (url && url !== "__photo__") photos.push({ date: log.date, url });
+        });
+        if (!photos.length) {
+          logs.forEach((log) => {
+            (log.photos || []).forEach((url, i) => {
+              if (url && url !== "__photo__")
+                photos.push({ date: log.date, url, pos: i + 1 });
+            });
+          });
+        }
+        photos.sort((a, b) => a.date.localeCompare(b.date));
+        if (photos.length < 2) {
+          toast("Cần ít nhất 2 ảnh để tạo video", true);
+          return;
+        }
 
-  $('#tl-progress').show();
-  $('#tl-video-wrap').hide();
-  $('#tl-prog-bar').css('width','0%');
-  $('#tl-prog-label').text('Đang tải ảnh...');
+        $("#tl-progress").show();
+        $("#tl-video-wrap").hide();
+        $("#tl-prog-bar").css("width", "0%");
+        $("#tl-prog-label").text("Đang tải ảnh...");
 
-  const SIZE = 720;
-  const FPS = 2; // 2 frames per second (each photo = 0.5s)
-  const canvas = document.createElement('canvas');
-  canvas.width = SIZE; canvas.height = SIZE;
-  const ctx = canvas.getContext('2d');
+        const SIZE = 720;
+        const FPS = 2; // 2 frames per second (each photo = 0.5s)
+        const canvas = document.createElement("canvas");
+        canvas.width = SIZE;
+        canvas.height = SIZE;
+        const ctx = canvas.getContext("2d");
 
-  // MediaRecorder
-  const stream = canvas.captureStream(FPS);
-  const chunks = [];
-  const rec = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp8', videoBitsPerSecond: 2500000 });
-  rec.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+        // MediaRecorder
+        const stream = canvas.captureStream(FPS);
+        const chunks = [];
+        const rec = new MediaRecorder(stream, {
+          mimeType: "video/webm;codecs=vp8",
+          videoBitsPerSecond: 2500000,
+        });
+        rec.ondataavailable = (e) => {
+          if (e.data.size > 0) chunks.push(e.data);
+        };
 
-  rec.onstop = () => {
-    timelapseBlob = new Blob(chunks, { type: 'video/webm' });
-    const url = URL.createObjectURL(timelapseBlob);
-    $('#tl-video').attr('src', url);
-    $('#tl-video-wrap').show();
-    $('#tl-progress').hide();
-    toast('Video đã sẵn sàng!');
-  };
+        rec.onstop = () => {
+          timelapseBlob = new Blob(chunks, { type: "video/webm" });
+          const url = URL.createObjectURL(timelapseBlob);
+          $("#tl-video").attr("src", url);
+          $("#tl-video-wrap").show();
+          $("#tl-progress").hide();
+          toast("Video đã sẵn sàng!");
+        };
 
-  rec.start();
+        rec.start();
 
-  for (let i = 0; i < photos.length; i++) {
-    const pct = Math.round((i / photos.length) * 100);
-    $('#tl-prog-bar').css('width', pct + '%');
-    $('#tl-prog-label').text(`Đang xử lý ảnh ${i+1}/${photos.length}...`);
+        for (let i = 0; i < photos.length; i++) {
+          const pct = Math.round((i / photos.length) * 100);
+          $("#tl-prog-bar").css("width", pct + "%");
+          $("#tl-prog-label").text(
+            `Đang xử lý ảnh ${i + 1}/${photos.length}...`,
+          );
 
-    await new Promise(resolve => {
-      const img = new Image();
-      img.crossOrigin = 'anonymous';
-      img.onload = () => {
-        // fill bg
-        ctx.fillStyle = '#0a0a0a';
-        ctx.fillRect(0, 0, SIZE, SIZE);
+          await new Promise((resolve) => {
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.onload = () => {
+              // fill bg
+              ctx.fillStyle = "#0a0a0a";
+              ctx.fillRect(0, 0, SIZE, SIZE);
 
-        // cover-fit image
-        const scale = Math.max(SIZE/img.width, SIZE/img.height);
-        const w = img.width * scale, h = img.height * scale;
-        ctx.drawImage(img, (SIZE-w)/2, (SIZE-h)/2, w, h);
+              // cover-fit image
+              const scale = Math.max(SIZE / img.width, SIZE / img.height);
+              const w = img.width * scale,
+                h = img.height * scale;
+              ctx.drawImage(img, (SIZE - w) / 2, (SIZE - h) / 2, w, h);
 
-        // overlay: date + week label
-        ctx.fillStyle = 'rgba(0,0,0,0.55)';
-        ctx.fillRect(0, SIZE-64, SIZE, 64);
-        ctx.fillStyle = '#f0ede8';
-        ctx.font = 'bold 22px sans-serif';
-        ctx.fillText(fmtDate(photos[i].date), 20, SIZE-35);
-        ctx.fillStyle = '#D85A30';
-        ctx.font = '16px sans-serif';
-        ctx.fillText('Week ' + getWeekSimple(photos[i].date) + ' · TOJI PROTOCOL', 20, SIZE-14);
+              // overlay: date + week label
+              ctx.fillStyle = "rgba(0,0,0,0.55)";
+              ctx.fillRect(0, SIZE - 64, SIZE, 64);
+              ctx.fillStyle = "#f0ede8";
+              ctx.font = "bold 22px sans-serif";
+              ctx.fillText(fmtDate(photos[i].date), 20, SIZE - 35);
+              ctx.fillStyle = "#D85A30";
+              ctx.font = "16px sans-serif";
+              ctx.fillText(
+                "Week " + getWeekSimple(photos[i].date) + " · TOJI PROTOCOL",
+                20,
+                SIZE - 14,
+              );
 
-        // hold frame for 500ms
-        setTimeout(resolve, 1000 / FPS);
-      };
-      img.onerror = () => setTimeout(resolve, 100);
-      img.src = photos[i].url + (photos[i].url.includes('?') ? '&' : '?') + 'cb=' + Date.now();
-    });
-  }
+              // hold frame for 500ms
+              setTimeout(resolve, 1000 / FPS);
+            };
+            img.onerror = () => setTimeout(resolve, 100);
+            img.src =
+              photos[i].url +
+              (photos[i].url.includes("?") ? "&" : "?") +
+              "cb=" +
+              Date.now();
+          });
+        }
 
-  $('#tl-prog-label').text('Đang kết xuất video...');
-  $('#tl-prog-bar').css('width','100%');
-  setTimeout(() => rec.stop(), 200);
-}
+        $("#tl-prog-label").text("Đang kết xuất video...");
+        $("#tl-prog-bar").css("width", "100%");
+        setTimeout(() => rec.stop(), 200);
+      }
 
-function downloadTimelapse() {
-  if (!timelapseBlob) return;
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(timelapseBlob);
-  a.download = 'toji-timelapse.webm';
-  a.click();
-}
-
-</script>
-</body>
+      function downloadTimelapse() {
+        if (!timelapseBlob) return;
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(timelapseBlob);
+        a.download = "toji-timelapse.webm";
+        a.click();
+      }
+    </script>
+  </body>
 </html>
