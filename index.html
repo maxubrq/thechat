@@ -1424,87 +1424,6 @@
             <button class="ctab" data-phase="3">Phase 3 — Tuần 9–12</button>
           </div>
           <div id="wo-content"></div>
-          <div
-            id="wo-video-modal"
-            style="
-              display: none;
-              position: fixed;
-              inset: 0;
-              background: rgba(0, 0, 0, 0.95);
-              z-index: 600;
-              flex-direction: column;
-              align-items: center;
-              justify-content: center;
-              padding: 1rem;
-            "
-          >
-            <div style="width: 100%; max-width: 640px">
-              <div
-                style="
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                  margin-bottom: 0.75rem;
-                "
-              >
-                <div
-                  id="wo-video-title"
-                  style="font-size: 14px; font-weight: 500; color: #f0ede8"
-                ></div>
-                <button
-                  onclick="closeVideoModal()"
-                  style="
-                    background: none;
-                    border: none;
-                    color: #888;
-                    font-size: 28px;
-                    cursor: pointer;
-                    line-height: 1;
-                    padding: 0;
-                  "
-                >
-                  ×
-                </button>
-              </div>
-              <div
-                style="
-                  position: relative;
-                  padding-bottom: 56.25%;
-                  height: 0;
-                  border-radius: 12px;
-                  overflow: hidden;
-                  background: #000;
-                "
-              >
-                <iframe
-                  id="wo-video-iframe"
-                  style="
-                    position: absolute;
-                    inset: 0;
-                    width: 100%;
-                    height: 100%;
-                    border: none;
-                  "
-                  allowfullscreen
-                  allow="autoplay; encrypted-media"
-                ></iframe>
-              </div>
-              <a
-                id="wo-video-link"
-                href="#"
-                target="_blank"
-                rel="noopener"
-                style="
-                  display: block;
-                  text-align: center;
-                  margin-top: 0.75rem;
-                  font-size: 13px;
-                  color: #d85a30;
-                "
-                >Mở trên YouTube →</a
-              >
-            </div>
-          </div>
         </div>
 
         <!-- ══ TRACKER ══ -->
@@ -2227,10 +2146,9 @@
           console.error("[TOJI] pull", e);
           if (!silent) {
             const msg = e && e.message ? e.message : String(e);
-            const hint =
-              /failed to fetch|networkerror|load failed/i.test(msg)
-                ? " — Thử: mở qua HTTPS (không dùng file://), tắt extension, hoặc kiểm tra token có quyền repo."
-                : "";
+            const hint = /failed to fetch|networkerror|load failed/i.test(msg)
+              ? " — Thử: mở qua HTTPS (không dùng file://), tắt extension, hoặc kiểm tra token có quyền repo."
+              : "";
             toast("Pull thất bại: " + msg + hint, true);
           }
         }
@@ -2760,9 +2678,8 @@
 
       function getCurrentProgramWeek() {
         if (!logs.length) return null;
-        const first = [...logs].sort((a, b) =>
-          a.date.localeCompare(b.date),
-        )[0].date;
+        const first = [...logs].sort((a, b) => a.date.localeCompare(b.date))[0]
+          .date;
         const today = new Date().toISOString().split("T")[0];
         const diff = Math.floor(
           (new Date(today + "T12:00:00") - new Date(first + "T12:00:00")) /
@@ -2779,281 +2696,460 @@
       }
 
       function openVideoModal(title, videoId) {
-        $("#wo-video-title").text(title);
-        $("#wo-video-iframe").attr("src", ytEmbed(videoId));
-        $("#wo-video-link").attr("href", ytWatch(videoId));
-        $("#wo-video-modal").css({ display: "flex" });
+        // Find the button that was clicked and replace it with inline player
+        const btn = $(`.ex-video-btn[data-vid="${videoId}"]`).first();
+        if (!btn.length) return;
+
+        // If already open, close it
+        const existing = btn.closest(".ex").find(".wo-inline-player");
+        if (existing.length) {
+          existing.remove();
+          btn.show();
+          return;
+        }
+
+        btn.hide();
+        const player =
+          $(`<div class="wo-inline-player" style="margin-top:8px;border-radius:var(--rs);overflow:hidden;position:relative;padding-bottom:56.25%;height:0;background:#000">
+    <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1"
+      style="position:absolute;inset:0;width:100%;height:100%;border:none"
+      allowfullscreen allow="autoplay;encrypted-media;fullscreen;picture-in-picture"
+      loading="lazy"></iframe>
+  </div>
+  <button type="button" style="font-size:11px;color:var(--hint);background:none;border:none;cursor:pointer;margin-top:4px;font-family:inherit" onclick="$(this).prev().remove();$(this).prev().show();$(this).remove()">✕ Đóng video</button>`);
+
+        btn.after(player);
+        // Scroll to player
+        setTimeout(
+          () =>
+            player[0].scrollIntoView({ behavior: "smooth", block: "nearest" }),
+          100,
+        );
       }
 
       function closeVideoModal() {
-        $("#wo-video-modal").hide();
-        $("#wo-video-iframe").attr("src", "");
+        // Legacy — close any open inline players
+        $(".wo-inline-player").remove();
       }
 
-      /** @type {Record<number, { estMin: number; blurb: string }>} */
-      const WO_PHASE_META = {
+      // ══════════════════════════════════════════
+      //  WORKOUT — 1 ROUTINE, PROGRESSIVE PER PHASE
+      // ══════════════════════════════════════════
+
+      // Verified YouTube IDs (FitnessFAQs & trusted channels)
+      const YT = {
+        pullup: "hWUDMCckm1Q", // Pull-Ups at Home All Levels — FitnessFAQs
+        pullneg: "Y3ntNsIS2Q8", // Master the Pull-Up Beginner — FitnessFAQs
+        pushup: "GxW9MAMQSv0", // Perfect Push-Up Workout All Levels — FitnessFAQs
+        pushvar: "9PnsatHXTP4", // Top 3 Push-Ups Beginner to Advanced — FitnessFAQs
+        row: "hWbUlkbHzMs", // Inverted Row / Australian Pull-up
+        hollow: "uZqTUwq96iU", // Best Hollow Body Progressions — FitnessFAQs
+        plank: "pSHjTRCQxIw", // Plank form
+        squat: "SkNsa3eBwLA", // Bulgarian Split Squat Tutorial
+        dip: "yN6Q1UI_xkE", // Dip progression
+        legraise: "Pr1ieGZ5atk", // Hanging leg raise
+        warmup: "2tM1LFFxeKg", // Full body warm-up
+        cooldown: "c56KcxwfVDc", // Cooldown / stretch
+      };
+
+      // 1 routine duy nhất — mỗi bài có variant per phase
+      // sets/reps: { p1, p2, p3 }  |  variant: mô tả biến thể theo phase
+      const ROUTINE = [
+        {
+          section: "Khởi động",
+          badge: "bm",
+          blabel: "bắt buộc",
+          exercises: [
+            {
+              name: "Nhảy dây / cardio kích hoạt",
+              yt: YT.warmup,
+              sets: { p1: "1 set", p2: "1 set", p3: "1 set" },
+              reps: { p1: "3 phút", p2: "5 phút", p3: "7 phút" },
+              variant: {
+                p1: "Nhịp vừa, ổn định",
+                p2: "Interval 30s nhanh / 20s chậm",
+                p3: "HIIT: 20s toàn lực / 10s nghỉ × 8",
+              },
+            },
+            {
+              name: "Scapular pull-up (kích hoạt vai)",
+              yt: YT.pullneg,
+              sets: { p1: "2 sets", p2: "3 sets", p3: "3 sets" },
+              reps: { p1: "8 reps", p2: "10 reps", p3: "12 reps" },
+              variant: {
+                p1: "Cánh tay thẳng, chỉ di chuyển xương bả vai",
+                p2: "+ pause 1s ở trên",
+                p3: "+ tempo 2s lên / 2s xuống",
+              },
+            },
+            {
+              name: "Wrist circles + shoulder rotation",
+              yt: null,
+              sets: { p1: "1 set", p2: "1 set", p3: "1 set" },
+              reps: { p1: "30s", p2: "30s", p3: "30s" },
+              variant: { p1: null, p2: null, p3: null },
+            },
+          ],
+        },
+        {
+          section: "Pull — Kéo (lưng + bicep)",
+          badge: "bs",
+          blabel: "kéo",
+          exercises: [
+            {
+              name: "Pull-up / Chin-up",
+              yt: YT.pullup,
+              sets: { p1: "4 sets", p2: "5 sets", p3: "5 sets" },
+              reps: {
+                p1: "AMRAP (tối thiểu 3)",
+                p2: "AMRAP",
+                p3: "AMRAP + pause 2s trên cùng",
+              },
+              variant: {
+                p1: "Dùng band hỗ trợ OK. Nghỉ 90s giữa sets",
+                p2: "Bodyweight. Không dùng band. Nghỉ 75s",
+                p3: "Bodyweight + tempo 3-1-2 (lên 3s / giữ 1s / xuống 2s). Nghỉ 60s",
+              },
+            },
+            {
+              name: "Inverted row (Australian pull-up)",
+              yt: YT.row,
+              sets: { p1: "3 sets", p2: "4 sets", p3: "4 sets" },
+              reps: { p1: "10–12 reps", p2: "12–15 reps", p3: "15–20 reps" },
+              variant: {
+                p1: "Chân đặt sàn, góc ~45°",
+                p2: "Chân thẳng hoàn toàn, thân song song sàn",
+                p3: "Chân nâng cao (trên ghế) — tăng tải lưng trên",
+              },
+            },
+            {
+              name: "Negative pull-up (eccentric)",
+              yt: YT.pullneg,
+              sets: { p1: "3 sets", p2: "3 sets", p3: "3 sets" },
+              reps: {
+                p1: "4 reps × 3–4s xuống",
+                p2: "4 reps × 4–5s xuống",
+                p3: "4 reps × 5–6s xuống",
+              },
+              variant: {
+                p1: "Nhảy lên vị trí đỉnh, hạ chậm có kiểm soát",
+                p2: "Hạ chậm hơn, siết lưng trong suốt hành trình",
+                p3: "Full eccentric: dừng lại 1s ở giữa hành trình",
+              },
+            },
+          ],
+        },
+        {
+          section: "Push — Đẩy (ngực + vai + tricep)",
+          badge: "bs",
+          blabel: "đẩy",
+          exercises: [
+            {
+              name: "Push-up",
+              yt: YT.pushup,
+              sets: { p1: "4 sets", p2: "5 sets", p3: "5 sets" },
+              reps: {
+                p1: "AMRAP (tối thiểu 5)",
+                p2: "AMRAP",
+                p3: "AMRAP + tempo 3-0-1",
+              },
+              variant: {
+                p1: "Standard push-up. Ngực chạm sàn, thân thẳng tuyệt đối. Nghỉ 60s",
+                p2: "Diamond push-up hoặc pike push-up xen kẽ theo tuần. Nghỉ 60s",
+                p3: "Archer push-up (1 tay thẳng, 1 tay chịu lực). Nếu chưa được: wide push-up với tempo chậm",
+              },
+            },
+            {
+              name: "Dip (thanh song song hoặc ghế)",
+              yt: YT.dip,
+              sets: { p1: "3 sets", p2: "4 sets", p3: "5 sets" },
+              reps: {
+                p1: "AMRAP (chân chạm đất OK)",
+                p2: "AMRAP bodyweight",
+                p3: "AMRAP + pause 1s dưới cùng",
+              },
+              variant: {
+                p1: "Bench dip: tay sau ghế, chân thẳng trước",
+                p2: "Parallel dip đầy đủ. Nghiêng người nhẹ về trước → kích hoạt ngực nhiều hơn",
+                p3: "Ring dip nếu có. Nếu không: thêm tạ nhẹ hoặc ba lô",
+              },
+            },
+            {
+              name: "Pike push-up (vai)",
+              yt: YT.pushvar,
+              sets: { p1: "3 sets", p2: "3 sets", p3: "4 sets" },
+              reps: {
+                p1: "8–10 reps",
+                p2: "10–15 reps",
+                p3: "12–15 reps + chân nâng",
+              },
+              variant: {
+                p1: "Hông cao hình chữ V, đầu hướng sàn",
+                p2: "Đầu gần chạm sàn hơn, hành trình sâu hơn",
+                p3: "Chân nâng lên ghế → tăng tải vai đáng kể",
+              },
+            },
+          ],
+        },
+        {
+          section: "Core — Lõi",
+          badge: "bc",
+          blabel: "core",
+          exercises: [
+            {
+              name: "Hollow body hold",
+              yt: YT.hollow,
+              sets: { p1: "3 sets", p2: "4 sets", p3: "4 sets" },
+              reps: { p1: "20–25s", p2: "30–35s", p3: "40–50s" },
+              variant: {
+                p1: "Đầu gối co — giảm đòn bẩy nếu lưng võng khỏi sàn",
+                p2: "Chân thẳng, tay chỉ ra sau đầu",
+                p3: "Full hollow + rock nhẹ (hollow rock) 10 reps",
+              },
+            },
+            {
+              name: "Plank",
+              yt: YT.plank,
+              sets: { p1: "3 sets", p2: "3 sets", p3: "3 sets" },
+              reps: { p1: "45–60s", p2: "60–75s", p3: "60–90s" },
+              variant: {
+                p1: "Standard plank. Siết mông + bụng. Không để lưng võng",
+                p2: "+ shoulder tap xen kẽ mỗi 10 cái",
+                p3: "RKC plank: siết toàn thân tối đa + hít thở kiểm soát",
+              },
+            },
+            {
+              name: "Hanging knee/leg raise",
+              yt: YT.legraise,
+              sets: { p1: "3 sets", p2: "3 sets", p3: "4 sets" },
+              reps: { p1: "8–10 reps", p2: "10–12 reps", p3: "12–15 reps" },
+              variant: {
+                p1: "Knee raise: đầu gối lên ngang hông, không swing",
+                p2: "L-hang: giữ đầu gối thẳng, nâng đến 90°",
+                p3: "Straight leg raise: nâng thẳng đến ngang xà, chậm 3s xuống",
+              },
+            },
+          ],
+        },
+        {
+          section: "Legs — Chân + Hông",
+          badge: "bs",
+          blabel: "chân",
+          exercises: [
+            {
+              name: "Bulgarian split squat",
+              yt: YT.squat,
+              sets: { p1: "3 sets", p2: "4 sets", p3: "4 sets" },
+              reps: {
+                p1: "8 reps/chân",
+                p2: "10 reps/chân",
+                p3: "12 reps/chân",
+              },
+              variant: {
+                p1: "Chân sau trên ghế thấp. Tempo 3-0-1. Đây là bài khó nhất — đừng skip",
+                p2: "Chân sau trên ghế cao hơn. Thêm ba lô nếu quá dễ",
+                p3: "Ba lô + pause 2s ở vị trí thấp nhất (isometric)",
+              },
+            },
+            {
+              name: "Glute bridge / Hip thrust",
+              yt: null,
+              sets: { p1: "3 sets", p2: "3 sets", p3: "4 sets" },
+              reps: {
+                p1: "15–20 reps",
+                p2: "15 reps/chân",
+                p3: "15 reps/chân + pulse 10 reps",
+              },
+              variant: {
+                p1: "Hai chân. Giữ 2s ở trên cùng mỗi rep",
+                p2: "Một chân (single-leg hip thrust) — tăng tải gấp đôi",
+                p3: "Vai lên ghế (elevated) + 1 chân + thêm tạ/ba lô",
+              },
+            },
+            {
+              name: "Calf raise",
+              yt: null,
+              sets: { p1: "3 sets", p2: "3 sets", p3: "3 sets" },
+              reps: {
+                p1: "20 reps/chân",
+                p2: "20 reps/chân",
+                p3: "25 reps/chân",
+              },
+              variant: {
+                p1: "Một chân, sàn phẳng",
+                p2: "Mũi chân đứng ở mép bậc thang — full range",
+                p3: "Full range + pause 1s ở trên + 3s hạ xuống",
+              },
+            },
+          ],
+        },
+        {
+          section: "Cardio Finisher",
+          badge: "ba",
+          blabel: "đốt mỡ",
+          exercises: [
+            {
+              name: "Nhảy dây (finisher)",
+              yt: YT.warmup,
+              sets: { p1: "1 set", p2: "1 set", p3: "1 set" },
+              reps: {
+                p1: "3 phút liên tục",
+                p2: "5 phút liên tục",
+                p3: "8 phút (tabata: 20s/10s × 16)",
+              },
+              variant: {
+                p1: "Max pace có thể duy trì 3 phút",
+                p2: "Tăng tốc 30s cuối mỗi phút",
+                p3: "Tabata protocol: toàn lực 20s / nghỉ 10s × 16 rounds",
+              },
+            },
+            {
+              name: "Shadow boxing",
+              yt: null,
+              sets: { p1: "2 sets", p2: "3 sets", p3: "3 sets" },
+              reps: { p1: "1 phút/set", p2: "1.5 phút/set", p3: "2 phút/set" },
+              variant: {
+                p1: "Jab-cross cơ bản. Jaw clenched, mắt tập trung",
+                p2: "Thêm hook + uppercut. Di chuyển chân",
+                p3: "Full combination + defensive movement. Hết sức mỗi round",
+              },
+            },
+          ],
+        },
+        {
+          section: "Cooldown",
+          badge: "bm",
+          blabel: "phục hồi",
+          exercises: [
+            {
+              name: "Stretching + breathing (5 phút)",
+              yt: YT.cooldown,
+              sets: { p1: "1 set", p2: "1 set", p3: "1 set" },
+              reps: { p1: "5 phút", p2: "6 phút", p3: "8 phút" },
+              variant: {
+                p1: "Chest + shoulder stretch, hip flexor, hamstring",
+                p2: "+ lat stretch + thoracic rotation",
+                p3: "+ full spinal decompression hang 2 phút",
+              },
+            },
+          ],
+        },
+      ];
+
+      const PHASE_META = {
         1: {
-          estMin: 55,
-          blurb:
-            "Nền tảng ~55 phút/ngày tập. Kỹ thuật & thói quen; volume vừa đủ để phục hồi.",
+          weeks: [1, 2, 3, 4],
+          duration: "~60 phút",
+          key: "p1",
+          desc: "Xây nền. Kỹ thuật trước, rep sau. Band hỗ trợ OK. Nghỉ đủ.",
         },
         2: {
-          estMin: 80,
-          blurb:
-            "Tăng sets + thêm bài phụ ~80 phút. Ưu tiên chất lượng rep, giữ nhịp thở.",
+          weeks: [5, 6, 7, 8],
+          duration: "~85 phút",
+          key: "p2",
+          desc: "Volume tăng mạnh. Bỏ band. Thêm sets và biến thể khó hơn.",
         },
         3: {
-          estMin: 110,
-          blurb:
-            "Finisher ~110 phút: density cao, thêm boxing/shadow + skill work.",
+          weeks: [9, 10, 11, 12],
+          duration: "~110 phút",
+          key: "p3",
+          desc: "Intensity cao nhất. Tempo slow, advanced variants. Finisher dài.",
         },
       };
 
-      /**
-       * sets/reps keyed by phase 1|2|3; yt = YouTube id; newFrom = show badge from phase
-       */
-      const WO_LIBRARY = {
-        warm: {
-          n: "Khởi động toàn thân (5–8 phút)",
-          sets: { 1: 1, 2: 1, 3: 1 },
-          reps: { 1: "5–8 phút", 2: "8 phút", 3: "10 phút" },
-          yt: "2tM1LFFxeKg",
-        },
-        scap: {
-          n: "Scapular pulls / dead hang awareness",
-          sets: { 1: 3, 2: 4, 3: 4 },
-          reps: { 1: "8–10", 2: "10–12", 3: "12–15" },
-          yt: "eGo4IYlbEe4",
-        },
-        neg: {
-          n: "Pull-up negatives (eccentric)",
-          sets: { 1: 3, 2: 4, 3: 5 },
-          reps: { 1: "3–5s xuống", 2: "4–6s", 3: "5–8s" },
-          yt: "eGo4IYlbEe4",
-        },
-        band: {
-          n: "Assisted pull-up (band / machine)",
-          sets: { 1: 4, 2: 5, 3: 6 },
-          reps: { 1: "AMRAP sạch", 2: "AMRAP", 3: "AMRAP + pause 1s trên" },
-          yt: "eGo4IYlbEe4",
-        },
-        push: {
-          n: "Push-up (full ROM)",
-          sets: { 1: 4, 2: 5, 3: 6 },
-          reps: { 1: "10–15", 2: "15–25", 3: "20–35" },
-          yt: "IODxDxX7oi4",
-        },
-        row: {
-          n: "Inverted row / Australian pull-up",
-          sets: { 1: 3, 2: 4, 3: 5 },
-          reps: { 1: "10–12", 2: "12–15", 3: "15–20" },
-          yt: "hWbUlkbHzMs",
-        },
-        core1: {
-          n: "Hollow body hold",
-          sets: { 1: 3, 2: 4, 3: 4 },
-          reps: { 1: "20–30s", 2: "30–40s", 3: "40–50s" },
-          yt: "p7vEWk05wFM",
-        },
-        plank: {
-          n: "Plank (bodyline)",
-          sets: { 1: 3, 2: 3, 3: 4 },
-          reps: { 1: "45–60s", 2: "60s", 3: "60–90s" },
-          yt: "pSHjTRCQxIw",
-        },
-        dip: {
-          n: "Bench dip / parallel dip progression",
-          sets: { 1: 0, 2: 4, 3: 5 },
-          reps: { 1: "—", 2: "10–15", 3: "12–20" },
-          yt: "yN6Q1UI_xkE",
-          newFrom: 2,
-        },
-        leg: {
-          n: "Hanging knee / leg raise",
-          sets: { 1: 0, 2: 3, 3: 4 },
-          reps: { 1: "—", 2: "10–12", 3: "12–15" },
-          yt: "Pr1ieGZ5atk",
-          newFrom: 2,
-        },
-        lunge: {
-          n: "Walking lunge / split squat",
-          sets: { 1: 0, 2: 3, 3: 4 },
-          reps: { 1: "—", 2: "10/leg", 3: "12/leg" },
-          yt: "QOVaHwmYZ6c",
-          newFrom: 2,
-        },
-        mu: {
-          n: "Pull-up (strict) + slow eccentric",
-          sets: { 1: 4, 2: 5, 3: 6 },
-          reps: { 1: "3–5", 2: "5–8", 3: "8–12" },
-          yt: "eGo4IYlbEe4",
-        },
-        arch: {
-          n: "Arch body / Superman hold",
-          sets: { 1: 0, 2: 0, 3: 3 },
-          reps: { 1: "—", 2: "—", 3: "20–30s" },
-          yt: "p7vEWk05wFM",
-          newFrom: 3,
-        },
-        box: {
-          n: "Shadow boxing (4 rounds × 3 phút)",
-          sets: { 1: 0, 2: 0, 3: 1 },
-          reps: { 1: "—", 2: "—", 3: "12 phút + nghỉ 1 phút/round" },
-          yt: "b-7UCHOLK0",
-          newFrom: 3,
-        },
-        fin: {
-          n: "Cooldown + foam roll / breathing (5–8 phút)",
-          sets: { 1: 1, 2: 1, 3: 1 },
-          reps: { 1: "5 phút", 2: "6 phút", 3: "8 phút" },
-          yt: "c56KcxwfVDc",
-        },
+      const WEEK_FOCUS = {
+        1: "Nhập môn — học form chuẩn",
+        2: "Tăng nhẹ reps, giữ form",
+        3: "Thêm 1 set mỗi nhóm cơ",
+        4: "Deload 20% — chuẩn bị P2",
+        5: "Bỏ band hoàn toàn",
+        6: "Volume shock — tăng 1 set",
+        7: "Siết tempo, chậm hơn",
+        8: "Max rep test + deload 25%",
+        9: "Tempo 3-1-2 mọi bài",
+        10: "Advanced variants",
+        11: "Max effort — ghi PR",
+        12: "Final week — ảnh so sánh",
       };
 
-      /** @type {Record<number, { title: string; keys: (keyof typeof WO_LIBRARY)[] }[]>} */
-      const WO_DAYS = {
-        1: [
-          {
-            title: "Ngày A — Kéo + đẩy (nền)",
-            keys: [
-              "warm",
-              "scap",
-              "neg",
-              "band",
-              "push",
-              "row",
-              "core1",
-              "fin",
-            ],
-          },
-          {
-            title: "Ngày B — Full body nhẹ",
-            keys: ["warm", "push", "row", "plank", "core1", "fin"],
-          },
-        ],
-        2: [
-          {
-            title: "Ngày A — Kéo + đẩy (+volume)",
-            keys: [
-              "warm",
-              "scap",
-              "neg",
-              "band",
-              "push",
-              "row",
-              "core1",
-              "plank",
-              "fin",
-            ],
-          },
-          {
-            title: "Ngày B — Thân dưới + core",
-            keys: ["warm", "push", "row", "plank", "core1", "fin"],
-          },
-        ],
-        3: [
-          {
-            title: "Ngày A — Strength + skill density",
-            keys: [
-              "warm",
-              "scap",
-              "mu",
-              "push",
-              "row",
-              "dip",
-              "leg",
-              "core1",
-              "arch",
-              "fin",
-            ],
-          },
-          {
-            title: "Ngày B — Conditioning + boxing",
-            keys: [
-              "warm",
-              "push",
-              "row",
-              "plank",
-              "leg",
-              "box",
-              "core1",
-              "fin",
-            ],
-          },
-        ],
-      };
-
-      function weekTemplateId(w) {
-        if (w <= 4) return 1;
-        if (w <= 8) return 2;
-        return 3;
+      function getCurrentProgramWeek() {
+        if (!logs.length) return null;
+        const first = [...logs].sort((a, b) => a.date.localeCompare(b.date))[0]
+          .date;
+        const today = new Date().toISOString().split("T")[0];
+        const diff = Math.floor(
+          (new Date(today + "T12:00:00") - new Date(first + "T12:00:00")) /
+            86400000,
+        );
+        return Math.min(12, Math.max(1, Math.floor(diff / 7) + 1));
       }
 
-      function renderExerciseRow(key, phase) {
-        const ex = WO_LIBRARY[key];
-        if (!ex) return "";
-        const sets =
-          ex.sets[phase] !== undefined ? ex.sets[phase] : ex.sets[3] ?? 0;
-        if (!sets) return "";
-        const reps =
-          ex.reps[phase] !== undefined ? ex.reps[phase] : ex.reps[3] ?? "—";
-        const newBadge =
-          ex.newFrom && phase >= ex.newFrom
-            ? '<span class="ex-new">Mới</span>'
-            : "";
-        const title = ex.n.replace(/"/g, "&quot;");
-        const vid = ex.yt;
+      function renderExRow(ex, phaseKey) {
+        const sets = ex.sets[phaseKey] || "—";
+        const reps = ex.reps[phaseKey] || "—";
+        const vari = ex.variant[phaseKey];
+        const ytBtn = ex.yt
+          ? `<button type="button" class="ex-video-btn" data-vid="${ex.yt}">▶ Video</button>`
+          : "";
         return `<div class="ex">
-  <div>
-    <div class="en">${ex.n}${newBadge}</div>
-    <button type="button" class="ex-video-btn" data-vid="${vid}" data-vtitle="${title}">▶ Video</button>
-  </div>
-  <div class="es">${sets} × ${reps}</div>
-</div>`;
+    <div style="flex:1">
+      <div class="en">${ex.name}</div>
+      ${vari ? `<div class="ep">${vari}</div>` : ""}
+      ${ytBtn}
+    </div>
+    <div class="es" style="min-width:90px">${sets}<br><span style="color:var(--hint);font-size:11px">${reps}</span></div>
+  </div>`;
       }
 
       function renderWorkout() {
-        const phase = activePhase;
-        const meta = WO_PHASE_META[phase];
+        const pm = PHASE_META[activePhase];
+        const phK = pm.key;
         const cw = getCurrentProgramWeek();
-        const weeksInPhase = { 1: [1, 2, 3, 4], 2: [5, 6, 7, 8], 3: [9, 10, 11, 12] }[
-          phase
-        ];
+
         $("#wo-current-label").text(
-          meta
-            ? `Phase ${phase} · ~${meta.estMin} phút / session gợi ý` +
-                (cw
-                  ? ` · Tuần hiện tại (theo log): ${cw}`
-                  : " · Chưa có log — thêm log để bắt đầu đếm tuần")
-            : "",
+          `Phase ${activePhase} · ${pm.duration}/session` +
+            (cw ? ` · Tuần hiện tại: ${cw}` : " · Chưa có log"),
         );
 
-        let html = `<div class="wo-phase-banner"><strong>Phase ${phase}</strong> — ${meta.blurb}</div>`;
+        let html = `<div class="wo-phase-banner">
+    <strong style="color:var(--text)">Phase ${activePhase} — ${pm.duration}</strong>
+    <div style="font-size:13px;color:var(--muted);margin-top:4px;line-height:1.6">${pm.desc}</div>
+  </div>`;
 
-        weeksInPhase.forEach((w) => {
-          const tmpl = weekTemplateId(w);
-          const days = WO_DAYS[tmpl];
-          const isCurrent = cw === w;
-          const open = openWeeks.has(w);
+        pm.weeks.forEach((w) => {
+          const isCur = cw === w;
+          const isOpen = openWeeks.has(w);
+          if (isCur && !openWeeks.has(w)) openWeeks.add(w);
+
           const cls =
-            "wo-week" + (open ? " open" : "") + (isCurrent ? " wo-week-current" : "");
-          const tag = isCurrent
+            "wo-week" +
+            (isOpen || isCur ? " open" : "") +
+            (isCur ? " wo-week-current" : "");
+          const tag = isCur
             ? '<span class="tag now">Tuần này</span>'
-            : `<span class="tag" style="background:rgba(136,136,136,.12);color:#888">Tuần ${w}</span>`;
-          let body = "";
-          days.forEach((d) => {
-            body += `<div class="wb" style="border-bottom:.5px solid var(--border)">
-  <div class="wh"><span class="wn">${d.title}</span><span class="badge bs">${tmpl === 3 ? "P3" : tmpl === 2 ? "P2" : "P1"}</span></div>
-  ${d.keys.map((k) => renderExerciseRow(k, tmpl)).join("")}
-</div>`;
+            : `<span class="tag" style="background:rgba(80,80,80,.18);color:#888">Tuần ${w}</span>`;
+
+          let sectionsHtml = "";
+          ROUTINE.forEach((sec) => {
+            const rows = sec.exercises
+              .map((ex) => renderExRow(ex, phK))
+              .join("");
+            sectionsHtml += `<div class="wb" style="margin:.5rem 0;border-radius:var(--rs);overflow:hidden">
+        <div class="wh"><span class="wn">${sec.section}</span><span class="badge ${sec.badge}">${sec.blabel}</span></div>
+        ${rows}
+      </div>`;
           });
+
           html += `<div class="${cls}" data-week="${w}">
-  <button type="button" class="wo-week-h" data-week-toggle="${w}">
-    <span>Tuần ${w}</span>
-    <span style="display:flex;align-items:center;gap:8px">${tag}<span class="chev">›</span></span>
-  </button>
-  <div class="wo-week-b">${body}</div>
-</div>`;
+      <button type="button" class="wo-week-h" data-week-toggle="${w}">
+        <span style="display:flex;align-items:center;gap:8px">
+          ${tag}
+          <span style="font-size:13px;color:var(--muted)">${WEEK_FOCUS[w] || ""}</span>
+        </span>
+        <span class="chev">›</span>
+      </button>
+      <div class="wo-week-b">${sectionsHtml}</div>
+    </div>`;
         });
 
         $("#wo-content").html(html);
@@ -3085,12 +3181,16 @@
         });
 
         // chart tabs (scoped — workout panel also uses .ctab for phases)
-        $(document).on("click", "#panel-charts .ctab[data-metric]", function () {
-          activeMetric = $(this).data("metric");
-          $("#panel-charts .ctab[data-metric]").removeClass("active");
-          $(this).addClass("active");
-          renderChart();
-        });
+        $(document).on(
+          "click",
+          "#panel-charts .ctab[data-metric]",
+          function () {
+            activeMetric = $(this).data("metric");
+            $("#panel-charts .ctab[data-metric]").removeClass("active");
+            $(this).addClass("active");
+            renderChart();
+          },
+        );
 
         $(document).on(
           "click",
@@ -3125,10 +3225,6 @@
           const vid = $(this).data("vid");
           const t = $(this).data("vtitle") || "Video";
           openVideoModal(t, String(vid));
-        });
-
-        $("#wo-video-modal").on("click", function (e) {
-          if (e.target === this) closeVideoModal();
         });
 
         // lock btn
