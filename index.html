@@ -9,6 +9,7 @@
     <title>Toji Protocol</title>
     <link rel="manifest" href="manifest.json" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
@@ -2060,6 +2061,9 @@
       const BRANCH = "main";
       const LOGS_PATH = "data/logs.json";
       const PHOTOS_DIR = "data/photos";
+      // Mở app qua http(s) (vd: GitHub Pages), không mở trực tiếp file:// — trình duyệt
+      // thường chặn fetch tới api.github.com. Console lỗi createSMSG/GetLoginNames4URL
+      // thường là extension (password manager), không phải TOJI.
 
       // ══════════════════════════════════════════
       //  STATE
@@ -2078,7 +2082,8 @@
       // ══════════════════════════════════════════
       function ghHeaders() {
         return {
-          Authorization: "token " + TOKEN,
+          // Bearer: đúng cho fine-grained PAT; classic ghp_ cũng được GitHub chấp nhận
+          Authorization: "Bearer " + TOKEN,
           Accept: "application/vnd.github.v3+json",
           "Content-Type": "application/json",
         };
@@ -2157,7 +2162,7 @@
         try {
           // validate token by hitting /user
           const r = await fetch(`${API}/user`, {
-            headers: { Authorization: "token " + t },
+            headers: { Authorization: "Bearer " + t },
           });
           if (!r.ok) throw new Error("Token không hợp lệ");
           TOKEN = t;
@@ -2167,7 +2172,12 @@
           setSyncStatus("ok", "Đã đăng nhập");
           await pull(true);
         } catch (e) {
-          $("#lock-err").text(e.message);
+          console.error("[TOJI] unlock", e);
+          $("#lock-err").text(
+            e && e.message
+              ? e.message
+              : "Lỗi mạng / CORS — mở app qua HTTPS, không dùng file://",
+          );
         } finally {
           $("#lock-spinner").hide();
           $("#lock-btn").prop("disabled", false);
@@ -2214,7 +2224,15 @@
           if (!silent) toast("Đã pull từ GitHub!");
         } catch (e) {
           setSyncStatus("err", "Pull thất bại");
-          if (!silent) toast("Pull thất bại: " + e.message, true);
+          console.error("[TOJI] pull", e);
+          if (!silent) {
+            const msg = e && e.message ? e.message : String(e);
+            const hint =
+              /failed to fetch|networkerror|load failed/i.test(msg)
+                ? " — Thử: mở qua HTTPS (không dùng file://), tắt extension, hoặc kiểm tra token có quyền repo."
+                : "";
+            toast("Pull thất bại: " + msg + hint, true);
+          }
         }
       }
 
@@ -2240,7 +2258,8 @@
           toast("Đã push lên GitHub!");
         } catch (e) {
           setSyncStatus("err", "Push thất bại");
-          toast("Push thất bại: " + e.message, true);
+          console.error("[TOJI] pushLogs", e);
+          toast("Push thất bại: " + (e && e.message ? e.message : e), true);
         }
       }
 
@@ -3005,7 +3024,7 @@
             ? `Phase ${phase} · ~${meta.estMin} phút / session gợi ý` +
                 (cw
                   ? ` · Tuần hiện tại (theo log): ${cw}`
-                  : " · Chưa có log — thêm log để bắt đầu đếm tuần"),
+                  : " · Chưa có log — thêm log để bắt đầu đếm tuần")
             : "",
         );
 
